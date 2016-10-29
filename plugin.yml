@@ -1,0 +1,31 @@
+name: AngelicHeadwear
+main: com.kraken.angelic.Angelic
+version: 1.0 (alpha)
+commands: 
+     angelic:
+        description: Info for the AngelicHeadwear plugin.
+        usage: /<command>
+     gameover:
+        description: End the game.
+        usage: /<command> <name>
+     gun:
+        description: Give yourself a gun.
+        usage: /<command>
+     queue:
+        description: Join a games queue!
+        usage: /<command> <name>
+     tele:
+        description: Teleport to a set location.
+        usage: /<command> <name>
+     teledel:
+        description: Delete a teleport.
+        usage: /<command> <name>
+     telelist:
+        description: List teleports.
+        usage: /<command>
+     teleset:
+        description: Set a teleport.
+        usage: /<command> <name>
+     spawnset:
+        description: Set a spawn.
+        usage: /<command> <name>
