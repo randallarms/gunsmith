@@ -39,48 +39,53 @@ public class GunSmith extends JavaPlugin implements Listener {
     
     @Override
     public void onDisable() {
+    	
         getLogger().info("GunSmith has been disabled.");
-                
+        
     }
     
-  //Angelic commands
+//GunSmith commands
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player = (Player) sender;
 		
     	//Command: guns
         if (cmd.getName().equalsIgnoreCase("guns") && sender instanceof Player) {
-        	player.sendMessage(ChatColor.RED + "[GUNS!]" + ChatColor.GRAY + " | Shoot things.");
+        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Type \"/givegun <gunName> to give yourself a gun.\"");
+        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Gun names: " 
+        					+ ChatColor.GREEN + "sniper" + ChatColor.GRAY + " | "
+        					+ ChatColor.GREEN + "br" + ChatColor.GRAY + "/" + ChatColor.GREEN + "battleRifle" + ChatColor.GRAY + " | " 
+        					+ ChatColor.GREEN + "pistol" + ChatColor.GRAY + " | ");
         	return true;
         }
         
-        //Command: gun
-        if (cmd.getName().equalsIgnoreCase("gun") && sender instanceof Player) {
+        //Command: givegun <gunName>
+        if (cmd.getName().equalsIgnoreCase("giveGun") && sender instanceof Player) {
         	
-        	ItemStack gunItem;
-        	
-        	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
-        		
-        		ItemSmith smithy = new ItemSmith();
-            	gunItem = smithy.makeGun(player, "sniperRifle");
-            	
-        	} else if (args.length == 1 && args[0].equalsIgnoreCase("br")) {
-        		
-        		ItemSmith smithy = new ItemSmith();
-            	gunItem = smithy.makeGun(player, "battleRifle");
-            	
-        	} else {
-        		
-        		ItemSmith smithy = new ItemSmith();
-        		gunItem = smithy.makeGun(player, "pistol");	
-        		
-    		}
-        	
-            player.sendMessage(ChatColor.RED + "[GUNS!]" + ChatColor.GRAY + " | Pew pew!");
-            player.getInventory().addItem(new ItemStack(gunItem));
+        	return new ItemSmith().giveGun(args, player);
             
-            return true;
-            
+        }
+        
+        //Command: getStat <gunName> <stat>
+        if (cmd.getName().equalsIgnoreCase("getStat") && sender instanceof Player) {
+        	
+        	String statName = args[2];
+        	String gunName = new GunStats().getName(args[1]);
+        	int stat = -1;
+        	
+        	if ( statName.equalsIgnoreCase("range") ) {
+        		stat = new GunStats().findRange(args[0]);
+        	} else if ( statName.equalsIgnoreCase("cooldown") ) {
+        		stat = new GunStats().findCooldown(args[0]);
+        	}
+        	
+        	if (stat >= 0) {
+        		
+        		player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + gunName + ", " + statName + ": " + stat);
+        		return true;
+        		
+        	}
+        	
         }
     	
         player.sendMessage(ChatColor.RED + "Your command was not recognized, or you have insufficient permissions.");
@@ -102,7 +107,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     			Material m = item.getType();
     			
     			//The Materials correspond to the item the gun is based on
-    			if (m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE)) {
+    			if (m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) || m.equals(Material.GOLD_AXE)) {
 	    			GunShot shot = new GunShot(player, item.getType());
 			    	Bukkit.getServer().getPluginManager().callEvent(shot);
 			    	shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
@@ -121,13 +126,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 		@EventHandler
 	    public void onHit(EntityDamageByEntityEvent event) {
 			
-			if (event.getDamager() instanceof Player) {
-				
-			}
-			
 	        if (event.getDamager() instanceof Snowball) { //check if the damager is a snowball
 	        	
-	            if (shotprojectiledata.containsKey(event.getDamager())) { //verify it is a move (i.e., snowball shout out by the move)
+	            if (shotprojectiledata.containsKey(event.getDamager())) { //verify it is a gunshot (i.e., snowball shout out by the gun)
 	            	
 	                EntityData eventdata = shotprojectiledata.get(event.getDamager()); //get data stored about the projectile
 	                

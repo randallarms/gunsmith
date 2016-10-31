@@ -30,10 +30,14 @@ public class GunShot extends Event {
 		Location location = player.getEyeLocation();
         BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, findRange(gun) );
         Location blockToAdd;
+        
         projectile = player.launchProjectile(Snowball.class);
         projectile.setVelocity(player.getLocation().getDirection().multiply(10.0D));
-        data = new EntityData(projectile.getLocation(), 75, 10D);
+        //Controls location, range, and damage
+        	data = new EntityData(projectile.getLocation(), 75, 10D);
+        //^^^
         shotprojectiledata.put(projectile, data);
+        
         while(blocksToAdd.hasNext()) {
             blockToAdd = blocksToAdd.next().getLocation();
             Material b = blockToAdd.getBlock().getType();
@@ -43,6 +47,7 @@ public class GunShot extends Event {
             player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.BEACON);
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST, (float) 0.1, (float) 0.5);
         }
+        
       for (Player p : Bukkit.getOnlinePlayers()) {
           ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
       }
