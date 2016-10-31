@@ -29,6 +29,7 @@ public class EntityData extends Event implements Cancellable {
     public Double getDamage() {
         return damage;
     }
+    
     @Override
     public HandlerList getHandlers() {
      

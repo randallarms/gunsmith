@@ -64,6 +64,31 @@ public class ItemSmith {
 		
 	}
 	
+	public boolean giveGun(String[] args, Player player) {
+		
+    	ItemStack gunItem;
+    	
+    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
+    		
+        	gunItem = makeGun(player, "sniperRifle");
+        	
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
+    		
+        	gunItem = makeGun(player, "battleRifle");
+        	
+    	} else {
+    		
+    		gunItem = makeGun(player, "pistol");	
+    		
+		}
+    	
+        player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");
+        player.getInventory().addItem(new ItemStack(gunItem));
+        
+        return true;
+		
+	}
+	
 	public ItemStack makeArmor(Player player, String armor) {
 		
 		Material m;
