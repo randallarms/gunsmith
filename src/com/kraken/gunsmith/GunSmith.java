@@ -59,7 +59,7 @@ public class GunSmith extends JavaPlugin implements Listener {
         	return true;
         }
         
-        //Command: givegun <gunName>
+        //Command: giveGun <gunName>
         if (cmd.getName().equalsIgnoreCase("giveGun") && sender instanceof Player) {
         	
         	return new ItemSmith().giveGun(args, player);
@@ -67,10 +67,10 @@ public class GunSmith extends JavaPlugin implements Listener {
         }
         
         //Command: getStat <gunName> <stat>
-        if (cmd.getName().equalsIgnoreCase("getStat") && sender instanceof Player) {
+        if (cmd.getName().equalsIgnoreCase("getStat") && sender instanceof Player && args.length == 2) {
         	
-        	String statName = args[2];
-        	String gunName = new GunStats().getName(args[1]);
+        	String statName = args[1];
+        	String gunName = new GunStats().getName(args[0]);
         	int stat = -1;
         	
         	if ( statName.equalsIgnoreCase("range") ) {
