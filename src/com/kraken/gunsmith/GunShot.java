@@ -56,8 +56,12 @@ public class GunShot extends Event {
 	
 	public int findRange(Material m) {
 
-		if ( m.equals(Material.FEATHER) ) {
+		if ( m.equals( Material.FEATHER) ) {
 			return 100;
+		} else if ( m.equals( Material.GOLD_AXE ) || m.equals( Material.WOOD_HOE ) ) {
+			return 50;
+		} else if ( m.equals( Material.DIAMOND_PICKAXE ) ) {
+			return 40;
 		} else {
 			return 50;
 		}
@@ -66,10 +70,14 @@ public class GunShot extends Event {
 	
 	public int findCooldown(Material m) {
 
-		if ( m.equals(Material.FEATHER) ) {
+		if ( m.equals( Material.FEATHER ) ) {
 			return 20;
-		} else if ( m.equals(Material.WOOD_HOE) ) {
+		} else if ( m.equals( Material.WOOD_HOE ) ) {
 			return 10;
+		} else if ( m.equals( Material.GOLD_AXE ) ) {
+			return 5;
+		} else if ( m.equals( Material.DIAMOND_PICKAXE ) ) {
+			return 2;
 		} else {
 			return 5;
 		}
