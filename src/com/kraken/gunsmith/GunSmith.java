@@ -1,3 +1,13 @@
+// ========================================================================
+// |GUNSMITH v0.1.3
+// | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
+// | code inspired by various Bukkit & Spigot devs -- thank you. 
+// |
+// | Always free & open-source! If this plugin is being sold or re-branded,
+// | please let me know on the SpigotMC site, or wherever you can. Thanks!
+// | Source code: https://github.com/randallarms/gunsmith
+// ========================================================================
+
 package com.kraken.gunsmith;
 
 import org.bukkit.command.Command;
@@ -54,7 +64,8 @@ public class GunSmith extends JavaPlugin implements Listener {
         	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Type \"/givegun <gunName> to give yourself a gun.\"");
         	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Gun names: " 
         					+ ChatColor.GREEN + "sniper" + ChatColor.GRAY + " | "
-        					+ ChatColor.GREEN + "br" + ChatColor.GRAY + "/" + ChatColor.GREEN + "battleRifle" + ChatColor.GRAY + " | " 
+        					+ ChatColor.GREEN + "br" + ChatColor.GRAY + "/" + ChatColor.GREEN + "battleRifle" + ChatColor.GRAY + " | "
+        					+ ChatColor.GREEN + "lmg" + ChatColor.GRAY + "/" + ChatColor.GREEN + "lightMachineGun" + ChatColor.GRAY + " | "
         					+ ChatColor.GREEN + "pistol" + ChatColor.GRAY + " | ");
         	return true;
         }
@@ -107,7 +118,8 @@ public class GunSmith extends JavaPlugin implements Listener {
     			Material m = item.getType();
     			
     			//The Materials correspond to the item the gun is based on
-    			if (m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) || m.equals(Material.GOLD_AXE)) {
+    			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
+    					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE) ) {
 	    			GunShot shot = new GunShot(player, item.getType());
 			    	Bukkit.getServer().getPluginManager().callEvent(shot);
 			    	shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
@@ -138,9 +150,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 	                	
 	                	//Headshot code
 		            	double projectileHeight = bullet.getLocation().getY();
-		            	System.out.println(projectileHeight);
 		                double playerBodyHeight = event.getEntity().getLocation().getY() + 1.35;
-		                System.out.println(playerBodyHeight);
 		            	
 		                if (projectileHeight > playerBodyHeight) {
 		                	event.setDamage( (double) (eventdata.getDamage() * 2) ); // double damage
