@@ -1,5 +1,9 @@
 // ========================================================================
+<<<<<<< HEAD
 // |GUNSMITH v0.3
+=======
+// |GUNSMITH v0.2
+>>>>>>> refs/remotes/origin/master
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
