@@ -1,6 +1,7 @@
 package com.kraken.gunsmith;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -13,21 +14,30 @@ public class EntityData extends Event implements Cancellable {
     private Location firedfrom;
     private Integer range;
     private Double damage;
-
-    //constructor
-    public EntityData(Location loc, Integer range, Double damage) {
-        this.firedfrom = loc;
+    private Player player;
+    
+    //Constructor
+    public EntityData(Player player, Location loc, Integer range, Double damage) {
+        this.player = player;
+    	this.firedfrom = loc;
         this.range = range;
         this.damage = damage;
     }
+    
     public Location getFiredFrom() {
         return firedfrom;
     }
+    
     public Integer getRange() {
         return range;
     }
+    
     public Double getDamage() {
         return damage;
+    }
+    
+    public Player getPlayer() {
+    	return player;
     }
     
     @Override

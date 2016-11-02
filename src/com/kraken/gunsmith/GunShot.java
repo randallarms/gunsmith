@@ -33,8 +33,8 @@ public class GunShot extends Event {
         
         projectile = player.launchProjectile(Snowball.class);
         projectile.setVelocity(player.getLocation().getDirection().multiply(10.0D));
-        //Controls location, range, and damage
-        	data = new EntityData(projectile.getLocation(), 75, 10D);
+        //Controls shooter identity, location, range, and damage
+        	data = new EntityData(player, projectile.getLocation(), 75, 10D);
         //^^^
         shotprojectiledata.put(projectile, data);
         
