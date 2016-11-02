@@ -5,7 +5,9 @@ Simple custom gun plugin for Bukkit on Minecraft (MCv1.9).
 
 HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
 
-Simple custom gun Bukkit plugin for Minecraft. Simply hold the item corresponding to the gun, and right click to fire.
+Simple custom gun Bukkit plugin for Minecraft. Simply hold the item corresponding to the gun, and right click to fire. You will need the proper ammunition to fire a weapon, as well!
+
+GunSmith works best with a custom resource pack that displays the base items as the corresponding firearm. A specialty resource pack is included in our GitHub project repository, and can be directly downloaded here: https://github.com/randallarms/gunsmith/blob/version-0-3/GunSmith%20%5BResources%5D.zip
 
 Type "/gun <gunName>" to get a gun. Gun Names:
 
@@ -14,7 +16,7 @@ Type "/gun <gunName>" to get a gun. Gun Names:
     "lmg" for a Light Machine Gun (base item: diamond pickaxe)
     "pistol" for a Pistol (base item: gold axe)
 
-GunSmith works best with a custom resource pack that displays the base items as the corresponding firearm. A specialty resource pack may be added in the near future to facilitate players and servers using this plugin.
+Type "/ammo <gunName>" to get the corresponding ammunition for that gun.
 
 Guides & plugin to be updated consistently! This plugin is far from complete, and represents an open-source, work-in-progress project.
 
