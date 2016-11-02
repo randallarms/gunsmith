@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.1 (alpha)
+version: 0.3 (alpha)
 commands: 
      guns:
         description: Info for the GunSmith plugin.
@@ -8,6 +8,9 @@ commands:
      giveGun:
         description: Give yourself a gun.
         usage: /<command> <gunName>
+     giveAmmo:
+        description: Give yourself ammunition.
+        usage: /<command> <ammoName>  
      getStat:
         description: Get stats for a particular gun.
         usage: /<command> <gunName> <stat>

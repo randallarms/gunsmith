@@ -1,5 +1,5 @@
 // ========================================================================
-// |GUNSMITH v0.2
+// |GUNSMITH v0.3
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -21,11 +21,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
@@ -77,6 +80,19 @@ public class GunSmith extends JavaPlugin implements Listener {
             
         }
         
+        //Command: giveAmmo <ammoName>
+        if (cmd.getName().equalsIgnoreCase("giveAmmo") && sender instanceof Player) {
+        	
+        	if ( !new ItemSmith().giveAmmo(args, player) ) {
+        		
+        		player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized ammo type.");
+        		
+        	}
+        	
+        	return true;
+            
+        }
+        
         //Command: getStat <gunName> <stat>
         if (cmd.getName().equalsIgnoreCase("getStat") && sender instanceof Player && args.length == 2) {
         	
@@ -120,15 +136,26 @@ public class GunSmith extends JavaPlugin implements Listener {
     			//The Materials correspond to the item the gun is based on
     			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
     					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE) ) {
-	    			GunShot shot = new GunShot(player, item.getType());
-			    	Bukkit.getServer().getPluginManager().callEvent(shot);
-			    	shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
-			    	cooldown.add(player);
-			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-			    		public void run() {
-			    			cooldown.remove(player);
-			    		}
-			    	}, shot.findCooldown(m));
+    				
+    				//Check if player has proper ammunition
+    				if (hasAmmo(player, m)) {
+    				
+		    			GunShot shot = new GunShot(player, item.getType());
+				    	Bukkit.getServer().getPluginManager().callEvent(shot);
+				    	shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+				    	cooldown.add(player);
+				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+				    		public void run() {
+				    			cooldown.remove(player);
+				    		}
+				    	}, shot.findCooldown(m));
+				    	
+    				} else {
+    					
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You are out of ammunition.");
+    					
+    				}
+			    	
     			}
     		}
     		
@@ -172,5 +199,55 @@ public class GunSmith extends JavaPlugin implements Listener {
 	            }
 	        }
 	    }
+		
+		//Checks for the name of the ammo used for a particular gun
+		public String getAmmoFor(Material m) {
+			
+			if ( m.equals(Material.FEATHER) ) {
+				return "Sniper Rifle";
+			} else if ( m.equals(Material.WOOD_HOE) ) {
+				return "Battle Rifle";
+			} else if ( m.equals(Material.GOLD_AXE) ) {
+				return "Pistol";
+			} else if ( m.equals(Material.DIAMOND_PICKAXE) ) {
+				return "LMG";
+			} else {
+				return "null";
+			}
+			
+		}
+		
+		//Checks if player has ammunition of a certain type
+		public boolean hasAmmo(Player player, Material m) {
+			
+			Inventory inv = player.getInventory();
+			String ammo = getAmmoFor(m);
+			
+			for (ItemStack item : inv) {
+				
+				if (item != null && item.hasItemMeta()) {
+				
+					ItemMeta im = item.getItemMeta();
+					
+					if (!im.equals(null) && im.hasLore()) {
+						
+						List<String> lore = im.getLore();
+						
+						if ( lore.toString().contains("Ammunition | " + ammo) ) {
+							//Ammo was found
+							item.setAmount(item.getAmount() - 1);
+							return true;
+						}
+						
+					}
+				
+				}
+				
+			}
+			
+			//Ammo was not found
+			return false;
+			
+		}
 		
 }

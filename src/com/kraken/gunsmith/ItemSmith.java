@@ -44,7 +44,7 @@ public class ItemSmith {
 		
 	}
 	
-	public ItemStack makeGun(Player player, String gun) {
+	public ItemStack makeGun(String gun) {
 		
 		Material m;
 		String name;
@@ -74,24 +74,84 @@ public class ItemSmith {
     	
     	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
     		
-        	gunItem = makeGun(player, "sniperRifle");
+        	gunItem = makeGun("sniperRifle");
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
     		
-        	gunItem = makeGun(player, "battleRifle");
+        	gunItem = makeGun("battleRifle");
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
     		
-        	gunItem = makeGun(player, "lightMachineGun");
+        	gunItem = makeGun("lightMachineGun");
         	
     	} else {
     		
-    		gunItem = makeGun(player, "pistol");	
+    		gunItem = makeGun("pistol");	
     		
 		}
     	
         player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");
         player.getInventory().addItem(new ItemStack(gunItem));
+        
+        return true;
+		
+	}
+	
+	public ItemStack makeAmmo(String ammo) {
+		
+		Material m = Material.MELON_SEEDS;
+		String name = "";
+		String ammoFor = "";
+		
+		if (ammo.equals("sniperAmmo")) {
+			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[Sniper Ammo]";
+			ammoFor = "Sniper Rifle";
+		} else if (ammo.equals("brAmmo")) {
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BR Ammo]";
+			ammoFor = "Battle Rifle";
+		} else if (ammo.equals("lmgAmmo")) {
+			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LMG Ammo]";
+			ammoFor = "LMG";
+		} else if (ammo.equals("pistolAmmo")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[Pistol Ammo]";
+			ammoFor = "Pistol";
+		}
+	
+		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
+    	return makeItem(m, name, desc);
+		
+	}
+	
+	public boolean giveAmmo(String[] args, Player player) {
+		
+    	ItemStack ammoItem;
+    	
+    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
+    		
+    		ammoItem = makeAmmo("sniperAmmo");
+        	
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
+    		
+    		ammoItem = makeAmmo("brAmmo");
+        	
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
+    		
+    		ammoItem = makeAmmo("lmgAmmo");
+        	
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("pistol") ) ) {
+    		
+    		ammoItem = makeAmmo("pistolAmmo");	
+    		
+		} else {
+			
+			return false;
+			
+		}
+    	
+    	//Put ammo into inventory
+    	for (int i = 0; i < 64; i++) {
+    		player.getInventory().addItem(new ItemStack(ammoItem));
+    	}
         
         return true;
 		
