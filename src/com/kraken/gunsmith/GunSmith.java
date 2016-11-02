@@ -1,5 +1,5 @@
 // ========================================================================
-// |GUNSMITH v0.1.3
+// |GUNSMITH v0.2
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -138,13 +138,18 @@ public class GunSmith extends JavaPlugin implements Listener {
 		@EventHandler
 	    public void onHit(EntityDamageByEntityEvent event) {
 			
-	        if (event.getDamager() instanceof Snowball) { //check if the damager is a snowball
+			//check if the damager is a snowball
+	        if ( event.getDamager() instanceof Snowball ) { 
 	        	
-	            if (shotprojectiledata.containsKey(event.getDamager())) { //verify it is a gunshot (i.e., snowball shout out by the gun)
+	        	//verify it is a gunshot (i.e., snowball shout out by the gun)
+	            if (shotprojectiledata.containsKey(event.getDamager())) { 
 	            	
-	                EntityData eventdata = shotprojectiledata.get(event.getDamager()); //get data stored about the projectile
-	                
-	                if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange() ) { //check if the event is outside of the range
+	            	//get data stored about the projectile
+	                EntityData eventdata = shotprojectiledata.get(event.getDamager()); 
+	              
+	                //check if the event is outside of the range AND target is not the shooter
+	                if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange()
+	                		&& !eventdata.getPlayer().equals( event.getEntity() ) ) { 
 	                	
 	                	Projectile bullet = (Projectile) event.getDamager();
 	                	
