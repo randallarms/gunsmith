@@ -1,5 +1,5 @@
 // ========================================================================
-// |GUNSMITH v0.3.1
+// |GUNSMITH v0.3.2
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -121,12 +121,11 @@ public class GunSmith extends JavaPlugin implements Listener {
         
     }
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
     	
     	Player player = e.getPlayer();
-    	ItemStack item = player.getInventory().getItemInHand();
+    	ItemStack item = player.getInventory().getItemInMainHand();
     	
 	  	//BulletShot
     		//On right click...
