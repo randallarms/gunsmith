@@ -50,16 +50,16 @@ public class ItemSmith {
 		String name;
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
 		
-		if (gun.equals("sniperRifle")) {
+		if (gun.equalsIgnoreCase("sniperRifle")) {
 			m = Material.FEATHER;
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[SNIPER RIFLE]";
-		} else if (gun.equals("battleRifle")) {
+		} else if (gun.equalsIgnoreCase("battleRifle")) {
 			m = Material.WOOD_HOE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BATTLE RIFLE]";
-		} else if (gun.equals("lightMachineGun")) {
+		} else if (gun.equalsIgnoreCase("lightMachineGun")) {
 			m = Material.DIAMOND_PICKAXE;
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LIGHT MACHINE GUN]";
-		} else if (gun.equals("crossbow")) {
+		} else if (gun.equalsIgnoreCase("crossbow")) {
 			m = Material.FLINT;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
 		} else {
@@ -75,7 +75,7 @@ public class ItemSmith {
 		
     	ItemStack gunItem;
     	
-    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
+    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper") ) {
     		
         	gunItem = makeGun("sniperRifle");
         	
@@ -89,7 +89,7 @@ public class ItemSmith {
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
     		
-    		gunItem = makeGun("crossBow");
+    		gunItem = makeGun("crossbow");
         	
     	} else {
     		
