@@ -1,5 +1,5 @@
 // ========================================================================
-// |GUNSMITH v0.3
+// |GUNSMITH v0.3.1
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -65,11 +65,12 @@ public class GunSmith extends JavaPlugin implements Listener {
     	//Command: guns
         if (cmd.getName().equalsIgnoreCase("guns") && sender instanceof Player) {
         	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Type \"/givegun <gunName> to give yourself a gun.\"");
-        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Gun names: " 
+        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Names: " 
         					+ ChatColor.GREEN + "sniper" + ChatColor.GRAY + " | "
         					+ ChatColor.GREEN + "br" + ChatColor.GRAY + "/" + ChatColor.GREEN + "battleRifle" + ChatColor.GRAY + " | "
         					+ ChatColor.GREEN + "lmg" + ChatColor.GRAY + "/" + ChatColor.GREEN + "lightMachineGun" + ChatColor.GRAY + " | "
-        					+ ChatColor.GREEN + "pistol" + ChatColor.GRAY + " | ");
+        					+ ChatColor.GREEN + "pistol" + ChatColor.GRAY + " | "
+        					+ ChatColor.GREEN + "bow");
         	return true;
         }
         
@@ -135,14 +136,19 @@ public class GunSmith extends JavaPlugin implements Listener {
     			
     			//The Materials correspond to the item the gun is based on
     			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
-    					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE) ) {
+    					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE)
+    					|| m.equals(Material.FLINT) ) {
     				
     				//Check if player has proper ammunition
     				if (hasAmmo(player, m)) {
     				
-		    			GunShot shot = new GunShot(player, item.getType());
-				    	Bukkit.getServer().getPluginManager().callEvent(shot);
-				    	shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+    					GunShot shot = new GunShot(player, item.getType());
+    					Bukkit.getServer().getPluginManager().callEvent(shot);
+				    	
+    					if ( !m.equals(Material.FLINT) ) {
+    						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+    					}
+				    	
 				    	cooldown.add(player);
 				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 				    		public void run() {
@@ -211,6 +217,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 				return "Pistol";
 			} else if ( m.equals(Material.DIAMOND_PICKAXE) ) {
 				return "LMG";
+			} else if ( m.equals(Material.FLINT) ) {
+				return "Crossbow";
 			} else {
 				return "null";
 			}

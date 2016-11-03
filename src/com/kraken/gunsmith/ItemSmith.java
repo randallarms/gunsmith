@@ -59,6 +59,9 @@ public class ItemSmith {
 		} else if (gun.equals("lightMachineGun")) {
 			m = Material.DIAMOND_PICKAXE;
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LIGHT MACHINE GUN]";
+		} else if (gun.equals("crossbow")) {
+			m = Material.FLINT;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
 		} else {
 			m = Material.GOLD_AXE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
@@ -83,6 +86,10 @@ public class ItemSmith {
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
     		
         	gunItem = makeGun("lightMachineGun");
+        	
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
+    		
+    		gunItem = makeGun("crossBow");
         	
     	} else {
     		
@@ -115,6 +122,10 @@ public class ItemSmith {
 		} else if (ammo.equals("pistolAmmo")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[Pistol Ammo]";
 			ammoFor = "Pistol";
+		} else if (ammo.equals("crossbowAmmo")) {
+			m = Material.ARROW;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[Crossbow Bolts]";
+			ammoFor = "Crossbow";
 		}
 	
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
@@ -141,6 +152,10 @@ public class ItemSmith {
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("pistol") ) ) {
     		
     		ammoItem = makeAmmo("pistolAmmo");	
+    		
+    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
+    		
+    		ammoItem = makeAmmo("crossbowAmmo");	
     		
 		} else {
 			
