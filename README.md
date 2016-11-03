@@ -15,8 +15,9 @@ Type "/gun <gunName>" to get a gun. Gun Names:
     "br" for a Battle Rifle (base item: wood hoe)
     "lmg" for a Light Machine Gun (base item: diamond pickaxe)
     "pistol" for a Pistol (base item: gold axe)
+    "bow" for a Crossbow (base item: flint)
 
-Type "/ammo <gunName>" to get the corresponding ammunition for that gun.
+Type "/ammo <gunName>" to get the corresponding ammunition for that gun (crossbows use bolts).
 
 Guides & plugin to be updated consistently! This plugin is far from complete, and represents an open-source, work-in-progress project.
 
