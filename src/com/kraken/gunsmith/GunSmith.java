@@ -1,12 +1,13 @@
-// ========================================================================
+// =========================================================================
 // |GUNSMITH v0.3.2
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
-// | Always free & open-source! If this plugin is being sold or re-branded,
+// | Always free & open-source! If the main plugin is being sold/re-branded,
 // | please let me know on the SpigotMC site, or wherever you can. Thanks!
 // | Source code: https://github.com/randallarms/gunsmith
-// ========================================================================
+// | Premium packs: None
+// =========================================================================
 
 package com.kraken.gunsmith;
 
@@ -48,6 +49,12 @@ public class GunSmith extends JavaPlugin implements Listener {
     	PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
 		
+		RecipeSmith recipes = new RecipeSmith();
+		
+		for (int n = 0; n < recipes.getTotal(); n++) {
+			getServer().addRecipe( recipes.getRecipe(n) );
+		}
+			
     }
     
     @Override
@@ -202,7 +209,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 	                }
 	                
 	            }
+	            
 	        }
+	        
 	    }
 		
 		//Checks for the name of the ammo used for a particular gun
@@ -242,7 +251,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 						
 						if ( lore.toString().contains("Ammunition | " + ammo) ) {
 							//Ammo was found
-							item.setAmount(item.getAmount() - 1);
+							if (item.getAmount() > 1) {
+								item.setAmount(item.getAmount() - 1);
+							} else {
+								inv.remove(item);
+							}
 							return true;
 						}
 						
