@@ -18,14 +18,25 @@ public class ItemSmith {
           
     }
 	
-	public ItemStack makeItem(Material m, String name, String desc) {
+	public ItemStack makeItem(Material m, String name, String desc, int amount, byte data) {
+		
+		net.minecraft.server.v1_9_R1.ItemStack nmsItem;
 		
 	    //Gets rid of durability
-      	net.minecraft.server.v1_9_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m));
+		if (data == (byte) 0) {
+      		nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount, data));
+		} else {
+			nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount));
+		}
       	NBTTagCompound tag = new NBTTagCompound(); //Create the NMS Stack's NBT (item data)
       	tag.setBoolean("Unbreakable", true); //Set unbreakable value to true
       	nmsItem.setTag(tag); //Apply the tag to the item
       	ItemStack item = CraftItemStack.asCraftMirror(nmsItem); //Get the bukkit version of the stack
+      	
+      	if ( ( ( m == Material.DIAMOND_HOE ) || ( m == Material.GOLD_HOE) || ( m == Material.IRON_HOE ) || ( m == Material.STONE_HOE ) )
+      			&& desc.contains("Firearms Part") ) {
+      		
+      	}
 		
     	//Create the item's meta data (name, lore/desc text, etc.)
     	ItemMeta im = item.getItemMeta();
@@ -44,7 +55,7 @@ public class ItemSmith {
 		
 	}
 	
-	public ItemStack makeGun(String gun) {
+	public ItemStack makeGun(String gun, int amount) {
 		
 		Material m;
 		String name;
@@ -62,12 +73,13 @@ public class ItemSmith {
 		} else if (gun.equalsIgnoreCase("crossbow")) {
 			m = Material.FLINT;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
+			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ranged Weapon";
 		} else {
 			m = Material.GOLD_AXE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
 		}
 	
-    	return makeItem(m, name, desc);
+    	return makeItem(m, name, desc, amount, (byte) 0);
 		
 	}
 	
@@ -77,23 +89,23 @@ public class ItemSmith {
     	
     	if (args.length == 1 && args[0].equalsIgnoreCase("sniper") ) {
     		
-        	gunItem = makeGun("sniperRifle");
+        	gunItem = makeGun("sniperRifle", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
     		
-        	gunItem = makeGun("battleRifle");
+        	gunItem = makeGun("battleRifle", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
     		
-        	gunItem = makeGun("lightMachineGun");
+        	gunItem = makeGun("lightMachineGun", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
     		
-    		gunItem = makeGun("crossbow");
+    		gunItem = makeGun("crossbow", 1);
         	
     	} else {
     		
-    		gunItem = makeGun("pistol");	
+    		gunItem = makeGun("pistol", 1);	
     		
 		}
     	
@@ -104,7 +116,7 @@ public class ItemSmith {
 		
 	}
 	
-	public ItemStack makeAmmo(String ammo) {
+	public ItemStack makeAmmo(String ammo, int amount) {
 		
 		Material m = Material.MELON_SEEDS;
 		String name = "";
@@ -129,7 +141,7 @@ public class ItemSmith {
 		}
 	
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
-    	return makeItem(m, name, desc);
+    	return makeItem(m, name, desc, amount, (byte) 0);
 		
 	}
 	
@@ -139,23 +151,23 @@ public class ItemSmith {
     	
     	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
     		
-    		ammoItem = makeAmmo("sniperAmmo");
+    		ammoItem = makeAmmo("sniperAmmo", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
     		
-    		ammoItem = makeAmmo("brAmmo");
+    		ammoItem = makeAmmo("brAmmo", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
     		
-    		ammoItem = makeAmmo("lmgAmmo");
+    		ammoItem = makeAmmo("lmgAmmo", 1);
         	
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("pistol") ) ) {
     		
-    		ammoItem = makeAmmo("pistolAmmo");	
+    		ammoItem = makeAmmo("pistolAmmo", 1);	
     		
     	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
     		
-    		ammoItem = makeAmmo("crossbowAmmo");	
+    		ammoItem = makeAmmo("crossbowAmmo", 1);	
     		
 		} else {
 			
@@ -196,11 +208,11 @@ public class ItemSmith {
 			
 		}
 	
-		return makeItem(m, name, desc);
+		return makeItem(m, name, desc, 1, (byte) 0);
 		
 	}
 	
-	public ItemStack makeGrenade(Player player, String grenade) {
+	public ItemStack makeGrenade(String grenade, int amount) {
 		
 		Material m;
 		String name;
@@ -215,7 +227,51 @@ public class ItemSmith {
 			name = ChatColor.GRAY + "" + ChatColor.BOLD + "[FRAG GRENADE]";
 		}
 		
-		return makeItem(m, name, desc);
+		return makeItem(m, name, desc, amount, (byte) 0);
+		
+	}
+	
+	public ItemStack makePart(String part, int amount) {
+		
+		Material m = Material.DIAMOND_HOE;
+		String name = "";
+		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearms Part";
+		byte data = 0;
+		
+		if (part.equals("casing")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CASING]";
+			data = (byte) 1001;
+		} else if (part.equals("smallStock")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[SMALL STOCK]";
+			data = (byte) 1002;
+		} else if (part.equals("largeStock")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[LARGE STOCK]";
+			data = (byte) 1003;
+		} else if (part.equals("shortBarrel")) {
+			m = Material.STONE_HOE;
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[SHORT BARREL]";
+			data = (byte) 101;
+		} else if (part.equals("mediumBarrel")) {
+			m = Material.IRON_HOE;
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[MEDIUM BARREL]";
+			data = (byte) 201;
+		} else if (part.equals("longBarrel")) {
+			m = Material.GOLD_HOE;
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[LONG BARREL]";
+			data = (byte) 31;
+		} else if (part.equals("chamber")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CHAMBER]";
+			data = (byte) 1007;
+		} else if (part.equals("muzzle")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[MUZZLE]";
+			data = (byte) 1008;
+		} else if (part.equals("crossbowStock")) {
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CROSSBOW STOCK]";
+			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Crossbow Part";
+			data = (byte) 1009;
+		}
+		
+		return makeItem(m, name, desc, amount, data);
 		
 	}
 	
