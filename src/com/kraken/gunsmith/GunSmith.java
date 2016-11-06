@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.3.2
+// |GUNSMITH v0.4.1
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |

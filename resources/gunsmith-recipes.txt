@@ -1,0 +1,178 @@
+=======
+RECIPES
+=======
+
+Currently, all custom weapons, ammunitions, and weapon parts can be crafted on a regular crafting grid using normal Minecraft materials like iron, wood, and gunpowder. To find the recipe for a specific item, press Ctrl + F (or the button combination for 'Find/Search' on your computer) and type in the item's name.
+
+------
+Legend
+------
+
+i = Iron Ingot
+w = Wood Planks
+s = Stick
+o = Bow
+g = Gun Powder
+
+c = Chamber
+m = Muzzle
+C = Crossbow Stock
+s = Small Stock
+S = Large Stock
+b = Short Barrel
+p = Medium Barrel
+B = Long Barrel
+
+--------
+Crossbow
+--------
+
+ |   |   |   |
+ | C | o |   |
+ |   |   |   |
+
+------
+Pistol
+------
+
+ |   |   |   |
+ | c | b |   |
+ | s |   |   |
+
+------------
+Battle Rifle
+------------
+
+ |   |   |   |
+ | c | p | m |
+ | s |   |   |
+
+------------
+Sniper Rifle
+------------
+
+ |   |   |   |
+ | c | B | m |
+ | s |   |   |
+
+-----------------
+Light Machine Gun
+-----------------
+
+ |   |   |   |
+ | i | B | m |
+ | s | c |   |
+
+-------
+Chamber
+-------
+
+ |   |   |   |
+ |   | i |   |
+ | i | i |   |
+
+-------
+Muzzle
+-------
+
+ |   |   |   |
+ |   | i |   |
+ |   |   |   |
+
+-------
+Chamber
+-------
+
+ |   |   |   |
+ |   | i |   |
+ | i | i |   |
+
+
+--------------
+Crossbow Stock
+--------------
+
+ |   |   |   |
+ | w | w | w |
+ | w |   |   |
+
+-----------
+Small Stock
+-----------
+
+ |   |   |   |
+ |   | i |   |
+ | w |   |   |
+
+
+-----------
+Large Stock
+-----------
+
+ |   |   |   |
+ | i | i |   |
+ | w |   |   |
+
+------------
+Short Barrel
+------------
+
+ |   |   |   |
+ |   |   |   |
+ | i | i | i |
+
+-------------
+Medium Barrel
+-------------
+
+ |   |   |   |
+ | i | i | i |
+ |   |   |   |
+
+-----------
+Long Barrel
+-----------
+
+ | i | i | i |
+ |   |   |   |
+ |   |   |   |
+
+-----------
+Pistol Ammo
+-----------
+
+ |   |   |   |
+ |   | g |   |
+ |   | i |   |
+
+-------
+BR Ammo
+-------
+
+ |   | g |   |
+ |   | g |   |
+ |   | i |   |
+
+-----------
+Sniper Ammo
+-----------
+
+ |   | g |   |
+ |   | g |   |
+ | i | i | i |
+
+--------
+LMG Ammo
+--------
+
+ |   |   |   |
+ | g | g | g |
+ | i | i | i |
+
+-------------
+Crossbow Ammo
+-------------
+
+ |   |   |   |
+ |   | i |   |
+ |   | s |   |
