@@ -44,7 +44,12 @@ public class GunShot extends Event {
 	        while(blocksToAdd.hasNext()) {
 	            blockToAdd = blocksToAdd.next().getLocation();
 	            Material b = blockToAdd.getBlock().getType();
-	            if (b.isOccluding() || !shotprojectiledata.containsKey(projectile)) {
+            	if ( b.equals(Material.GLASS)
+            			|| b.equals(Material.THIN_GLASS)
+            			|| b.equals(Material.STAINED_GLASS)
+            			|| b.equals(Material.STAINED_GLASS_PANE) ) {
+            		blockToAdd.getBlock().setType(Material.AIR);
+            	} else if (b.isOccluding() || !shotprojectiledata.containsKey(projectile)) {
 	            	break;
 	            }
 	            player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.BEACON);
