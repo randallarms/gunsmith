@@ -87,19 +87,19 @@ public class ItemSmith {
 		
     	ItemStack gunItem;
     	
-    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper") ) {
+    	if ( args[0].equalsIgnoreCase("sniper") ) {
     		
         	gunItem = makeGun("sniperRifle", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) {
     		
         	gunItem = makeGun("battleRifle", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) {
     		
         	gunItem = makeGun("lightMachineGun", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("bow") ) {
     		
     		gunItem = makeGun("crossbow", 1);
         	
@@ -149,23 +149,23 @@ public class ItemSmith {
 		
     	ItemStack ammoItem;
     	
-    	if (args.length == 1 && args[0].equalsIgnoreCase("sniper")) {
+    	if ( args[0].equalsIgnoreCase("sniper") ) {
     		
     		ammoItem = makeAmmo("sniperAmmo", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) {
     		
     		ammoItem = makeAmmo("brAmmo", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) {
     		
     		ammoItem = makeAmmo("lmgAmmo", 1);
         	
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("pistol") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("pistol") ) {
     		
     		ammoItem = makeAmmo("pistolAmmo", 1);	
     		
-    	} else if (args.length == 1 && ( args[0].equalsIgnoreCase("bow") ) ) {
+    	} else if ( args[0].equalsIgnoreCase("bow") ) {
     		
     		ammoItem = makeAmmo("crossbowAmmo", 1);	
     		
