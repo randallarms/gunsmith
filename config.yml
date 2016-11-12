@@ -1,0 +1,19 @@
+# ------------------------------------------------------
+# GUNSMITH Configuration File (config.yml)
+# 
+# Editing the settings in this file will change the way
+# GunSmith works on your server. To reset this file to
+# its default values, simply delete your config.yml and
+# stop/restart your server.
+# ------------------------------------------------------
+#
+# LOADED MARKER | Dummy value to check against at start-up.
+loaded: true
+# 
+# LANGUAGE | Currently supported languages: English, Spanish
+language: English
+# 
+# GLASS BREAK | If true, fired firearm rounds will break glass on contact.
+glassBreak: true
+# 
+# FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

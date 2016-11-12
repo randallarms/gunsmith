@@ -18,20 +18,32 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 
 public class GSListener implements Listener {
 	
 	public final static WeakHashMap<Entity, EntityData> shotprojectiledata = new WeakHashMap<Entity, EntityData>();
 	GunSmith plugin;
 	ArrayList<Player> cooldown = new ArrayList<Player>();
+	String language;
+	Boolean glassBreak;
 	
-    public GSListener(GunSmith plugin) {
+    public GSListener(GunSmith plugin, String language) {
   	  
   	  plugin.getServer().getPluginManager().registerEvents(this, plugin);
   	  this.plugin = plugin;
+  	  this.language = language;
+  	  glassBreak = plugin.getConfig().getBoolean("glassBreak");
   	  
+    }
+    
+    public void loadLanguage(String language) {
+    	this.language = language;
+    }
+    
+    public void loadGlassBreak(Boolean glassBreak) {
+    	this.glassBreak = glassBreak;
     }
 	
 	@EventHandler
@@ -54,7 +66,7 @@ public class GSListener implements Listener {
     				//Check if player has proper ammunition
     				if (hasAmmo(player, m)) {
     				
-    					GunShot shot = new GunShot(player, item.getType());
+    					GunShot shot = new GunShot(player, item.getType(), glassBreak);
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					if ( !m.equals(Material.FLINT) ) {
@@ -70,7 +82,12 @@ public class GSListener implements Listener {
 				    	
     				} else {
     					
-    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You are out of ammunition.");
+    					new Messages(language).makeMsg(player, "errorNoAmmoFound");
+    					if ( m.equals(Material.GOLD_AXE) ) {
+    						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.1, (float) 0.7);
+    					} else {
+    						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.2, (float) 0.5);
+    					}
     					
     				}
 			    	

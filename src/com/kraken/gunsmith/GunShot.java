@@ -26,7 +26,7 @@ public class GunShot extends Event {
 	Snowball projectile;
 	EntityData data;
 
-	public GunShot(Player player, Material gun) {
+	public GunShot(Player player, Material gun, Boolean glassBreakEnabled) {
 
 		if ( !gun.equals(Material.FLINT) ) {
 			
@@ -48,7 +48,11 @@ public class GunShot extends Event {
             			|| b.equals(Material.THIN_GLASS)
             			|| b.equals(Material.STAINED_GLASS)
             			|| b.equals(Material.STAINED_GLASS_PANE) ) {
-            		blockToAdd.getBlock().setType(Material.AIR);
+            		if (glassBreakEnabled) {
+            			blockToAdd.getBlock().setType(Material.AIR);
+            		} else {
+            			break;
+            		}
             	} else if (b.isOccluding() || !shotprojectiledata.containsKey(projectile)) {
 	            	break;
 	            }

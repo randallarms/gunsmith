@@ -6,29 +6,35 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class RecipeSmith {
 	
-	int rTotal = 18;
+	int rTotal = 20;
+	
+	String language;
 	
 	ShapedRecipe[] recipesList = new ShapedRecipe[rTotal];
-	ItemStack sniper = new ItemStack( new ItemSmith().makeGun("sniperRifle", 1) );
-	ItemStack sniperAmmo = new ItemStack( new ItemSmith().makeAmmo("sniperAmmo", 2) );
-	ItemStack pistol = new ItemStack( new ItemSmith().makeGun("pistol", 1) );
-	ItemStack pistolAmmo = new ItemStack( new ItemSmith().makeAmmo("pistolAmmo", 1) );
-	ItemStack br = new ItemStack( new ItemSmith().makeGun("battleRifle", 1) );
-	ItemStack brAmmo = new ItemStack( new ItemSmith().makeAmmo("brAmmo", 2) );
-	ItemStack lmg = new ItemStack( new ItemSmith().makeGun("lightMachineGun", 1) );
-	ItemStack lmgAmmo = new ItemStack( new ItemSmith().makeAmmo("lmgAmmo", 3) );
-	ItemStack bow = new ItemStack( new ItemSmith().makeGun("crossbow", 1) );
-	ItemStack bowAmmo = new ItemStack( new ItemSmith().makeAmmo("crossbowAmmo", 1) );
-	ItemStack smallStock = new ItemStack( new ItemSmith().makePart("smallStock", 1) );
-	ItemStack largeStock = new ItemStack( new ItemSmith().makePart("largeStock", 1) );
-	ItemStack shortBarrel = new ItemStack( new ItemSmith().makePart("shortBarrel", 1) );
-	ItemStack mediumBarrel = new ItemStack( new ItemSmith().makePart("mediumBarrel", 1) );
-	ItemStack longBarrel = new ItemStack( new ItemSmith().makePart("longBarrel", 1) );
-	ItemStack chamber = new ItemStack( new ItemSmith().makePart("chamber", 1) );
-	ItemStack muzzle = new ItemStack( new ItemSmith().makePart("muzzle", 1) );
-	ItemStack crossbowStock = new ItemStack( new ItemSmith().makePart("crossbowStock", 1) );
+	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
+	ItemStack sniperAmmo = new ItemStack( new ItemSmith(language).makeAmmo("sniperAmmo", 2) );
+	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
+	ItemStack pistolAmmo = new ItemStack( new ItemSmith(language).makeAmmo("pistolAmmo", 1) );
+	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
+	ItemStack brAmmo = new ItemStack( new ItemSmith(language).makeAmmo("brAmmo", 2) );
+	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
+	ItemStack lmgAmmo = new ItemStack( new ItemSmith(language).makeAmmo("lmgAmmo", 3) );
+	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
+	ItemStack bowAmmo = new ItemStack( new ItemSmith(language).makeAmmo("crossbowAmmo", 1) );
+	ItemStack smallStock = new ItemStack( new ItemSmith(language).makePart("smallStock", 1) );
+	ItemStack largeStock = new ItemStack( new ItemSmith(language).makePart("largeStock", 1) );
+	ItemStack shortBarrel = new ItemStack( new ItemSmith(language).makePart("shortBarrel", 1) );
+	ItemStack mediumBarrel = new ItemStack( new ItemSmith(language).makePart("mediumBarrel", 1) );
+	ItemStack longBarrel = new ItemStack( new ItemSmith(language).makePart("longBarrel", 1) );
+	ItemStack chamber = new ItemStack( new ItemSmith(language).makePart("chamber", 1) );
+	ItemStack muzzle = new ItemStack( new ItemSmith(language).makePart("muzzle", 1) );
+	ItemStack crossbowStock = new ItemStack( new ItemSmith(language).makePart("crossbowStock", 1) );
+	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
+	ItemStack rpgAmmo = new ItemStack( new ItemSmith(language).makeAmmo("rpgAmmo", 1) );
 	
-	public RecipeSmith() {
+	public RecipeSmith(String language) {
+		
+		this.language = language;
 		
 		recipesList[0] = craftRecipe(sniper);
 		recipesList[1] = craftRecipe(sniperAmmo);
@@ -48,6 +54,8 @@ public class RecipeSmith {
 		recipesList[15] = craftRecipe(chamber);
 		recipesList[16] = craftRecipe(muzzle);
 		recipesList[17] = craftRecipe(crossbowStock);
+		recipesList[18] = craftRecipe(rocketLauncher);
+		recipesList[19] = craftRecipe(rpgAmmo);
         
     }
 	
@@ -136,7 +144,18 @@ public class RecipeSmith {
 		} else if ( item.equals(crossbowStock) ) {
 			recipe.shape("   ", "www", "w  ");
 			recipe.setIngredient('w', Material.WOOD);
-		} 
+		} else if ( item.equals(rocketLauncher) ) {
+			recipe.shape("   ", "768", "3  ");
+			recipe.setIngredient('7', Material.GOLD_INGOT);
+			recipe.setIngredient('6', Material.GOLD_HOE);
+			recipe.setIngredient('8', Material.DIAMOND_HOE);
+			recipe.setIngredient('3', Material.DIAMOND_HOE);
+		} else if ( item.equals(rpgAmmo) ) {
+			recipe.shape("igi", "igi", "ibi");
+			recipe.setIngredient('g', Material.SULPHUR);
+			recipe.setIngredient('b', Material.BLAZE_POWDER);
+			recipe.setIngredient('i', Material.IRON_INGOT);
+		}
 		
 		return recipe;
 		
