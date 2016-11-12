@@ -14,8 +14,10 @@ import net.minecraft.server.v1_9_R1.NBTTagCompound;
 
 public class ItemSmith {
 
-	public ItemSmith() {
-          
+	String language;
+	
+	public ItemSmith(String language) {
+          this.language = language;
     }
 	
 	public ItemStack makeItem(Material m, String name, String desc, int amount, byte data) {
@@ -32,11 +34,6 @@ public class ItemSmith {
       	tag.setBoolean("Unbreakable", true); //Set unbreakable value to true
       	nmsItem.setTag(tag); //Apply the tag to the item
       	ItemStack item = CraftItemStack.asCraftMirror(nmsItem); //Get the bukkit version of the stack
-      	
-      	if ( ( ( m == Material.DIAMOND_HOE ) || ( m == Material.GOLD_HOE) || ( m == Material.IRON_HOE ) || ( m == Material.STONE_HOE ) )
-      			&& desc.contains("Firearms Part") ) {
-      		
-      	}
 		
     	//Create the item's meta data (name, lore/desc text, etc.)
     	ItemMeta im = item.getItemMeta();
@@ -60,6 +57,7 @@ public class ItemSmith {
 		Material m;
 		String name;
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
+		byte data = (byte) 0;
 		
 		if (gun.equalsIgnoreCase("sniperRifle")) {
 			m = Material.FEATHER;
@@ -74,12 +72,19 @@ public class ItemSmith {
 			m = Material.FLINT;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ranged Weapon";
+		} else if (gun.equalsIgnoreCase("rocketLauncher")) {
+			m = Material.DIAMOND_SPADE;
+			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[ROCKET LAUNCHER]";
+		} else if (gun.equalsIgnoreCase("hammerOfDawn")) {
+			m = Material.DIAMOND_AXE;
+			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
+			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
 		} else {
 			m = Material.GOLD_AXE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
 		}
 	
-    	return makeItem(m, name, desc, amount, (byte) 0);
+    	return makeItem(m, name, desc, amount, data);
 		
 	}
 	
@@ -103,13 +108,21 @@ public class ItemSmith {
     		
     		gunItem = makeGun("crossbow", 1);
         	
+    	} else if ( args[0].equalsIgnoreCase("rpg") ) {
+    		
+        	gunItem = makeGun("rocketLauncher", 1);
+        	
+    	} else if ( args[0].equalsIgnoreCase("orbital") || args[0].equalsIgnoreCase("hammerOfDawn") ) {
+    		
+        	gunItem = makeGun("hammerOfDawn", 1);
+        	
     	} else {
     		
     		gunItem = makeGun("pistol", 1);	
     		
 		}
     	
-        player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");
+    	new Messages(language).makeMsg(player, "cmdGiveGun");
         player.getInventory().addItem(new ItemStack(gunItem));
         
         return true;
@@ -123,21 +136,25 @@ public class ItemSmith {
 		String ammoFor = "";
 		
 		if (ammo.equals("sniperAmmo")) {
-			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[Sniper Ammo]";
+			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[SNIPER AMMO]";
 			ammoFor = "Sniper Rifle";
 		} else if (ammo.equals("brAmmo")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BR Ammo]";
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BR AMMO]";
 			ammoFor = "Battle Rifle";
 		} else if (ammo.equals("lmgAmmo")) {
-			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LMG Ammo]";
+			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LMG AMMO]";
 			ammoFor = "LMG";
 		} else if (ammo.equals("pistolAmmo")) {
-			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[Pistol Ammo]";
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL AMMO]";
 			ammoFor = "Pistol";
 		} else if (ammo.equals("crossbowAmmo")) {
 			m = Material.ARROW;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[Crossbow Bolts]";
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW BOLTS]";
 			ammoFor = "Crossbow";
+		} else if (ammo.equals("rpgAmmo")) {
+			m = Material.FIREWORK;
+			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[LIGHT WARHEAD]";
+			ammoFor = "Rocket Launcher";
 		}
 	
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
@@ -169,7 +186,11 @@ public class ItemSmith {
     		
     		ammoItem = makeAmmo("crossbowAmmo", 1);	
     		
-		} else {
+		} else if ( args[0].equalsIgnoreCase("rpg") ) {
+    		
+    		ammoItem = makeAmmo("rpgAmmo", 1);
+        	
+    	} else {
 			
 			return false;
 			
@@ -180,54 +201,8 @@ public class ItemSmith {
     		player.getInventory().addItem(new ItemStack(ammoItem));
     	}
         
+    	new Messages(language).makeMsg(player, "cmdGiveAmmo");
         return true;
-		
-	}
-	
-	public ItemStack makeArmor(Player player, String armor) {
-		
-		Material m;
-		String name;
-		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Armor";
-		
-		if (armor.equals("pvtHelm")) {
-			m = Material.DIAMOND_HELMET;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. HELMET]";
-		} else if (armor.equals("pvtChest")) {
-			m = Material.DIAMOND_CHESTPLATE;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. BODY ARMOR]";
-		} else if (armor.equals("pvtLegs")) {
-			m = Material.DIAMOND_LEGGINGS;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. LEG ARMOR]";
-		} else if (armor.equals("pvtBoots")) {
-			m = Material.DIAMOND_BOOTS;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. BOOTS]";
-		} else {
-			m = Material.DIAMOND_HELMET;
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. HELMET]";
-			
-		}
-	
-		return makeItem(m, name, desc, 1, (byte) 0);
-		
-	}
-	
-	public ItemStack makeGrenade(String grenade, int amount) {
-		
-		Material m;
-		String name;
-		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Equipment";
-		
-		if (grenade.equals("fragNade")) {
-			m = Material.MAGMA_CREAM;
-			name = ChatColor.GRAY + "" + ChatColor.BOLD + "[FRAG GRENADE]";
-			
-		} else {
-			m = Material.MAGMA_CREAM;
-			name = ChatColor.GRAY + "" + ChatColor.BOLD + "[FRAG GRENADE]";
-		}
-		
-		return makeItem(m, name, desc, amount, (byte) 0);
 		
 	}
 	

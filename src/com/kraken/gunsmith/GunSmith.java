@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.5
+// |GUNSMITH v0.6
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -13,16 +13,27 @@ package com.kraken.gunsmith;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	GSListener listener;
+	WeakHashMap<String, Boolean> packs = new WeakHashMap<String, Boolean>();
+	String language;
+	ArrayList<String> languages = new ArrayList<String>();
+	Boolean glassBreak = false;
 	
     @Override
     public void onEnable() {
@@ -30,9 +41,21 @@ public class GunSmith extends JavaPlugin implements Listener {
     	getLogger().info("GunSmith has been enabled.");
     	PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
-		listener = new GSListener(this);
 		
-		RecipeSmith recipes = new RecipeSmith();
+		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
+		this.getConfig().options().copyDefaults(true);
+	    saveDefaultConfig();
+		
+		getPacks();
+		
+		this.language = getConfig().getString("language");
+		
+		languages.add("english");
+		languages.add("spanish");
+		
+		listener = new GSListener(this, language);
+		
+		RecipeSmith recipes = new RecipeSmith(language);
 		
 		for (int n = 0; n < recipes.getTotal(); n++) {
 			getServer().addRecipe( recipes.getRecipe(n) );
@@ -47,7 +70,19 @@ public class GunSmith extends JavaPlugin implements Listener {
         
     }
     
-//GunSmith commands
+    public void msg(Player player, String cmd) {
+    	new Messages(language).makeMsg(player, cmd);
+    }
+    
+    public void setLanguage() {
+    	listener.loadLanguage(language);
+    }
+    
+    public void setGlassBreak() {
+    	listener.loadGlassBreak(glassBreak);
+    }
+    
+  //GunSmith commands
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		String command = cmd.getName();
@@ -64,14 +99,70 @@ public class GunSmith extends JavaPlugin implements Listener {
 			//Command: guns
 			case "guns":
 				
-	        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Type \"/givegun <gunName> to give yourself a gun.\"");
-	        	player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Names: " 
-	        					+ ChatColor.GREEN + "sniper" + ChatColor.GRAY + " | "
-	        					+ ChatColor.GREEN + "br" + ChatColor.GRAY + "/" + ChatColor.GREEN + "battleRifle" + ChatColor.GRAY + " | "
-	        					+ ChatColor.GREEN + "lmg" + ChatColor.GRAY + "/" + ChatColor.GREEN + "lightMachineGun" + ChatColor.GRAY + " | "
-	        					+ ChatColor.GREEN + "pistol" + ChatColor.GRAY + " | "
-	        					+ ChatColor.GREEN + "bow");
-	        	return true;
+				switch (args.length) {
+				
+					case 0:
+						msg(player, "cmdGuns");
+						return true;
+						
+					case 2:
+						switch ( args[0].toLowerCase() ) {
+						
+							case "language":
+								if ( player.isOp() ) {
+									
+									if ( languages.contains( args[1].toLowerCase() ) ) {
+										this.language = args[1].toLowerCase();
+										setLanguage();
+										getConfig().set("language", args[1].toLowerCase());
+										saveConfig();
+										msg(player, "cmdLang");
+										return true;
+										
+									} else {
+										msg(player, "errorLangNotFound");
+										return true;
+									}
+									
+								}
+								
+							case "glassbreak":
+								if ( player.isOp() ) {
+									
+									switch ( args[1].toLowerCase() ) {
+									
+										case "true":
+											this.glassBreak = true;
+											setGlassBreak();
+											getConfig().set("glassBreak", true);
+											saveConfig();
+											msg(player, "cmdGlassBreakOn");
+											return true;
+											
+										case "false":
+											this.glassBreak = false;
+											setGlassBreak();
+											getConfig().set("glassBreak", false);
+											saveConfig();
+											msg(player, "cmdGlassBreakOff");
+											return true;
+											
+										default: 
+											msg(player, "errorGlassBreakFormat");
+											return true;
+									
+									}
+									
+								}
+							
+							}
+							
+					default:
+						msg(player, "errorIllegalCommand");
+						return true;
+						
+				}
+	        	
 	        
 	        //Command: giveGun <gunName>
 			case "giveGun":
@@ -80,16 +171,48 @@ public class GunSmith extends JavaPlugin implements Listener {
 				switch (args.length) {
 				
 					case 1:
-						return new ItemSmith().giveGun(args, player);
+						switch (args[0]) {
+						
+							case "rpg":
+								if ( !packs.get("WarZone") ) {
+									msg(player, "errorWarZoneNotFound");
+									return true;
+								}
+							case "hammerOfDawn":
+							case "orbital":
+								if ( !packs.get("WarZone") ) {
+									msg(player, "errorWarZoneNotFound");
+									return true;
+								}
+							default:
+								return new ItemSmith(language).giveGun(args, player);
+							
+						}
 					case 2:
-						try {
-							return new ItemSmith().giveGun( args, getServer().getPlayer(args[1]) );
-						} catch (NullPointerException npe) {
-							player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Player not found!");
-							return true;
+						switch (args[0]) {
+						
+							case "rpg":
+								if ( !packs.get("WarZone") ) {
+									msg(player, "errorWarZoneNotFound");
+									return true;
+								}
+							case "hammerOfDawn":
+							case "orbital":
+								if ( !packs.get("WarZone") ) {
+									msg(player, "errorWarZoneNotFound");
+									return true;
+								}
+							default:
+								try {
+									return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
+								} catch (NullPointerException npe) {
+									msg(player, "errorPlayerNotFound");
+									return true;
+								}
+								
 						}
 					default:
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveGun <gunName> {player}\"");
+						msg(player, "errorGunFormat");
 						return true;
 				
 				}
@@ -101,16 +224,37 @@ public class GunSmith extends JavaPlugin implements Listener {
 				switch (args.length) {
 				
 				case 1:
-					return new ItemSmith().giveAmmo(args, player);
+					switch (args[0]) {
+					
+						case "rpg":
+							if ( !packs.get("WarZone") ) {
+								msg(player, "errorWarZoneNotFound");
+								return true;
+							}
+						default:
+							new ItemSmith(language).giveAmmo(args, player);
+							return true;
+						
+					}
 				case 2:
-					try {
-						return new ItemSmith().giveAmmo( args, getServer().getPlayer(args[1]) );
-					} catch (NullPointerException npe) {
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Player not found!");
-						return true;
+					switch (args[0]) {
+					
+						case "rpg":
+							if ( !packs.get("WarZone") ) {
+								msg(player, "errorWarZoneNotFound");
+								return true;
+							}
+						default:
+							try {
+								return new ItemSmith(language).giveAmmo( args, getServer().getPlayer(args[1]) );
+							} catch (NullPointerException npe) {
+								msg(player, "errorPlayerNotFound");
+								return true;
+							}
+					
 					}
 				default:
-					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveAmmo <gunName> {player}\"");
+					msg(player, "errorAmmoFormat");
 					return true;
 			
 				}
@@ -118,8 +262,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        //Command: getStat <gunName> <stat>
 			case "getStat":
 			case "getstat":
-				
-		        if (args.length == 2) {
+					
+		        if ( args.length == 2 && !args[0].equalsIgnoreCase("rpg") ) {
 		        	
 		        	String statName = args[1];
 		        	String gunName = new GunStats().getName(args[0]);
@@ -129,6 +273,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 		        		stat = new GunStats().findRange(args[0]);
 		        	} else if ( statName.equalsIgnoreCase("cooldown") ) {
 		        		stat = new GunStats().findCooldown(args[0]);
+		        	}  else {
+		        		msg(player, "errorStatType");
+		        		return true;
 		        	}
 		        	
 		        	if (stat >= 0) {
@@ -136,16 +283,46 @@ public class GunSmith extends JavaPlugin implements Listener {
 		        		player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + gunName + ", " + statName + ": " + stat);
 		        		return true;
 		        		
-		        	}
+		        	} else {
+			        	
+		        		msg(player, "errorStatFormat");
+			        	return true;
+			        	
+			        }
+		        	
+		        } else {
+		        	
+		        	msg(player, "errorStatFormat");
+		        	return true;
 		        	
 		        }
-		        
+				
 			default:
-				player.sendMessage(ChatColor.RED + "Your command was not recognized, or you have insufficient permissions.");
+				msg(player, "errorIllegalCommand");
 	        	return true;
 		
 		}
 		
 	}
+	
+	public void getPacks() {
+		
+    	File packsFile = new File("plugins/GunSmith", "packs.yml");
+	  	FileConfiguration packsConfig = YamlConfiguration.loadConfiguration(packsFile);
+	  	packsConfig.set("default.enabled", true);
+	  	
+	  	try {
+			packsConfig.save(packsFile);
+		} catch (IOException e) {
+			//No need to fuss!
+		}
+	  	
+		Boolean isEnabled = packsConfig.getBoolean("WarZone.enabled");
+		if (isEnabled != null) {
+			packs.put("WarZone", isEnabled);
+		}
+			
+	}
+	
 		
 }
