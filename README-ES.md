@@ -1,7 +1,7 @@
 #GunSmith
 por Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
-Plugin Bukkit de armas, simple y personalizado para Minecraft (MVv1.9).
+Plugin Bukkit de armas, simple y personalizado para Minecraft (MCv1.9).
 
 CÓMO USAR E INSTALAR: https://www.spigotmc.org/threads/gunsmith.189617/
 
