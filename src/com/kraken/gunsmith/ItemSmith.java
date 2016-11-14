@@ -79,6 +79,15 @@ public class ItemSmith {
 			m = Material.DIAMOND_AXE;
 			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
+		} else if (gun.equalsIgnoreCase("shotgun")) {
+			m = Material.GOLD_SPADE;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN]";
+		} else if (gun.equalsIgnoreCase("assaultRifle")) {
+			m = Material.WOOD_PICKAXE;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[ASSAULT RIFLE]";
+		} else if (gun.equalsIgnoreCase("heavyMachineGun")) {
+			m = Material.GOLD_PICKAXE;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HEAVY MACHINE GUN]";
 		} else {
 			m = Material.GOLD_AXE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
@@ -115,6 +124,18 @@ public class ItemSmith {
     	} else if ( args[0].equalsIgnoreCase("orbital") || args[0].equalsIgnoreCase("hammerOfDawn") ) {
     		
         	gunItem = makeGun("hammerOfDawn", 1);
+        	
+    	} else if ( args[0].equalsIgnoreCase("shotgun") ) {
+    		
+    		gunItem = makeGun("shotgun", 1);
+        	
+    	} else if ( args[0].equalsIgnoreCase("ar") || args[0].equalsIgnoreCase("assaultRifle") ) {
+    		
+        	gunItem = makeGun("assaultRifle", 1);
+        	
+    	} else if ( args[0].equalsIgnoreCase("hmg") || args[0].equalsIgnoreCase("heavyMachineGun") ) {
+    		
+        	gunItem = makeGun("heavyMachineGun", 1);
         	
     	} else {
     		
@@ -155,6 +176,15 @@ public class ItemSmith {
 			m = Material.FIREWORK;
 			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[LIGHT WARHEAD]";
 			ammoFor = "Rocket Launcher";
+		} else if (ammo.equals("shotgunAmmo")) {
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN SHELLS]";
+			ammoFor = "Shotgun";
+		} else if (ammo.equals("arAmmo")) {
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[AR AMMO]";
+			ammoFor = "Assault Rifle";
+		} else if (ammo.equals("hmgAmmo")) {
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HMG AMMO]";
+			ammoFor = "HMG";
 		}
 	
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
@@ -189,6 +219,18 @@ public class ItemSmith {
 		} else if ( args[0].equalsIgnoreCase("rpg") ) {
     		
     		ammoItem = makeAmmo("rpgAmmo", 1);
+        	
+		} else if ( args[0].equalsIgnoreCase("shotgun") ) {
+    		
+    		ammoItem = makeAmmo("shotgunAmmo", 1);	
+    		
+    	} else if ( args[0].equalsIgnoreCase("ar") || args[0].equalsIgnoreCase("assaultRifle") ) {
+    		
+    		ammoItem = makeAmmo("arAmmo", 1);	
+    		
+		} else if ( args[0].equalsIgnoreCase("hmg") || args[0].equalsIgnoreCase("heavyMachineGun") ) {
+    		
+    		ammoItem = makeAmmo("hmgAmmo", 1);
         	
     	} else {
 			

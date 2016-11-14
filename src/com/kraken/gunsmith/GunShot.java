@@ -14,6 +14,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.util.BlockIterator;
+import org.bukkit.util.Vector;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -28,16 +30,19 @@ public class GunShot extends Event {
 
 	public GunShot(Player player, Material gun, Boolean glassBreakEnabled) {
 
-		if ( !gun.equals(Material.FLINT) ) {
+		if ( !gun.equals(Material.FLINT) ) { //Crossbow
 			
 			Location location = player.getEyeLocation();
-	        BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, findRange(gun) );
+			Integer range = findRange(gun);
+	        Double damage = findDamage(gun);
+	        Vector velocity = player.getLocation().getDirection().multiply(10.0D);
+	        BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, range );
 	        Location blockToAdd;
 	        
 	        projectile = player.launchProjectile(Snowball.class);
-	        projectile.setVelocity(player.getLocation().getDirection().multiply(10.0D));
+	        projectile.setVelocity(velocity);
 	        //Controls shooter identity, location, range, and damage
-	        	data = new EntityData(player, projectile.getLocation(), 75, 10D);
+	        	data = new EntityData(player, projectile.getLocation(), range, damage);
 	        //^^^
 	        shotprojectiledata.put(projectile, data);
 	        
@@ -56,6 +61,9 @@ public class GunShot extends Event {
             	} else if (b.isOccluding() || !shotprojectiledata.containsKey(projectile)) {
 	            	break;
 	            }
+            	if ( gun.equals(Material.GOLD_SPADE) ) { //Shotgun
+            		//Get players in a radius around the shot and deal spray damage to them
+            	}
 	            player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.BEACON);
 	            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST, (float) 0.1, (float) 0.5);
 	        }
@@ -74,16 +82,38 @@ public class GunShot extends Event {
           
     }
 	
+	public double findDamage(Material m) {
+
+		if ( m.equals( Material.FEATHER ) ) { //Sniper
+			return 15D;
+		} else if ( m.equals( Material.FLINT ) ) { //Crossbow
+			return 5D;
+		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+			return 9D;
+		} else if ( m.equals( Material.WOOD_HOE ) || m.equals( Material.WOOD_PICKAXE ) ) { //BR, AR
+			return 10D;
+		} else if ( m.equals( Material.GOLD_AXE )  ) { //Pistol
+			return 7D;
+		} else if ( m.equals( Material.DIAMOND_PICKAXE ) || m.equals( Material.GOLD_PICKAXE ) ) { //LMG, HMG
+			return 11D;
+		} else {
+			return 7D;
+		}
+	      
+	}
+	
 	public int findRange(Material m) {
 
-		if ( m.equals( Material.FEATHER) ) {
+		if ( m.equals( Material.FEATHER) ) { //Sniper
 			return 100;
-		} else if ( m.equals( Material.GOLD_AXE ) || m.equals( Material.WOOD_HOE ) ) {
+		} else if ( m.equals( Material.GOLD_AXE ) || m.equals( Material.WOOD_HOE ) ) { //Pistol, BR
 			return 50;
-		} else if ( m.equals( Material.DIAMOND_PICKAXE ) ) {
+		} else if ( m.equals( Material.DIAMOND_PICKAXE ) || m.equals( Material.GOLD_PICKAXE ) || m.equals( Material.WOOD_PICKAXE ) ) { //LMG, HMG, AR
 			return 40;
-		} else if ( m.equals( Material.FLINT ) ) {
+		} else if ( m.equals( Material.FLINT ) ) { //Crossbow
 			return 30;
+		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+			return 20;
 		} else {
 			return 50;
 		}
@@ -92,15 +122,17 @@ public class GunShot extends Event {
 	
 	public int findCooldown(Material m) {
 
-		if ( m.equals( Material.FEATHER ) ) {
+		if ( m.equals( Material.FEATHER ) ) { //Sniper
 			return 20;
-		} else if ( m.equals( Material.FLINT ) ) {
+		} else if ( m.equals( Material.FLINT ) ) { //Crossbow
 			return 30;
-		} else if ( m.equals( Material.WOOD_HOE ) ) {
+		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+			return 20;
+		} else if ( m.equals( Material.WOOD_HOE ) ) { //BR
 			return 10;
-		} else if ( m.equals( Material.GOLD_AXE ) ) {
+		} else if ( m.equals( Material.GOLD_AXE ) || m.equals( Material.WOOD_PICKAXE ) ) { //Pistol, AR
 			return 5;
-		} else if ( m.equals( Material.DIAMOND_PICKAXE ) ) {
+		} else if ( m.equals( Material.DIAMOND_PICKAXE ) || m.equals( Material.GOLD_PICKAXE ) ) { //LMG, HMG
 			return 2;
 		} else {
 			return 5;
