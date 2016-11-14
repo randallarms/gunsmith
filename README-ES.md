@@ -9,7 +9,7 @@ Plugin Bukkit de armas, simple y personalizado para Minecraft. Tan solo sostenga
 
 GunSmith funciona mejor con un paquete de recursos personalizado que muestra los ítems básicos como el correspondiente a las armas de fuego. Un paquete de recursos especiales está incluido en nuestro repositorio de Github, lo puedes descargar directamente aquí: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
 
-Escribe "/giveGun <nombreArma>" para obtener un arma. Los nombres de las armas son:
+Escribe "/giveGun (nombreArma)" para obtener un arma. Los nombres de las armas son:
 
     "sniper" para un Rifle de Francotirador (ítem básico: feather)
     "br" para un Rifle de combate (ítem básico: wood hoe)
@@ -17,7 +17,7 @@ Escribe "/giveGun <nombreArma>" para obtener un arma. Los nombres de las armas s
     "pistol" para una pistola (ítem básico: gold axe)
     "bow" para una Ballesta (ítem básico: flint)
 
-Escribe "/giveAmmo <nombreArma>" Para obtener la munición correspondiente al arma en particular (la ballesta utiliza saetas).
+Escribe "/giveAmmo (nombreArma)" Para obtener la munición correspondiente al arma en particular (la ballesta utiliza saetas).
 
 ¡Tanto las guías como el plugin son actualizados constantemente! Este plugin es un proyecto en constante desarrollo y de código abierto, aún faltan aspectos para completarlo.
 
