@@ -54,14 +54,18 @@ public class GSListener implements Listener {
     	
 	  	//BulletShot
     		//On right click...
-    		if ( e.getAction() != Action.LEFT_CLICK_AIR && item != null && !cooldown.contains( player ) ) {
+    		if ( e.getAction() != Action.LEFT_CLICK_AIR 
+    				&& e.getAction() != Action.LEFT_CLICK_BLOCK
+    				&& e.getAction() != Action.RIGHT_CLICK_BLOCK
+    				&& item != null && !cooldown.contains( player ) ) {
     			
     			Material m = item.getType();
     			
     			//The Materials correspond to the item the gun is based on
     			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
     					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE)
-    					|| m.equals(Material.FLINT) ) {
+    					|| m.equals(Material.FLINT) || m.equals(Material.GOLD_SPADE) || m.equals(Material.WOOD_PICKAXE)
+    					|| m.equals(Material.GOLD_PICKAXE) ) {
     				
     				//Check if player has proper ammunition
     				if (hasAmmo(player, m)) {
@@ -150,6 +154,12 @@ public class GSListener implements Listener {
 				return "LMG";
 			} else if ( m.equals(Material.FLINT) ) {
 				return "Crossbow";
+			} else if ( m.equals(Material.GOLD_SPADE) ) {
+				return "Shotgun";
+			} else if ( m.equals(Material.WOOD_PICKAXE) ) {
+				return "Assault Rifle";
+			} else if ( m.equals(Material.GOLD_PICKAXE) ) {
+				return "HMG";
 			} else {
 				return "null";
 			}

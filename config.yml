@@ -14,6 +14,6 @@ loaded: true
 language: English
 # 
 # GLASS BREAK | If true, fired firearm rounds will break glass on contact.
-glassBreak: true
+glassBreak: false
 # 
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/
