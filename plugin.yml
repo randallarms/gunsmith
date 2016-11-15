@@ -1,10 +1,10 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.7.1 (beta)
+version: 0.7.2 (beta)
 commands: 
      guns:
-        description: Info for the GunSmith plugin.
-        usage: /<command>
+        description: Info for the GunSmith plugin and various gun commands.
+        usage: /<command> <secondaryCmd>
      giveGun:
         description: Give yourself a gun.
         usage: /<command> <gunName>

@@ -7,7 +7,7 @@
 # stop/restart your server.
 # ------------------------------------------------------
 #
-# LOADED MARKER | Dummy value to check against at start-up.
+# LOADED MARKER | Dummy value to check against at start-up, don't change!
 loaded: true
 # 
 # LANGUAGE | Currently supported languages: English, Spanish
@@ -15,5 +15,8 @@ language: English
 # 
 # GLASS BREAK | If true, fired firearm rounds will break glass on contact.
 glassBreak: false
+#
+# SILENT MODE | If true, most messages will not be relayed to players.
+silentMode: false
 # 
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

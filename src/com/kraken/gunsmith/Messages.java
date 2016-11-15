@@ -1,17 +1,32 @@
 package com.kraken.gunsmith;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Messages {
 
 	String language;
+	boolean silentMode;
 	
 	public Messages(String language) {
           this.language = language;
+          this.silentMode = Bukkit.getPluginManager().getPlugin("GunSmith").getConfig().getBoolean("silentMode");
     }
 	
+	public void silence(boolean setting) {
+		
+		this.silentMode = setting;
+		
+	}
+	
 	public void makeMsg(Player player, String msg) {
+		
+		if (this.silentMode && !msg.equals("errorSilentMode") && !msg.equals("cmdSilentOn") && !msg.equals("cmdSilentOff")) {
+			
+			return;
+			
+		}
 		
 		switch (language) {
 		
@@ -93,6 +108,18 @@ public class Messages {
 						
 					case "errorGlassBreakFormat":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns glassbreak <cierto/falso>\"");
+						break;
+						
+					case "cmdSilentOn":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Ahora esta en modo silencio.");
+						break;
+						
+					case "cmdSilentOff":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No esta en modo silencio nunca mas.");
+						break;
+						
+					case "errorSilentModeFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns silentMode <cierto/falso>\"");
 						break;
 						
 					default:
@@ -180,6 +207,18 @@ public class Messages {
 						
 					case "errorGlassBreakFormat":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/guns glassbreak <true/false>\"");
+						break;
+						
+					case "cmdSilentOn":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Silent mode is turned on.");
+						break;
+						
+					case "cmdSilentOff":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Silent mode is turned off.");
+						break;
+						
+					case "errorSilentModeFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/guns silentMode <true/false>\"");
 						break;
 						
 					default:

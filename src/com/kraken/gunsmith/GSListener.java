@@ -63,7 +63,7 @@ public class GSListener implements Listener {
     			//The Materials correspond to the item the gun is based on
     			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
     					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE)
-    					|| m.equals(Material.FLINT) || m.equals(Material.GOLD_SPADE) || m.equals(Material.WOOD_PICKAXE)
+    					|| m.equals(Material.FLINT) || m.equals(Material.WOOD_SPADE) || m.equals(Material.WOOD_PICKAXE)
     					|| m.equals(Material.GOLD_PICKAXE) ) {
     				
     				//Check if player has proper ammunition
@@ -153,7 +153,7 @@ public class GSListener implements Listener {
 				return "LMG";
 			} else if ( m.equals(Material.FLINT) ) {
 				return "Crossbow";
-			} else if ( m.equals(Material.GOLD_SPADE) ) {
+			} else if ( m.equals(Material.WOOD_SPADE) ) {
 				return "Shotgun";
 			} else if ( m.equals(Material.WOOD_PICKAXE) ) {
 				return "Assault Rifle";

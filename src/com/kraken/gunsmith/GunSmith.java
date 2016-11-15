@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.7.1
+// |GUNSMITH v0.7.2
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -35,6 +35,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Boolean glassBreak = false;
+	Boolean silentMode = false;
+	Messages messenger;
 	
     @Override
     public void onEnable() {
@@ -51,6 +53,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 		
 		this.language = getConfig().getString("language");
 		
+		this.messenger = new Messages(language);
+		
 		languages.add("english");
 		languages.add("spanish");
 		
@@ -61,6 +65,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 		for (int n = 0; n < recipes.getTotal(); n++) {
 			getServer().addRecipe( recipes.getRecipe(n) );
 		}
+	    	
+    	this.silentMode = getConfig().getBoolean("silentMode");
+    	silencer(silentMode);
 			
     }
     
@@ -72,11 +79,17 @@ public class GunSmith extends JavaPlugin implements Listener {
     }
     
     public void msg(Player player, String cmd) {
-    	new Messages(language).makeMsg(player, cmd);
+    	messenger.makeMsg(player, cmd);
     }
     
     public void setLanguage() {
     	listener.loadLanguage(language);
+    }
+    
+    public void silencer(boolean setting) {
+    	getConfig().set("silentMode", setting);
+    	saveConfig();
+    	messenger.silence(setting);
     }
     
     public void setGlassBreak() {
@@ -151,6 +164,35 @@ public class GunSmith extends JavaPlugin implements Listener {
 										default: 
 											msg(player, "errorGlassBreakFormat");
 											return true;
+									
+									}
+									
+								}
+								
+							case "silentmode":
+								if ( player.isOp() ) {
+									
+									switch ( args[1].toLowerCase() ) {
+									
+									case "true":
+										this.silentMode = true;
+										silencer(true);
+										getConfig().set("silentMode", true);
+										saveConfig();
+										msg(player, "cmdSilentOn");
+										return true;
+										
+									case "false":
+										this.silentMode = false;
+										silencer(false);
+										getConfig().set("silentMode", false);
+										saveConfig();
+										msg(player, "cmdSilentOff");
+										return true;
+										
+									default: 
+										msg(player, "errorSilentModeFormat");
+										return true;
 									
 									}
 									
