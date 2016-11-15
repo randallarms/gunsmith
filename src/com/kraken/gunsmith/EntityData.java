@@ -1,5 +1,7 @@
 package com.kraken.gunsmith;
 
+import java.util.Collection;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -15,6 +17,7 @@ public class EntityData extends Event implements Cancellable {
     private Integer range;
     private Double damage;
     private Player player;
+    private Collection<? extends Player> nearby;
     
     //Constructor
     public EntityData(Player player, Location loc, Integer range, Double damage) {
@@ -38,6 +41,10 @@ public class EntityData extends Event implements Cancellable {
     
     public Player getPlayer() {
     	return player;
+    }
+    
+    public Collection<? extends Player> getNearby() {
+    	return nearby;
     }
     
     @Override

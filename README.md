@@ -9,7 +9,7 @@ Simple custom gun Bukkit plugin for Minecraft. Simply hold the item correspondin
 
 GunSmith works best with a custom resource pack that displays the base items as the corresponding firearm. A specialty resource pack is included in our GitHub project repository, and can be directly downloaded here: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
 
-Type "/giveGun (gunName)" to get a gun. Gun Names:
+Type "/gun <gunName>" to get a gun. Gun Names:
 
     "sniper" for a Sniper Rifle (base item: feather)
     "br" for a Battle Rifle (base item: wood hoe)
@@ -20,7 +20,7 @@ Type "/giveGun (gunName)" to get a gun. Gun Names:
     "ar" for an Assault Rifle (base: wood pickaxe)
     "hmg" for a Heavy Machine Gun (base: gold pickaxe)
 
-Type "/giveAmmo (gunName)" to get the corresponding ammunition for that gun (crossbows use bolts).
+Type "/ammo <gunName>" to get the corresponding ammunition for that gun (crossbows use bolts).
 
 Guides & plugin to be updated consistently! This plugin is far from complete, and represents an open-source, work-in-progress project.
 
