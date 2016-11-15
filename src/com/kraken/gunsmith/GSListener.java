@@ -56,7 +56,6 @@ public class GSListener implements Listener {
     		//On right click...
     		if ( e.getAction() != Action.LEFT_CLICK_AIR 
     				&& e.getAction() != Action.LEFT_CLICK_BLOCK
-    				&& e.getAction() != Action.RIGHT_CLICK_BLOCK
     				&& item != null && !cooldown.contains( player ) ) {
     			
     			Material m = item.getType();

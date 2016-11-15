@@ -1,7 +1,8 @@
 // =========================================================================
-// |GUNSMITH v0.7
+// |GUNSMITH v0.7.1
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
-// | code inspired by various Bukkit & Spigot devs -- thank you. 
+// | code inspired by various Bukkit & Spigot devs -- thank you.
+// | Special mention: codename_B (FireworkEffectPlayer)
 // |
 // | Always free & open-source! If the main plugin is being sold/re-branded,
 // | please let me know on the SpigotMC site, or wherever you can. Thanks!
