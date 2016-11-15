@@ -97,14 +97,14 @@ public class GunShot extends Event {
             }
         	
         	player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.WEB);
-        	if ( gun.equals(Material.GOLD_SPADE) && bCount == 1 ) {
+        	if ( gun.equals(Material.WOOD_SPADE) && bCount == 1 ) {
                 fwEffect(blockToAdd.add(player.getLocation().getDirection().multiply(2)).add(0, 1, 0));
         	}
         	
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST, (float) 0.1, (float) 0.5);
             
           //Buckshot
-            if ( gun.equals(Material.GOLD_SPADE) ) {
+            if ( gun.equals(Material.WOOD_SPADE) ) {
             	
 	            if ( bCount > 7 ) {
 	            	
@@ -154,7 +154,7 @@ public class GunShot extends Event {
 			return 4.5D;
 		} else if ( m.equals( Material.DIAMOND_PICKAXE ) || m.equals( Material.GOLD_PICKAXE ) ) { //LMG, HMG
 			return 5D;
-		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+		} else if ( m.equals( Material.WOOD_SPADE ) ) { //Shotgun
 			return 10D;
 		} else {
 			return 3D;
@@ -172,7 +172,7 @@ public class GunShot extends Event {
 			return 40;
 		} else if ( m.equals( Material.FLINT ) ) { //Crossbow
 			return 30;
-		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+		} else if ( m.equals( Material.WOOD_SPADE ) ) { //Shotgun
 			return 20;
 		} else {
 			return 50;
@@ -186,7 +186,7 @@ public class GunShot extends Event {
 			return 20;
 		} else if ( m.equals( Material.FLINT ) ) { //Crossbow
 			return 30;
-		} else if ( m.equals( Material.GOLD_SPADE ) ) { //Shotgun
+		} else if ( m.equals( Material.WOOD_SPADE ) ) { //Shotgun
 			return 20;
 		} else if ( m.equals( Material.WOOD_HOE ) ) { //BR
 			return 10;

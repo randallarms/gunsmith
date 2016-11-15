@@ -80,7 +80,7 @@ public class ItemSmith {
 			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
 		} else if (gun.equalsIgnoreCase("shotgun")) {
-			m = Material.GOLD_SPADE;
+			m = Material.WOOD_SPADE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN]";
 		} else if (gun.equalsIgnoreCase("assaultRifle")) {
 			m = Material.WOOD_PICKAXE;
