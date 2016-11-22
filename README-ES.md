@@ -1,4 +1,4 @@
-#GunSmith
+﻿#GunSmith
 por Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
 Plugin Bukkit de armas, simple y personalizado para Minecraft (MCv1.9).
@@ -7,15 +7,18 @@ CÓMO USAR E INSTALAR: https://www.spigotmc.org/threads/gunsmith.189617/
 
 Plugin Bukkit de armas, simple y personalizado para Minecraft. Tan solo sostenga el ítem del arma y luego de click derecho para disparar. Además, necesitarás una munición adecuada para dispararla.
 
-GunSmith funciona mejor con un paquete de recursos personalizado que muestra los ítems básicos como el correspondiente a las armas de fuego. Un paquete de recursos especiales está incluido en nuestro repositorio de Github, lo puedes descargar directamente aquí: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
+GunSmith funciona mejor con un paquete de recursos personalizado que muestra el ítem básico (un diamond hoe) como el correspondiente a las armas de fuego. Un paquete de recursos especiales está incluido en nuestro repositorio de Github, lo puedes descargar directamente aquí: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
 
 Escribe "/giveGun (nombreArma)" para obtener un arma. Los nombres de las armas son:
 
-    "sniper" para un Rifle de Francotirador (ítem básico: feather)
-    "br" para un Rifle de combate (ítem básico: wood hoe)
-    "lmg" para una ametralladora ligera (ítem básico: diamond pickaxe)
-    "pistol" para una pistola (ítem básico: gold axe)
-    "bow" para una Ballesta (ítem básico: flint)
+    "sniper" para un Rifle de Francotirador
+    "br" para un Rifle de combate
+    "lmg" para una ametralladora ligera
+    "pistol" para una pistola
+    "bow" para una Ballesta
+    "shotgun" para una escopeta
+    "ar" para un Rifle de asalto
+    "hmg" para una ametralladora pesada
 
 Escribe "/giveAmmo (nombreArma)" Para obtener la munición correspondiente al arma en particular (la ballesta utiliza saetas).
 
