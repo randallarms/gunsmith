@@ -73,7 +73,7 @@ public class RecipeSmith {
 		if ( item.equals(sniper) ) {
 			recipe.shape("   ", "768", "3  ");
 			recipe.setIngredient('7', Material.DIAMOND_HOE);
-			recipe.setIngredient('6', Material.GOLD_HOE);
+			recipe.setIngredient('6', Material.DIAMOND_HOE);
 			recipe.setIngredient('8', Material.DIAMOND_HOE);
 			recipe.setIngredient('3', Material.DIAMOND_HOE);
 		} else if ( item.equals(sniperAmmo) ) {
@@ -83,7 +83,7 @@ public class RecipeSmith {
 		} else if ( item.equals(pistol) ) {
 			recipe.shape("   ", "74 ", "2  ");
 			recipe.setIngredient('7', Material.DIAMOND_HOE);
-			recipe.setIngredient('4', Material.STONE_HOE);
+			recipe.setIngredient('4', Material.DIAMOND_HOE);
 			recipe.setIngredient('2', Material.DIAMOND_HOE);
 		} else if ( item.equals(pistolAmmo) ) {
 			recipe.shape("   ", " g ", " c ");
@@ -92,7 +92,7 @@ public class RecipeSmith {
 		} else if ( item.equals(br) ) {
 			recipe.shape("   ", "758", "3  ");
 			recipe.setIngredient('7', Material.DIAMOND_HOE);
-			recipe.setIngredient('5', Material.IRON_HOE);
+			recipe.setIngredient('5', Material.DIAMOND_HOE);
 			recipe.setIngredient('8', Material.DIAMOND_HOE);
 			recipe.setIngredient('3', Material.DIAMOND_HOE);
 		} else if ( item.equals(brAmmo) ) {
@@ -102,7 +102,7 @@ public class RecipeSmith {
 		} else if ( item.equals(lmg) ) {
 			recipe.shape("   ", "i68", "37 ");
 			recipe.setIngredient('i', Material.IRON_INGOT);
-			recipe.setIngredient('6', Material.GOLD_HOE);
+			recipe.setIngredient('6', Material.DIAMOND_HOE);
 			recipe.setIngredient('8', Material.DIAMOND_HOE);
 			recipe.setIngredient('3', Material.DIAMOND_HOE);
 			recipe.setIngredient('7', Material.DIAMOND_HOE);
@@ -145,16 +145,14 @@ public class RecipeSmith {
 			recipe.shape("   ", "www", "w  ");
 			recipe.setIngredient('w', Material.WOOD);
 		} else if ( item.equals(rocketLauncher) ) {
-			recipe.shape("   ", "768", "3  ");
-			recipe.setIngredient('7', Material.GOLD_INGOT);
-			recipe.setIngredient('6', Material.GOLD_HOE);
-			recipe.setIngredient('8', Material.DIAMOND_HOE);
+			recipe.shape("   ", "666", "33 ");
+			recipe.setIngredient('6', Material.DIAMOND_HOE);
 			recipe.setIngredient('3', Material.DIAMOND_HOE);
 		} else if ( item.equals(rpgAmmo) ) {
-			recipe.shape("igi", "igi", "ibi");
+			recipe.shape("dgd", "dgd", "dbd");
 			recipe.setIngredient('g', Material.SULPHUR);
 			recipe.setIngredient('b', Material.BLAZE_POWDER);
-			recipe.setIngredient('i', Material.IRON_INGOT);
+			recipe.setIngredient('d', Material.DIAMOND);
 		}
 		
 		return recipe;

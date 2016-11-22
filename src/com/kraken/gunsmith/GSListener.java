@@ -29,6 +29,16 @@ public class GSListener implements Listener {
 	String language;
 	Boolean glassBreak;
 	
+	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
+	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
+	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
+	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
+	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
+	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
+	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun("shotgun", 1) );
+	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
+	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
+	
     public GSListener(GunSmith plugin, String language) {
   	  
   	  plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -58,21 +68,16 @@ public class GSListener implements Listener {
     				&& e.getAction() != Action.LEFT_CLICK_BLOCK
     				&& item != null && !cooldown.contains( player ) ) {
     			
-    			Material m = item.getType();
-    			
     			//The Materials correspond to the item the gun is based on
-    			if ( m.equals(Material.FEATHER) || m.equals(Material.WOOD_HOE) 
-    					|| m.equals(Material.GOLD_AXE) || m.equals(Material.DIAMOND_PICKAXE)
-    					|| m.equals(Material.FLINT) || m.equals(Material.WOOD_SPADE) || m.equals(Material.WOOD_PICKAXE)
-    					|| m.equals(Material.GOLD_PICKAXE) ) {
+    			if ( item.getType().equals(Material.DIAMOND_HOE) ) {
     				
     				//Check if player has proper ammunition
-    				if (hasAmmo(player, m)) {
+    				if (hasAmmo(player, item)) {
     				
-    					GunShot shot = new GunShot(player, item.getType(), glassBreak);
+    					GunShot shot = new GunShot(player, item, glassBreak);
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
-    					if ( !m.equals(Material.FLINT) ) {
+    					if ( !item.equals(bow) ) {
     						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
     					}
 				    	
@@ -81,12 +86,12 @@ public class GSListener implements Listener {
 				    		public void run() {
 				    			cooldown.remove(player);
 				    		}
-				    	}, shot.findCooldown(m));
+				    	}, shot.findCooldown(item));
 				    	
     				} else {
     					
     					new Messages(language).makeMsg(player, "errorNoAmmoFound");
-    					if ( m.equals(Material.GOLD_AXE) ) {
+    					if ( item.equals(pistol) ) {
     						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.1, (float) 0.7);
     					} else {
     						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.2, (float) 0.5);
@@ -141,23 +146,23 @@ public class GSListener implements Listener {
 	    }
 		
 		//Checks for the name of the ammo used for a particular gun
-		public String getAmmoFor(Material m) {
+		public String getAmmoFor(ItemStack gun) {
 			
-			if ( m.equals(Material.FEATHER) ) {
+			if ( gun.equals(sniper) ) {
 				return "Sniper Rifle";
-			} else if ( m.equals(Material.WOOD_HOE) ) {
+			} else if ( gun.equals(br) ) {
 				return "Battle Rifle";
-			} else if ( m.equals(Material.GOLD_AXE) ) {
+			} else if ( gun.equals(pistol) ) {
 				return "Pistol";
-			} else if ( m.equals(Material.DIAMOND_PICKAXE) ) {
+			} else if ( gun.equals(lmg) ) {
 				return "LMG";
-			} else if ( m.equals(Material.FLINT) ) {
+			} else if ( gun.equals(bow) ) {
 				return "Crossbow";
-			} else if ( m.equals(Material.WOOD_SPADE) ) {
+			} else if ( gun.equals(shotgun) ) {
 				return "Shotgun";
-			} else if ( m.equals(Material.WOOD_PICKAXE) ) {
+			} else if ( gun.equals(ar) ) {
 				return "Assault Rifle";
-			} else if ( m.equals(Material.GOLD_PICKAXE) ) {
+			} else if ( gun.equals(hmg) ) {
 				return "HMG";
 			} else {
 				return "null";
@@ -166,10 +171,10 @@ public class GSListener implements Listener {
 		}
 		
 		//Checks if player has ammunition of a certain type
-		public boolean hasAmmo(Player player, Material m) {
+		public boolean hasAmmo(Player player, ItemStack gun) {
 			
 			Inventory inv = player.getInventory();
-			String ammo = getAmmoFor(m);
+			String ammo = getAmmoFor(gun);
 			
 			for (ItemStack item : inv) {
 				

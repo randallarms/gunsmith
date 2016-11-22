@@ -20,22 +20,19 @@ public class ItemSmith {
           this.language = language;
     }
 	
-	public ItemStack makeItem(Material m, String name, String desc, int amount, byte data) {
+	public ItemStack makeItem(Material m, String name, String desc, int amount, Integer data, boolean unbreakable) {
 		
 		net.minecraft.server.v1_9_R1.ItemStack nmsItem;
 		
 	    //Gets rid of durability
-		if (data == (byte) 0) {
-      		nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount, data));
-		} else {
-			nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount));
-		}
+      	nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount));
       	NBTTagCompound tag = new NBTTagCompound(); //Create the NMS Stack's NBT (item data)
-      	tag.setBoolean("Unbreakable", true); //Set unbreakable value to true
+      	tag.setBoolean("Unbreakable", unbreakable); //Set unbreakable value to true
       	nmsItem.setTag(tag); //Apply the tag to the item
       	ItemStack item = CraftItemStack.asCraftMirror(nmsItem); //Get the bukkit version of the stack
 		
     	//Create the item's meta data (name, lore/desc text, etc.)
+      	item.setDurability( (short) data.shortValue() );
     	ItemMeta im = item.getItemMeta();
     	im.setDisplayName(name);
     	//Creates the lore
@@ -54,52 +51,52 @@ public class ItemSmith {
 	
 	public ItemStack makeGun(String gun, int amount) {
 		
-		Material m;
-		String name;
+		Material m = Material.DIAMOND_HOE;
+		String name = "Null";
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
-		byte data = (byte) 0;
+		int data = 0;
 		
-		if (gun.equalsIgnoreCase("sniperRifle")) {
-			m = Material.FEATHER;
+		if (gun.equalsIgnoreCase("pistol")) { 
+			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
+			data = 601;
+		} else if (gun.equalsIgnoreCase("sniperRifle")) {
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[SNIPER RIFLE]";
+			data = 602;
 		} else if (gun.equalsIgnoreCase("battleRifle")) {
-			m = Material.WOOD_HOE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BATTLE RIFLE]";
+			data = 603;
 		} else if (gun.equalsIgnoreCase("lightMachineGun")) {
-			m = Material.DIAMOND_PICKAXE;
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LIGHT MACHINE GUN]";
+			data = 604;
 		} else if (gun.equalsIgnoreCase("crossbow")) {
-			m = Material.FLINT;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ranged Weapon";
-		} else if (gun.equalsIgnoreCase("rocketLauncher")) {
-			m = Material.DIAMOND_SPADE;
-			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[ROCKET LAUNCHER]";
+			data = 605;
 		} else if (gun.equalsIgnoreCase("hammerOfDawn")) {
-			m = Material.DIAMOND_AXE;
 			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
+			data = 606;
+		} else if (gun.equalsIgnoreCase("rocketLauncher")) {
+			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[ROCKET LAUNCHER]";
+			data = 607;
 		} else if (gun.equalsIgnoreCase("shotgun")) {
-			m = Material.WOOD_SPADE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN]";
+			data = 608;
 		} else if (gun.equalsIgnoreCase("assaultRifle")) {
-			m = Material.WOOD_PICKAXE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[ASSAULT RIFLE]";
+			data = 609;
 		} else if (gun.equalsIgnoreCase("heavyMachineGun")) {
-			m = Material.GOLD_PICKAXE;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HEAVY MACHINE GUN]";
-		} else {
-			m = Material.GOLD_AXE;
-			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
+			data = 610;
 		}
 	
-    	return makeItem(m, name, desc, amount, data);
+    	return makeItem(m, name, desc, amount, data, true);
 		
 	}
 	
 	public boolean giveGun(String[] args, Player player) {
 		
-    	ItemStack gunItem;
+    	ItemStack gunItem = makeGun("pistol", 1);
     	
     	if ( args[0].equalsIgnoreCase("sniper") ) {
     		
@@ -113,7 +110,7 @@ public class ItemSmith {
     		
         	gunItem = makeGun("lightMachineGun", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("bow") ) {
+    	} else if ( args[0].equalsIgnoreCase("bow") || args[0].equalsIgnoreCase("crossbow") ) {
     		
     		gunItem = makeGun("crossbow", 1);
         	
@@ -137,11 +134,7 @@ public class ItemSmith {
     		
         	gunItem = makeGun("heavyMachineGun", 1);
         	
-    	} else {
-    		
-    		gunItem = makeGun("pistol", 1);	
-    		
-		}
+    	}
     	
     	new Messages(language).makeMsg(player, "cmdGiveGun");
         player.getInventory().addItem(new ItemStack(gunItem));
@@ -188,7 +181,7 @@ public class ItemSmith {
 		}
 	
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ammunition | " + ammoFor;
-    	return makeItem(m, name, desc, amount, (byte) 0);
+    	return makeItem(m, name, desc, amount, 0, true);
 		
 	}
 	
@@ -253,42 +246,39 @@ public class ItemSmith {
 		Material m = Material.DIAMOND_HOE;
 		String name = "";
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearms Part";
-		byte data = 0;
+		int data = 0;
 		
 		if (part.equals("casing")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CASING]";
-			data = (byte) 1001;
+			data = 651;
 		} else if (part.equals("smallStock")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[SMALL STOCK]";
-			data = (byte) 1002;
+			data = 652;
 		} else if (part.equals("largeStock")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[LARGE STOCK]";
-			data = (byte) 1003;
+			data = 653;
 		} else if (part.equals("shortBarrel")) {
-			m = Material.STONE_HOE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[SHORT BARREL]";
-			data = (byte) 101;
+			data = 654;
 		} else if (part.equals("mediumBarrel")) {
-			m = Material.IRON_HOE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[MEDIUM BARREL]";
-			data = (byte) 201;
+			data = 655;
 		} else if (part.equals("longBarrel")) {
-			m = Material.GOLD_HOE;
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[LONG BARREL]";
-			data = (byte) 31;
+			data = 656;
 		} else if (part.equals("chamber")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CHAMBER]";
-			data = (byte) 1007;
+			data = 657;
 		} else if (part.equals("muzzle")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[MUZZLE]";
-			data = (byte) 1008;
+			data = 658;
 		} else if (part.equals("crossbowStock")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CROSSBOW STOCK]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Crossbow Part";
-			data = (byte) 1009;
+			data = 659;
 		}
 		
-		return makeItem(m, name, desc, amount, data);
+		return makeItem(m, name, desc, amount, data, true);
 		
 	}
 	

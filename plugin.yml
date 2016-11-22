@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.7.2 (beta)
+version: 0.8 (beta)
 commands: 
      guns:
         description: Info for the GunSmith plugin and various gun commands.

@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.7.2
+// |GUNSMITH v0.8
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -47,7 +47,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 		
 		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
 		this.getConfig().options().copyDefaults(true);
-	    saveDefaultConfig();
 		
 		getPacks();
 		
