@@ -104,7 +104,7 @@ public class GSListener implements Listener {
     		
     	}
 	    //End of BulletShot
-	 
+	
 		@EventHandler
 	    public void onHit(EntityDamageByEntityEvent event) {
 			

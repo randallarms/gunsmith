@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.8
+// |GUNSMITH v0.8.1
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -96,6 +96,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     }
     
   //GunSmith commands
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		String command = cmd.getName();
@@ -145,6 +146,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 									switch ( args[1].toLowerCase() ) {
 									
 										case "true":
+										case "enable":
+										case "enabled":
+										case "on":
 											this.glassBreak = true;
 											setGlassBreak();
 											getConfig().set("glassBreak", true);
@@ -153,6 +157,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 											return true;
 											
 										case "false":
+										case "disable":
+										case "disabled":
+										case "off":
 											this.glassBreak = false;
 											setGlassBreak();
 											getConfig().set("glassBreak", false);
@@ -174,6 +181,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 									switch ( args[1].toLowerCase() ) {
 									
 									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
 										this.silentMode = true;
 										silencer(true);
 										getConfig().set("silentMode", true);
@@ -182,6 +192,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 										return true;
 										
 									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
 										this.silentMode = false;
 										silencer(false);
 										getConfig().set("silentMode", false);
