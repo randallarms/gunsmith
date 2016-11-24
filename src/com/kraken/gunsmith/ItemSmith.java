@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
+import net.minecraft.server.v1_10_R1.NBTTagCompound;
 
 public class ItemSmith {
 
@@ -22,7 +22,7 @@ public class ItemSmith {
 	
 	public ItemStack makeItem(Material m, String name, String desc, int amount, Integer data, boolean unbreakable) {
 		
-		net.minecraft.server.v1_9_R1.ItemStack nmsItem;
+		net.minecraft.server.v1_10_R1.ItemStack nmsItem;
 		
 	    //Gets rid of durability
       	nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount));

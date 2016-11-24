@@ -1,7 +1,7 @@
 #GunSmith
 by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
-Simple custom gun plugin for Bukkit on Minecraft (MCv1.9).
+Simple custom gun plugin for Bukkit on Minecraft 1.10.2!
 
 HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
 

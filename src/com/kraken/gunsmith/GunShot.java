@@ -10,10 +10,11 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftSnowball;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -24,7 +25,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_9_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_10_R1.PacketPlayOutEntityDestroy;
 
 public class GunShot extends Event {
 	
@@ -86,7 +87,7 @@ public class GunShot extends Event {
 		BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, range );
         Location blockToAdd;
 		int bCount = 0;
-		List<Entity> entities = player.getWorld().getEntities();
+		List<LivingEntity> entities = player.getWorld().getLivingEntities();
         
 		while ( blocksToAdd.hasNext() ) {
         	
@@ -120,12 +121,14 @@ public class GunShot extends Event {
             	
 	            if ( bCount > 7 ) {
 	            	
-	            	for (Entity entity : entities) {
+	            	for (LivingEntity entity : entities) {
 	            		
-	            		if (entity.getLocation().distance(blockToAdd) < 2.5 && entity instanceof LivingEntity) {
+	            		if (entity.getLocation().distance(blockToAdd) < 2.5) {
 	            			
 	            			LivingEntity target = (LivingEntity) entity;
-	            			target.damage( findDamage(gun) - 2D );
+	            			if ( !( target instanceof HumanEntity && !entity.getWorld().getPlayers().contains(entity) ) ) {
+	            				target.damage( findDamage(gun) - 2D );
+	            			}
 	            			
 	            		}
 	            		
@@ -135,13 +138,15 @@ public class GunShot extends Event {
 	            
 	            if ( bCount > 14 ) {
 	            		
-	            	for (Entity entity : entities) {
+	            	for (LivingEntity entity : entities) {
 	            		
-	            		if (entity.getLocation().distance(blockToAdd) < 3.5 && entity instanceof LivingEntity) {
+	            		if (entity.getLocation().distance(blockToAdd) < 3.5) {
 	            			
 	            			LivingEntity target = (LivingEntity) entity;
-	            			target.damage( findDamage(gun) - 4D );
-	            			
+	            			if ( !( target instanceof HumanEntity && !entity.getWorld().getPlayers().contains(entity) ) ) { 
+	            				target.damage( findDamage(gun) - 4D );
+	            			}
+	            		
 	            		}
 	            		
 	            	}
