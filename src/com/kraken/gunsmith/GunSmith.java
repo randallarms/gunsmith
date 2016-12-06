@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.8.1
+// |GUNSMITH v0.8.2
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
