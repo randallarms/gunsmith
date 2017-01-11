@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.8.2 (beta)
+version: 0.8.3 (beta)
 commands: 
      guns:
         description: Info for the GunSmith plugin and various gun commands.
@@ -14,3 +14,6 @@ commands:
      getStat:
         description: Get stats for a particular gun.
         usage: /<command> <gunName> <stat>
+     version:
+        description: Get the current version of this plugin.
+        usage: /<command>
