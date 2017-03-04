@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.8.3
+// |GUNSMITH v0.8.3.3
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -221,7 +221,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        //Command: version        
 	    		case "version":
 	    			
-	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v0.8.3 (beta)");
+	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v0.8.3.3 (beta)");
 	                return true;
 	        
 	                

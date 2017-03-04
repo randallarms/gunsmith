@@ -230,7 +230,7 @@ public class Messages {
 			  // End of English messages
 				
 		}
-		
-	}
 	
+	}
+		
 }
