@@ -1,7 +1,7 @@
 #GunSmith
 by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
-Simple custom gun plugin for Bukkit on Minecraft 1.11, 1.10, & 1.9!
+Simple custom gun plugin for Bukkit on Minecraft 1.12, 1.11, 1.10, & 1.9!
 
 WARNING: Issue #33 is a resource pack issue. This issue appeared with the update to MC-1.11 and is currently unresolved. Local use of the resource pack seems to work, but server downloading does not. Please see our SpigotMC thread on the subject here: https://www.spigotmc.org/threads/custom-item-models-displaying-improperly-in-mc-1-11.196173
 
