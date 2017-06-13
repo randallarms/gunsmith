@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.8.3.3
+// |GUNSMITH v0.9 | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -7,31 +7,26 @@
 // | Always free & open-source! If the main plugin is being sold/re-branded,
 // | please let me know on the SpigotMC site, or wherever you can. Thanks!
 // | Source code: https://github.com/randallarms/gunsmith
-// | Premium packs: None
 // =========================================================================
 
 package com.kraken.gunsmith;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.WeakHashMap;
 
 import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
+	public String VERSION = "0.9";
+	
 	GSListener listener;
-	WeakHashMap<String, Boolean> packs = new WeakHashMap<String, Boolean>();
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Boolean glassBreak = false;
@@ -41,16 +36,15 @@ public class GunSmith extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
     	
-    	getLogger().info("GunSmith has been enabled.");
+    	getLogger().info("Loading...");
     	PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
 		
 		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
 		this.getConfig().options().copyDefaults(true);
 		
-		getPacks();
-		
 		this.language = getConfig().getString("language");
+		getLogger().info(ChatColor.RED + "Language: " + language.toUpperCase());
 		
 		this.messenger = new Messages(language);
 		
@@ -67,6 +61,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 	    	
     	this.silentMode = getConfig().getBoolean("silentMode");
     	silencer(silentMode);
+    	getLogger().info("Silent mode: " + silentMode.toString().toUpperCase() );
 			
     }
     
@@ -95,16 +90,15 @@ public class GunSmith extends JavaPlugin implements Listener {
     	listener.loadGlassBreak(glassBreak);
     }
     
-  //GunSmith commands
+    //GunSmith commands
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		String command = cmd.getName();
 		Player player = (Player) sender;
 		
 		if ( !(sender instanceof Player) ) {
-			
 			return false;
-			
 		}
 		
 		switch (command) {
@@ -221,7 +215,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        //Command: version        
 	    		case "version":
 	    			
-	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v0.8.3.3 (beta)");
+	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION + " (beta)");
 	                return true;
 	        
 	                
@@ -235,16 +229,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 						switch (args[0]) {
 						
 							case "rpg":
-								if ( !packs.get("WarZone") ) {
-									msg(player, "errorWarZoneNotFound");
-									return true;
-								}
 							case "hammerOfDawn":
 							case "orbital":
-								if ( !packs.get("WarZone") ) {
-									msg(player, "errorWarZoneNotFound");
-									return true;
-								}
 							default:
 								return new ItemSmith(language).giveGun(args, player);
 							
@@ -253,16 +239,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 						switch (args[0]) {
 						
 							case "rpg":
-								if ( !packs.get("WarZone") ) {
-									msg(player, "errorWarZoneNotFound");
-									return true;
-								}
 							case "hammerOfDawn":
 							case "orbital":
-								if ( !packs.get("WarZone") ) {
-									msg(player, "errorWarZoneNotFound");
-									return true;
-								}
 							default:
 								try {
 									return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
@@ -288,10 +266,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 					switch (args[0]) {
 					
 						case "rpg":
-							if ( !packs.get("WarZone") ) {
-								msg(player, "errorWarZoneNotFound");
-								return true;
-							}
 						default:
 							new ItemSmith(language).giveAmmo(args, player);
 							return true;
@@ -301,10 +275,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 					switch (args[0]) {
 					
 						case "rpg":
-							if ( !packs.get("WarZone") ) {
-								msg(player, "errorWarZoneNotFound");
-								return true;
-							}
 						default:
 							try {
 								return new ItemSmith(language).giveAmmo( args, getServer().getPlayer(args[1]) );
@@ -364,25 +334,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 		
 		}
 		
-	}
-	
-	public void getPacks() {
-		
-    	File packsFile = new File("plugins/GunSmith", "packs.yml");
-	  	FileConfiguration packsConfig = YamlConfiguration.loadConfiguration(packsFile);
-	  	packsConfig.set("default.enabled", true);
-	  	
-	  	try {
-			packsConfig.save(packsFile);
-		} catch (IOException e) {
-			//No need to fuss!
-		}
-	  	
-		Boolean isEnabled = packsConfig.getBoolean("WarZone.enabled");
-		if (isEnabled != null) {
-			packs.put("WarZone", isEnabled);
-		}
-			
 	}
 	
 		

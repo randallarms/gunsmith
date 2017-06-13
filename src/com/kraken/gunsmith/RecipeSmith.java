@@ -65,6 +65,7 @@ public class RecipeSmith {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public ShapedRecipe craftRecipe(ItemStack item) {
 		
 		ShapedRecipe recipe = new ShapedRecipe(item);
