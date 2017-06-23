@@ -54,6 +54,10 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | ¡Pew pew!");
 						break;
 						
+					case "errorGUINotEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | El GUI es discapacitado.");
+						break;
+						
 					case "errorGunFormat":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveGun <nombreDeLaArma> {jugador}\"");
 						break;
@@ -122,6 +126,18 @@ public class Messages {
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns silentMode <cierto/falso>\"");
 						break;
 						
+					case "cmdGUIEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Ahora el GUI esta habilitado.");
+						break;
+						
+					case "cmdGUIDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas el GUI esta habilitado.");
+						break;
+						
+					case "errorGUIToggleFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns gui <cierto/falso>\"");
+						break;
+						
 					default:
 				
 						break;
@@ -149,6 +165,10 @@ public class Messages {
 			        					+ ChatColor.GREEN + "bow");
 			        	break;
 						
+					case "errorGUINotEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | The GUI is disabled.");
+						break;			        	
+			        	
 					case "cmdGiveGun":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");
 						break;
@@ -219,6 +239,18 @@ public class Messages {
 						
 					case "errorSilentModeFormat":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/guns silentMode <true/false>\"");
+						break;
+						
+					case "cmdGUIEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | The GUI is enabled.");
+						break;
+						
+					case "cmdGUIDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | The GUI is disabled.");
+						break;
+						
+					case "errorGUIToggleFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/guns gui <on/off>\"");
 						break;
 						
 					default:

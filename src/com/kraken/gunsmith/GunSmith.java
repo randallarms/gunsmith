@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9 | for Minecraft v1.12
+// |GUNSMITH v0.9| for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -31,7 +31,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 	ArrayList<String> languages = new ArrayList<String>();
 	Boolean glassBreak = false;
 	Boolean silentMode = false;
+	Boolean guiEnabled = true;
 	Messages messenger;
+	GunSmithGUI gui = new GunSmithGUI(language);
 	
     @Override
     public void onEnable() {
@@ -62,6 +64,8 @@ public class GunSmith extends JavaPlugin implements Listener {
     	this.silentMode = getConfig().getBoolean("silentMode");
     	silencer(silentMode);
     	getLogger().info("Silent mode: " + silentMode.toString().toUpperCase() );
+    	
+    	this.guiEnabled = getConfig().getBoolean("guiEnabled");
 			
     }
     
@@ -109,7 +113,12 @@ public class GunSmith extends JavaPlugin implements Listener {
 				switch (args.length) {
 				
 					case 0:
-						msg(player, "cmdGuns");
+						if (guiEnabled) {
+							GunSmithGUI.openGSGUI(player);
+						} else {
+							msg(player, "errorGUINotEnabled");
+						}
+						
 						return true;
 						
 					case 2:
@@ -202,6 +211,39 @@ public class GunSmith extends JavaPlugin implements Listener {
 									}
 									
 								}
+								
+							case "gui":
+								if ( player.isOp() ) {
+									
+									switch ( args[1].toLowerCase() ) {
+									
+									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
+										this.guiEnabled = true;
+										getConfig().set("guiEnabled", true);
+										saveConfig();
+										msg(player, "cmdGUIEnabled");
+										return true;
+										
+									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
+										this.guiEnabled = false;
+										getConfig().set("guiEnabled", false);
+										saveConfig();
+										msg(player, "cmdGUIDisabled");
+										return true;
+										
+									default: 
+										msg(player, "errorGUIToggleFormat");
+										return true;
+									
+									}
+									
+								}
 							
 							}
 							
@@ -267,7 +309,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 					
 						case "rpg":
 						default:
-							new ItemSmith(language).giveAmmo(args, player);
+							new ItemSmith(language).giveAmmo(args[0], player);
 							return true;
 						
 					}
@@ -277,7 +319,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						case "rpg":
 						default:
 							try {
-								return new ItemSmith(language).giveAmmo( args, getServer().getPlayer(args[1]) );
+								return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
 							} catch (NullPointerException npe) {
 								msg(player, "errorPlayerNotFound");
 								return true;
