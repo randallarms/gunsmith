@@ -3,7 +3,7 @@ main: com.kraken.gunsmith.GunSmith
 version: 0.9 (beta)
 commands: 
      guns:
-        description: Info for the GunSmith plugin and various gun commands.
+        description: Controls the GunSmith plugin, and opens a GUI for gun selection..
         usage: /<command> <secondaryCmd>
      giveGun:
         description: Give yourself a gun.
@@ -14,6 +14,6 @@ commands:
      getStat:
         description: Get stats for a particular gun.
         usage: /<command> <gunName> <stat>
-     version:
-        description: Get the current version of this plugin.
+     versionGS:
+        description: Get the current version of the GunSmith plugin.
         usage: /<command>

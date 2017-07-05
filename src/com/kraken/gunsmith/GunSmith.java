@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9| for Minecraft v1.12
+// |GUNSMITH v0.9.1 | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "0.9";
+	public String VERSION = "0.9.1";
 	
 	GSListener listener;
 	String language;
@@ -254,8 +254,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 				}
 			
 				
-	        //Command: version        
-	    		case "version":
+	        //Command: versionGS     
+	    		case "versionGS":
 	    			
 	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION + " (beta)");
 	                return true;
