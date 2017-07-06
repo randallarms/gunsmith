@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9.1 | for Minecraft v1.12
+// |GUNSMITH v0.9.2 | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "0.9.1";
+	public String VERSION = "0.9.2";
 	
 	GSListener listener;
 	String language;
@@ -99,12 +99,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		String command = cmd.getName();
-		Player player = (Player) sender;
-		
-		if ( !(sender instanceof Player) ) {
-			return false;
-		}
-		
 		switch (command) {
 		
 			//Command: guns
@@ -113,141 +107,238 @@ public class GunSmith extends JavaPlugin implements Listener {
 				switch (args.length) {
 				
 					case 0:
-						if (guiEnabled) {
-							GunSmithGUI.openGSGUI(player);
+						if (sender instanceof Player) {
+							
+							Player player = (Player) sender;
+							
+							if ( guiEnabled ) {
+								GunSmithGUI.openGSGUI(player);
+							} else {
+								msg(player, "errorGUINotEnabled");
+							}
+							
 						} else {
-							msg(player, "errorGUINotEnabled");
+							System.out.println("[GUNSMITH] This is a player-only command.");
 						}
 						
 						return true;
 						
 					case 2:
+						
+						//Check if sender is a player and if that player has OP perms
+						if ( sender instanceof Player ) {
+							
+							Player player = (Player) sender;
+							
+							if ( !player.isOp() ) {
+								msg(player, "errorIllegalCommand");
+								return true;
+							}
+							
+						}
+						
+						//Command handling switch
 						switch ( args[0].toLowerCase() ) {
 						
 							case "language":
-								if ( player.isOp() ) {
+								
+								//Language command handling
+								if ( languages.contains( args[1].toLowerCase() ) ) {
 									
-									if ( languages.contains( args[1].toLowerCase() ) ) {
-										this.language = args[1].toLowerCase();
-										setLanguage();
-										getConfig().set("language", args[1].toLowerCase());
-										saveConfig();
-										msg(player, "cmdLang");
-										return true;
-										
+									this.language = args[1].toLowerCase();
+									setLanguage();
+									getConfig().set("language", args[1].toLowerCase());
+									saveConfig();
+									
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Language set.");
 									} else {
-										msg(player, "errorLangNotFound");
-										return true;
+										Player player = (Player) sender;
+										msg(player, "cmdLang");
 									}
 									
+									return true;
+								
+								//Language command error handling
+								} else {
+									
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Language not found.");
+									} else {
+										Player player = (Player) sender;
+										msg(player, "errorLangNotFound");
+									}
+									
+									return true;
 								}
 								
 							case "glassbreak":
-								if ( player.isOp() ) {
 									
-									switch ( args[1].toLowerCase() ) {
-									
-										case "true":
-										case "enable":
-										case "enabled":
-										case "on":
-											this.glassBreak = true;
-											setGlassBreak();
-											getConfig().set("glassBreak", true);
-											saveConfig();
+								//Glassbreak command handling
+								switch ( args[1].toLowerCase() ) {
+								
+									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
+										this.glassBreak = true;
+										setGlassBreak();
+										getConfig().set("glassBreak", true);
+										saveConfig();
+										
+										if ( !(sender instanceof Player) ) {
+											System.out.println("[GUNSMITH] Glass-break on gunshot is now enabled.");
+										} else {
+											Player player = (Player) sender;
 											msg(player, "cmdGlassBreakOn");
-											return true;
-											
-										case "false":
-										case "disable":
-										case "disabled":
-										case "off":
-											this.glassBreak = false;
-											setGlassBreak();
-											getConfig().set("glassBreak", false);
-											saveConfig();
+										}
+										
+										return true;
+										
+									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
+										this.glassBreak = false;
+										setGlassBreak();
+										getConfig().set("glassBreak", false);
+										saveConfig();
+										
+										if ( !(sender instanceof Player) ) {
+											System.out.println("[GUNSMITH] Glass-break on gunshot is now disabled.");
+										} else {
+											Player player = (Player) sender;
 											msg(player, "cmdGlassBreakOff");
-											return true;
-											
-										default: 
+										}
+										
+										return true;
+									
+									//Glassbreak command error handling
+									default: 
+										
+										if ( !(sender instanceof Player) ) {
+											System.out.println("[GUNSMITH] Unrecognized command format.");
+										} else {
+											Player player = (Player) sender;
 											msg(player, "errorGlassBreakFormat");
-											return true;
-									
-									}
-									
+										}
+										
+										return true;
+								
 								}
 								
 							case "silentmode":
-								if ( player.isOp() ) {
+								
+								//Silentmode command handling
+								switch ( args[1].toLowerCase() ) {
+								
+								case "true":
+								case "enable":
+								case "enabled":
+								case "on":
+									this.silentMode = true;
+									silencer(true);
+									getConfig().set("silentMode", true);
+									saveConfig();
 									
-									switch ( args[1].toLowerCase() ) {
-									
-									case "true":
-									case "enable":
-									case "enabled":
-									case "on":
-										this.silentMode = true;
-										silencer(true);
-										getConfig().set("silentMode", true);
-										saveConfig();
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Silent mode is now enabled.");
+									} else {
+										Player player = (Player) sender;
 										msg(player, "cmdSilentOn");
-										return true;
-										
-									case "false":
-									case "disable":
-									case "disabled":
-									case "off":
-										this.silentMode = false;
-										silencer(false);
-										getConfig().set("silentMode", false);
-										saveConfig();
-										msg(player, "cmdSilentOff");
-										return true;
-										
-									default: 
-										msg(player, "errorSilentModeFormat");
-										return true;
-									
 									}
 									
+									return true;
+									
+								case "false":
+								case "disable":
+								case "disabled":
+								case "off":
+									this.silentMode = false;
+									silencer(false);
+									getConfig().set("silentMode", false);
+									saveConfig();
+									
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Silent mode is now disabled.");
+									} else {
+										Player player = (Player) sender;
+										msg(player, "cmdSilentOff");
+									}
+									
+									return true;
+								
+								//Silentmode command error handling
+								default: 
+									
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Unrecognized command format.");
+									} else {
+										Player player = (Player) sender;
+										msg(player, "errorSilentModeFormat");
+									}
+									
+									return true;
+								
 								}
 								
 							case "gui":
-								if ( player.isOp() ) {
+								
+								//GUI command handling	
+								switch ( args[1].toLowerCase() ) {
+								
+								case "true":
+								case "enable":
+								case "enabled":
+								case "on":
+									this.guiEnabled = true;
+									getConfig().set("guiEnabled", true);
+									saveConfig();
 									
-									switch ( args[1].toLowerCase() ) {
-									
-									case "true":
-									case "enable":
-									case "enabled":
-									case "on":
-										this.guiEnabled = true;
-										getConfig().set("guiEnabled", true);
-										saveConfig();
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] GUI is now enabled.");
+									} else {
+										Player player = (Player) sender;
 										msg(player, "cmdGUIEnabled");
-										return true;
-										
-									case "false":
-									case "disable":
-									case "disabled":
-									case "off":
-										this.guiEnabled = false;
-										getConfig().set("guiEnabled", false);
-										saveConfig();
-										msg(player, "cmdGUIDisabled");
-										return true;
-										
-									default: 
-										msg(player, "errorGUIToggleFormat");
-										return true;
-									
 									}
 									
+									return true;
+									
+								case "false":
+								case "disable":
+								case "disabled":
+								case "off":
+									this.guiEnabled = false;
+									getConfig().set("guiEnabled", false);
+									saveConfig();
+
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] GUI is now disabled.");
+									} else {
+										Player player = (Player) sender;
+										msg(player, "cmdGUIDisabled");
+									}
+									
+									return true;
+								
+								//GUI command error handling
+								default: 
+									
+									if ( !(sender instanceof Player) ) {
+										System.out.println("[GUNSMITH] Unrecognized command format.");
+									} else {
+										Player player = (Player) sender;
+										msg(player, "errorGUIToggleFormat");
+									}
+									
+									return true;
+								
 								}
 							
 							}
 							
 					default:
+						Player player = (Player) sender;
 						msg(player, "errorIllegalCommand");
 						return true;
 						
@@ -257,7 +348,13 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        //Command: versionGS     
 	    		case "versionGS":
 	    			
-	    			player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION + " (beta)");
+					if ( !(sender instanceof Player) ) {
+						System.out.println("[GUNSMITH] v" + VERSION + " (beta)");
+					} else {
+						Player player = (Player) sender;
+						player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION + " (beta)");
+					}
+					
 	                return true;
 	        
 	                
@@ -274,9 +371,18 @@ public class GunSmith extends JavaPlugin implements Listener {
 							case "hammerOfDawn":
 							case "orbital":
 							default:
-								return new ItemSmith(language).giveGun(args, player);
+								if (sender instanceof Player) {
+									
+									Player player = (Player) sender;
+									return new ItemSmith(language).giveGun(args, player);
+									
+								} else {
+									System.out.println("[GUNSMITH] This is a player-only command.");
+									return true;
+								}
 							
 						}
+						
 					case 2:
 						switch (args[0]) {
 						
@@ -287,13 +393,31 @@ public class GunSmith extends JavaPlugin implements Listener {
 								try {
 									return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
 								} catch (NullPointerException npe) {
-									msg(player, "errorPlayerNotFound");
+									
+									if (sender instanceof Player) {
+										
+										Player player = (Player) sender;
+										msg(player, "errorPlayerNotFound");
+										
+									} else {
+										System.out.println("[GUNSMITH] Player not found.");
+									}
+									
 									return true;
+									
 								}
 								
 						}
+						
 					default:
-						msg(player, "errorGunFormat");
+						
+						if (sender instanceof Player) {
+							Player player = (Player) sender;
+							msg(player, "errorGunFormat");
+						} else {
+							System.out.println("[GUNSMITH] Command not recognized.");
+						}
+						
 						return true;
 				
 				}
@@ -304,74 +428,69 @@ public class GunSmith extends JavaPlugin implements Listener {
 				
 				switch (args.length) {
 				
-				case 1:
-					switch (args[0]) {
-					
-						case "rpg":
-						default:
-							new ItemSmith(language).giveAmmo(args[0], player);
-							return true;
+					case 1:
+						switch (args[0]) {
 						
-					}
-				case 2:
-					switch (args[0]) {
-					
-						case "rpg":
-						default:
-							try {
-								return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
-							} catch (NullPointerException npe) {
-								msg(player, "errorPlayerNotFound");
-								return true;
-							}
-					
-					}
-				default:
-					msg(player, "errorAmmoFormat");
-					return true;
+							case "rpg":
+							default:
+								if (sender instanceof Player) {
+									
+									Player player = (Player) sender;
+									new ItemSmith(language).giveAmmo(args[0], player);
+									
+								} else {
+									System.out.println("[GUNSMITH] This is a player-only command.");
+									return true;
+								}
+							
+						}
+						
+					case 2:
+						switch (args[0]) {
+						
+							case "rpg":
+							default:
+								try {
+									return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
+								} catch (NullPointerException npe) {
+									
+									if (sender instanceof Player) {
+										
+										Player player = (Player) sender;
+										msg(player, "errorPlayerNotFound");
+										
+									} else {
+										System.out.println("[GUNSMITH] Player not found.");
+									}
+									
+									return true;
+									
+								}
+						
+						}
+						
+					default:
+						
+						if (sender instanceof Player) {
+							Player player = (Player) sender;
+							msg(player, "errorAmmoFormat");
+						} else {
+							System.out.println("[GUNSMITH] Command not recognized.");
+						}
+						
+						return true;
 			
 				}
 	        
-	        //Command: getStat <gunName> <stat>
-			case "getStat":
-			case "getstat":
-					
-		        if ( args.length == 2 && !args[0].equalsIgnoreCase("rpg") ) {
-		        	
-		        	String statName = args[1];
-		        	String gunName = new GunStats().getName(args[0]);
-		        	int stat = -1;
-		        	
-		        	if ( statName.equalsIgnoreCase("range") ) {
-		        		stat = new GunStats().findRange(args[0]);
-		        	} else if ( statName.equalsIgnoreCase("cooldown") ) {
-		        		stat = new GunStats().findCooldown(args[0]);
-		        	}  else {
-		        		msg(player, "errorStatType");
-		        		return true;
-		        	}
-		        	
-		        	if (stat >= 0) {
-		        		
-		        		player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + gunName + ", " + statName + ": " + stat);
-		        		return true;
-		        		
-		        	} else {
-			        	
-		        		msg(player, "errorStatFormat");
-			        	return true;
-			        	
-			        }
-		        	
-		        } else {
-		        	
-		        	msg(player, "errorStatFormat");
-		        	return true;
-		        	
-		        }
-				
 			default:
-				msg(player, "errorIllegalCommand");
+				
+				if (sender instanceof Player) {
+					Player player = (Player) sender;
+					msg(player, "errorIllegalCommand");
+				} else {
+					System.out.println("[GUNSMITH] Command not recognized.");
+				}
+	        	
 	        	return true;
 		
 		}
