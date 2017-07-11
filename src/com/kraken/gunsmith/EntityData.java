@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityData extends Event implements Cancellable {
 	
@@ -17,14 +18,16 @@ public class EntityData extends Event implements Cancellable {
     private Integer range;
     private Double damage;
     private Player player;
+    private ItemStack gun;
     private Collection<? extends Player> nearby;
     
     //Constructor
-    public EntityData(Player player, Location loc, Integer range, Double damage) {
+    public EntityData(Player player, Location loc, Integer range, Double damage, ItemStack gun) {
         this.player = player;
     	this.firedfrom = loc;
         this.range = range;
         this.damage = damage;
+        this.gun = gun;
     }
     
     public Location getFiredFrom() {
@@ -41,6 +44,10 @@ public class EntityData extends Event implements Cancellable {
     
     public Player getPlayer() {
     	return player;
+    }
+    
+    public ItemStack getGun() {
+    	return gun;
     }
     
     public Collection<? extends Player> getNearby() {
