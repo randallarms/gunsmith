@@ -81,7 +81,7 @@ public class ItemSmith {
 			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
 			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
 			data = 606;
-		} else if (gun.equalsIgnoreCase("rocketLauncher")) {
+		} else if (gun.equalsIgnoreCase("rocketLauncher") || gun.equalsIgnoreCase("rpg")) {
 			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[ROCKET LAUNCHER]";
 			data = 607;
 		} else if (gun.equalsIgnoreCase("shotgun")) {
@@ -119,7 +119,7 @@ public class ItemSmith {
     		
     		gunItem = makeGun("crossbow", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("rpg") ) {
+    	} else if ( args[0].equalsIgnoreCase("rpg") || args[0].equalsIgnoreCase("rocketLauncher") )  {
     		
         	gunItem = makeGun("rocketLauncher", 1);
         	
@@ -285,6 +285,50 @@ public class ItemSmith {
 		
 		return makeItem(m, name, desc, amount, data, true);
 		
+	}
+	
+	public ItemStack makeArmor(String armor) {
+		
+		Material m;
+		String name;
+		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Armor";
+		
+		if (armor.equalsIgnoreCase("pvtHelm")) {
+			m = Material.IRON_HELMET;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. HELMET]";
+		} else if (armor.equalsIgnoreCase("pvtChest")) {
+			m = Material.IRON_CHESTPLATE;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. BODY ARMOR]";
+		} else if (armor.equalsIgnoreCase("pvtLegs")) {
+			m = Material.IRON_LEGGINGS;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. LEG ARMOR]";
+		} else if (armor.equalsIgnoreCase("pvtBoots")) {
+			m = Material.IRON_BOOTS;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. BOOTS]";
+		} else {
+			m = Material.IRON_HELMET;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[PVT. HELMET]";
+			
+		}
+	
+		return makeItem(m, name, desc, 1, 0, false);
+		
+	}
+	
+	public ItemStack makeGrenade(String grenade) {
+		
+		Material m = Material.MAGMA_CREAM;
+		String name = ChatColor.GREEN + "" + ChatColor.BOLD + "[FRAG GRENADE]";
+		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Equipment | ";
+		
+		if (grenade.equals("fragNade")) {
+			m = Material.MAGMA_CREAM;
+			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[FRAG GRENADE]";
+			desc = desc + "Frag Grenade";
+		}
+		
+		return makeItem(m, name, desc, 4, 0, true);
+	
 	}
 	
 }

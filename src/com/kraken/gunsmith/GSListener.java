@@ -8,12 +8,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,14 +23,19 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 
 public class GSListener implements Listener {
 	
-	public final static WeakHashMap<Entity, EntityData> shotprojectiledata = new WeakHashMap<Entity, EntityData>();
 	GunSmith plugin;
+	public final static WeakHashMap<Entity, EntityData> shotprojectiledata = new WeakHashMap<Entity, EntityData>();
+	public final static WeakHashMap<Entity, Location> shotHitLoc = new WeakHashMap<Entity, Location>();
 	ArrayList<Player> cooldown = new ArrayList<Player>();
+	ArrayList<Player> orbitalCooldown = new ArrayList<Player>();
 	String language;
 	Boolean glassBreak;
 	
@@ -41,6 +48,12 @@ public class GSListener implements Listener {
 	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun("shotgun", 1) );
 	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
 	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
+	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun("orbital", 1) );
+	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
+	ItemStack pvtHelm = new ItemStack( new ItemSmith(language).makeArmor("pvtHelm") );
+	ItemStack pvtChest = new ItemStack( new ItemSmith(language).makeArmor("pvtChest") );
+	ItemStack pvtLegs = new ItemStack( new ItemSmith(language).makeArmor("pvtLegs") );
+	ItemStack pvtBoots = new ItemStack( new ItemSmith(language).makeArmor("pvtBoots") );
 	
     public GSListener(GunSmith plugin, String language) {
   	  
@@ -75,7 +88,7 @@ public class GSListener implements Listener {
     			if ( item.getType().equals(Material.DIAMOND_HOE) ) {
     				
     				//Check if player has proper ammunition
-    				if (hasAmmo(player, item)) {
+    				if ( hasAmmo(player, item)  || item.equals(orbital) ) {
     				
     					GunShot shot = new GunShot(player, item, glassBreak);
     					Bukkit.getServer().getPluginManager().callEvent(shot);
@@ -84,12 +97,21 @@ public class GSListener implements Listener {
     						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
     					}
 				    	
-				    	cooldown.add(player);
-				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				    		public void run() {
-				    			cooldown.remove(player);
-				    		}
-				    	}, shot.findCooldown(item));
+				    	if (!item.equals(orbital)) {
+					    	cooldown.add(player);
+					    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					    		public void run() {
+					    			cooldown.remove(player);
+					    		}
+					    	}, shot.findCooldown(item));
+    					} else {
+    				    	orbitalCooldown.add(player);
+    				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+    				    		public void run() {
+    				    			orbitalCooldown.remove(player);
+    				    		}
+    				    	}, shot.findCooldown(item));
+    					}
 				    	
     				} else {
     					
@@ -102,12 +124,113 @@ public class GSListener implements Listener {
     					
     				}
 			    	
+    			} else if ( item.equals(grenade) ) {
+    				
+    				//Check if player has proper ammunition
+    				if (hasGrenade(player, item)) {
+    				
+    					GunShot shot = new GunShot(player, grenade, glassBreak);
+    					Bukkit.getServer().getPluginManager().callEvent(shot);
+				    	
+    					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+    					
+				    	cooldown.add(player);
+				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				    		public void run() {
+				    			cooldown.remove(player);
+				    		}
+				    	}, shot.findCooldown(item));
+				    	
+    				} else {
+    					
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You are out of grenades.");
+    					
+    				}
+    				
     			}
+    			
     		}
     		
     	}
 	    //End of BulletShot
 	
+		@EventHandler
+		public void onProjectileHit(ProjectileHitEvent e) {
+			
+			Entity entity = e.getEntity();
+			EntityData eventdata = shotprojectiledata.get(entity); 
+			
+			if ( shotprojectiledata.containsKey(entity) && ( eventdata.getGun().equals( rocketLauncher ) 
+					|| eventdata.getGun().equals( grenade ) || eventdata.getGun().equals( orbital ) ) ) {
+				
+			    BlockIterator iterator = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0.0D, 4);
+			    Block hitBlock = null;
+			    
+			    while ( iterator.hasNext() ) {
+			    	
+			        hitBlock = iterator.next();
+			         
+			        if ( !hitBlock.getType().equals(Material.AIR) ) {
+			        	break;
+			        }
+				        
+			    }
+			         
+		        if ( eventdata.getGun().equals( rocketLauncher ) ) {
+		        	
+		        	hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 8.0F);
+		        
+		        } else if ( eventdata.getGun().equals( grenade ) ) {
+		        	
+		        	shotHitLoc.put(entity, hitBlock.getLocation());
+		        	
+			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			    		
+			    		public void run() {
+			    			Location hit = shotHitLoc.get(entity);
+			    			hit.getWorld().createExplosion(hit, 6.0F);
+			    		}
+			    		
+			    	}, 40);
+		        	
+		        } else if ( eventdata.getGun().equals( orbital ) ) {
+		        	
+		        	shotHitLoc.put(entity, hitBlock.getLocation());
+		        	
+			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			    		
+						public void run() {
+			    			Location hit = shotHitLoc.get(entity);
+			    			
+				        	Location newLoc = null;
+				        	boolean isNotAir = false;
+				        	int y = 255;
+				        	while (isNotAir == false) {
+				        		if (y < 0) {
+				        			break;
+				        		}
+				        		newLoc = new Location(hit.getWorld(), hit.getX(), y, hit.getZ());
+				        		if (newLoc.getBlock().getType() != Material.AIR) {
+				        			isNotAir = true;
+				        		} else y--;
+				        	}
+				        	
+				        	hit.getWorld().strikeLightning(hit);
+				        	newLoc.getWorld().createExplosion(newLoc, 9.0F);
+				        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
+				        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
+				        	
+			    		}
+			    		
+			    	}, 126);
+		        	
+		        	
+		        }
+			
+			}
+			
+		}
+
 		@EventHandler
 	    public void onHit(EntityDamageByEntityEvent event) {
 			
@@ -119,9 +242,44 @@ public class GSListener implements Listener {
 	            	
 	            	//get data stored about the projectile
 	                EntityData eventdata = shotprojectiledata.get(event.getDamager()); 
-	              
+
+	                if ( eventdata.getGun().equals( rocketLauncher ) ) {
+	                	
+	                	event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 6.0F);
+	                	
+	                } else if ( eventdata.getGun().equals( orbital ) ) {
+	                	
+	                	shotHitLoc.put(event.getDamager(), event.getEntity().getLocation());
+			        	
+				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				    		
+							public void run() {
+				    			Location hit = shotHitLoc.get(event.getDamager());
+				    			
+					        	Location newLoc = null;
+					        	boolean isNotAir = false;
+					        	int y = 255;
+					        	while (isNotAir == false) {
+					        		newLoc = new Location(hit.getWorld(), hit.getX(), y, hit.getZ());
+					        		if (newLoc.getBlock().getType() != Material.AIR) {
+					        			isNotAir = true;
+					        		} else y--;
+					        	}
+					        	
+					        	hit.getWorld().strikeLightning(hit);
+					        	newLoc.getWorld().createExplosion(newLoc, 11.0F);
+					        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
+					        	newLoc.add(-2, 0, -2).getWorld().createExplosion(newLoc, 6.0F);
+					        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
+					        	newLoc.add(3, 0, -3).getWorld().createExplosion(newLoc, 3.0F);
+					        	hit.getWorld().strikeLightning(hit);
+					        	
+				    		}
+				    		
+				    	}, 126);
+	                
 	                //check if the event is outside of the range AND target is not the shooter
-	                if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange()
+	                } else if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange()
 	                		&& !eventdata.getPlayer().equals( event.getEntity() ) ) { 
 	                	
 	                	Projectile bullet = (Projectile) event.getDamager();
@@ -167,6 +325,10 @@ public class GSListener implements Listener {
 				return "Assault Rifle";
 			} else if ( gun.equals(hmg) ) {
 				return "HMG";
+			}  else if ( gun.equals(rocketLauncher) ) {
+				return "Rocket Launcher";
+			} else if ( gun.equals(grenade) ) {
+				return "Frag Grenade";
 			} else {
 				return "null";
 			}
@@ -289,6 +451,45 @@ public class GSListener implements Listener {
 				}
 				
 			}
+			
+		}
+		
+		//Checks if player has grenades
+		public boolean hasGrenade(Player player, ItemStack grenade) {
+			
+			Inventory inv = player.getInventory();
+			String grenadeName = getAmmoFor(grenade);
+			
+			for (ItemStack item : inv) {
+				
+				if ( item != null && item.hasItemMeta() ) {
+				
+					ItemMeta im = item.getItemMeta();
+					
+					if ( !im.equals(null) && im.hasLore() ) {
+						
+						List<String> lore = im.getLore();
+						
+						if ( lore.toString().contains("Equipment | " + grenadeName) ) {
+							//Ammo was found
+							if (item.getAmount() > 1) {
+								item.setAmount(item.getAmount() - 1);
+								return true;
+							} else {
+								inv.remove(item);
+								return true;
+							}
+							
+						}
+						
+					}
+				
+				}
+				
+			}
+			
+			//Grenades not found
+			return false;
 			
 		}
 		

@@ -40,10 +40,12 @@ public class GunShot extends Event {
 	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
 	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
 	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
+	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun("orbital", 1) );
 	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
 	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun("shotgun", 1) );
 	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
 	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
+	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
 
 	public GunShot(Player player, ItemStack gun, Boolean glassBreakEnabled) {
 		
@@ -54,11 +56,21 @@ public class GunShot extends Event {
 	        Double damage = findDamage(gun);
 	        Vector velocity = player.getLocation().getDirection().multiply(10.0D);
 	        
+	        if ( gun.equals(rocketLauncher.getType()) ) {
+	        	damage = 6D;
+	        	velocity = player.getLocation().getDirection().multiply(3D);
+	        } else if ( gun.equals(grenade.getType()) ) {
+	        	damage = 1D;
+	        	velocity = player.getLocation().getDirection().multiply(1.5D);
+	        } else if ( gun.equals(orbital.getType()) ) {
+	        	damage = 0D;
+	        }
+	        
 	        projectile = player.launchProjectile(Snowball.class);
 	        projectile.setVelocity(velocity);
 	        
 	        //Controls shooter identity, location, range, and damage
-	        	data = new EntityData(player, projectile.getLocation(), range, damage);
+	        	data = new EntityData(player, projectile.getLocation(), range, damage, gun);
 	        //^^^
 	        	
 	        shotprojectiledata.put(projectile, data);
@@ -71,12 +83,14 @@ public class GunShot extends Event {
 	          ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
 	      }
 	      
-	  }
-	      
-      else {
+	  } else if ( gun.equals(bow) ) {
     	  
     	  player.launchProjectile(Arrow.class);
     	  
+	  } else {
+      	
+          player.getWorld().playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, (float) 0.1, (float) 0.5);
+      	
       }
           
     }
@@ -181,8 +195,8 @@ public class GunShot extends Event {
 	
 	public int findRange(ItemStack gun) {
 
-		if ( gun.equals( sniper ) ) {
-			return 100;
+		if ( gun.equals( sniper ) || gun.equals( orbital ) || gun.equals( rocketLauncher ) ) {
+			return 125;
 		} else if ( gun.equals( pistol ) || gun.equals( br ) ) {
 			return 50;
 		} else if ( gun.equals( lmg ) || gun.equals( hmg ) || gun.equals( ar ) ) {
@@ -211,6 +225,10 @@ public class GunShot extends Event {
 			return 5;
 		} else if ( m.equals( lmg ) || m.equals( hmg ) ) { //LMG, HMG
 			return 2;
+		} else if ( m.equals( rocketLauncher ) ) { //RPG
+			return 50;
+		} else if ( m.equals( orbital ) ) { //Orbital
+			return 250;
 		} else {
 			return 5;
 		}

@@ -1,19 +1,22 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.9.2 (beta)
+version: 0.9.3 (WarZone)
 commands: 
      guns:
-        description: Controls the GunSmith plugin, and opens a GUI for gun selection..
+        description: Controls the GunSmith plugin, and opens a GUI for gun selection.
         usage: /<command> <secondaryCmd>
      giveGun:
-        description: Give yourself a gun.
+        description: Give GunSmith a gun.
         usage: /<command> <gunName>
      giveAmmo:
-        description: Give yourself ammunition.
-        usage: /<command> <ammoName>  
-     getStat:
-        description: Get stats for a particular gun.
-        usage: /<command> <gunName> <stat>
+        description: Give GunSmith ammunition.
+        usage: /<command> <ammoName> 
+     giveArmor:
+        description: Give GunSmith armor. (Not yet functional)
+        usage: /<command> <ammoName> 
+     giveGrenade:
+        description: Give GunSmith grenades. (Not yet functional)
+        usage: /<command> <ammoName>
      versionGS:
         description: Get the current version of the GunSmith plugin.
         usage: /<command>
