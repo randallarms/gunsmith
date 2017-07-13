@@ -21,5 +21,8 @@ silentMode: false
 #
 # GUI ENABLED | If true, players can freely access GS items from a menu.
 guiEnabled: true
+#
+# OP REQUIREMENT | If true, players must have OP permissions to use the GS GUI.
+opRequirement: false
 # 
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

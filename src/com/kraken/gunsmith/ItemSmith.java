@@ -321,7 +321,7 @@ public class ItemSmith {
 		String name = ChatColor.GREEN + "" + ChatColor.BOLD + "[FRAG GRENADE]";
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Equipment | ";
 		
-		if (grenade.equals("fragNade")) {
+		if (grenade.equals("frag")) {
 			m = Material.MAGMA_CREAM;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[FRAG GRENADE]";
 			desc = desc + "Frag Grenade";

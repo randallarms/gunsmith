@@ -167,7 +167,15 @@ public class Messages {
 						
 					case "errorGUINotEnabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | The GUI is disabled.");
-						break;			        	
+						break;	
+						
+					case "cmdOpReqEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | OP perms are now required for the GS GUI.");
+						break;
+						
+					case "cmdOpReqDisabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | OP perms are no longer required for the GS GUI.");
+						break;
 			        	
 					case "cmdGiveGun":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");

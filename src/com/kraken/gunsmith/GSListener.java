@@ -49,7 +49,7 @@ public class GSListener implements Listener {
 	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
 	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
 	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun("orbital", 1) );
-	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
+	ItemStack frag = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
 	ItemStack pvtHelm = new ItemStack( new ItemSmith(language).makeArmor("pvtHelm") );
 	ItemStack pvtChest = new ItemStack( new ItemSmith(language).makeArmor("pvtChest") );
 	ItemStack pvtLegs = new ItemStack( new ItemSmith(language).makeArmor("pvtLegs") );
@@ -124,12 +124,12 @@ public class GSListener implements Listener {
     					
     				}
 			    	
-    			} else if ( item.equals(grenade) ) {
+    			} else if ( item.equals(frag) ) {
     				
     				//Check if player has proper ammunition
     				if (hasGrenade(player, item)) {
     				
-    					GunShot shot = new GunShot(player, grenade, glassBreak);
+    					GunShot shot = new GunShot(player, frag, glassBreak);
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
@@ -161,7 +161,7 @@ public class GSListener implements Listener {
 			EntityData eventdata = shotprojectiledata.get(entity); 
 			
 			if ( shotprojectiledata.containsKey(entity) && ( eventdata.getGun().equals( rocketLauncher ) 
-					|| eventdata.getGun().equals( grenade ) || eventdata.getGun().equals( orbital ) ) ) {
+					|| eventdata.getGun().equals( frag ) || eventdata.getGun().equals( orbital ) ) ) {
 				
 			    BlockIterator iterator = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0.0D, 4);
 			    Block hitBlock = null;
@@ -180,7 +180,7 @@ public class GSListener implements Listener {
 		        	
 		        	hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 8.0F);
 		        
-		        } else if ( eventdata.getGun().equals( grenade ) ) {
+		        } else if ( eventdata.getGun().equals( frag ) ) {
 		        	
 		        	shotHitLoc.put(entity, hitBlock.getLocation());
 		        	
@@ -327,7 +327,7 @@ public class GSListener implements Listener {
 				return "HMG";
 			}  else if ( gun.equals(rocketLauncher) ) {
 				return "Rocket Launcher";
-			} else if ( gun.equals(grenade) ) {
+			} else if ( gun.equals(frag) ) {
 				return "Frag Grenade";
 			} else {
 				return "null";
