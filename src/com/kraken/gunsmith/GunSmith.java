@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9.3 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v0.9.3.1 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -24,23 +24,29 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "0.9.3";
+	public String VERSION = "0.9.3.1";
 	
 	GSListener listener;
+	
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
-	Boolean glassBreak = false;
-	Boolean silentMode = false;
-	Boolean guiEnabled = true;
 	Messages messenger;
+	
 	GunSmithGUI gui = new GunSmithGUI(language);
+	
 	Player player;
+	
 	boolean isPlayer = false;
+	boolean glassBreak = false;
+	boolean silentMode = false;
+	boolean guiEnabled = true;
+	boolean opRequired = false;
 	
     @Override
     public void onEnable() {
     	
-    	getLogger().info("Loading...");
+    	getLogger().info("[GUNSMITH] Loading...");
+    	
     	PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
 		
@@ -48,7 +54,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 		this.getConfig().options().copyDefaults(true);
 		
 		this.language = getConfig().getString("language");
-		getLogger().info(ChatColor.RED + "Language: " + language.toUpperCase());
+		getLogger().info( ChatColor.RED + "[GUNSMITH] Language: " + language.toUpperCase() );
 		
 		this.messenger = new Messages(language);
 		
@@ -65,17 +71,21 @@ public class GunSmith extends JavaPlugin implements Listener {
 	    	
     	this.silentMode = getConfig().getBoolean("silentMode");
     	silencer(silentMode);
-    	getLogger().info("Silent mode: " + silentMode.toString().toUpperCase() );
+    	getLogger().info("[GUNSMITH] Silent mode: " + silentMode );
     	
     	this.guiEnabled = getConfig().getBoolean("guiEnabled");
+    	getLogger().info("[GUNSMITH] GUI enabled: " + guiEnabled );
+    	
+    	this.opRequired = getConfig().getBoolean("opRequired");
+    	getLogger().info("[GUNSMITH] OP requirement enabled: " + opRequired );
+    	
+    	getLogger().info("[GUNSMITH] Finished loading.");
 			
     }
     
     @Override
     public void onDisable() {
-    	
         getLogger().info("GunSmith has been disabled.");
-        
     }
     
     public void msg(Player player, String cmd) {
@@ -115,9 +125,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 				switch (args.length) {
 				
 					case 0:
-						if (isPlayer) {
+						if ( isPlayer ) {
 							
-							if ( guiEnabled ) {
+							if ( opRequired && !( player.isOp() ) ) {
+								msg(player, "errorIllegalCommand");
+							} else if ( guiEnabled ) {
 								GunSmithGUI.openGSGUI(player);
 							} else {
 								msg(player, "errorGUINotEnabled");
@@ -175,6 +187,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 								}
 								
 							case "glassbreak":
+							case "glassBreak":
 									
 								//Glassbreak command handling
 								switch ( args[1].toLowerCase() ) {
@@ -227,6 +240,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 								}
 								
 							case "silentmode":
+							case "silentMode":
 								
 								//Silentmode command handling
 								switch ( args[1].toLowerCase() ) {
@@ -279,6 +293,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 								}
 								
 							case "gui":
+							case "GUI": 
 								
 								//GUI command handling	
 								switch ( args[1].toLowerCase() ) {
@@ -327,6 +342,69 @@ public class GunSmith extends JavaPlugin implements Listener {
 									return true;
 								
 								}
+								
+						  //Command: opReqGS
+			        	    case "opRequiredGS":
+			        	    case "oprequiredgs":
+			        	    case "opReqGS":
+			        	    case "opreqgs":
+			        			  
+			        	    	if ( args.length == 2 ) {
+			        	    		switch ( args[1].toLowerCase() ) {
+			        	    			case "on":
+			        	    			case "enable":
+			        	    			case "enabled":
+			        	    			case "true":
+			        	    				this.opRequired = true;
+											getConfig().set("opRequired", true);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] OP requirement is now enabled.");
+											} else {
+												msg(player, "cmdOpReqEnabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			case "off":
+			        	    			case "disable":
+			        	    			case "disabled":
+			        	    			case "false":
+			        	    				this.opRequired = false;
+											getConfig().set("opRequired", false);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] OP requirement is now disabled.");
+											} else {
+												msg(player, "cmdOpReqDisabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			default:
+			        	    				if ( !isPlayer ) {
+			        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+			        	    				} else {
+			        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReqGS <on/off>\".");
+			        	    				}
+			        	    				
+			        	        	    	return true;
+			        	        	    	
+			        	    		}
+			        	    		
+			        	    	} else {
+			        	    		
+			        	    		if ( !isPlayer ) {
+	        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+	        	    				} else {
+	        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReqGS <on/off>\".");
+	        	    				}
+			        	    		
+	        	        	    	return true;
+	        	        	    	
+			        	    	}
 							
 							}
 							
@@ -363,9 +441,13 @@ public class GunSmith extends JavaPlugin implements Listener {
 						switch (args[0]) {
 						
 							default:
-								if (isPlayer) {
+								if (isPlayer ) {
 									
-									return new ItemSmith(language).giveGun(args, player);
+									if ( player.isOp() ) {
+										return new ItemSmith(language).giveGun(args, player);
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
 									
 								} else {
 									System.out.println("[GUNSMITH] This is a player-only command.");
@@ -380,7 +462,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 							default:
 								try {
 									
-									return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
+									if ( player.isOp() ) {
+										return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
 									
 								} catch (NullPointerException npe) {
 									
@@ -422,7 +508,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 							default:
 								if (isPlayer) {
 									
-									new ItemSmith(language).giveAmmo(args[0], player);
+									if ( player.isOp() ) {
+										new ItemSmith(language).giveAmmo(args[0], player);
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
 									
 								} else {
 									System.out.println("[GUNSMITH] This is a player-only command.");
@@ -437,7 +527,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 							default:
 								try {
 									
-									return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
+									if ( player.isOp() ) {
+										return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
 									
 								} catch (NullPointerException npe) {
 									
@@ -494,7 +588,13 @@ public class GunSmith extends JavaPlugin implements Listener {
 						case "frag":
 							
 							if (isPlayer) {
-								player.getInventory().addItem( new ItemSmith(language).makeGrenade( args[0] ) );
+								
+								if ( player.isOp() ) {
+									player.getInventory().addItem( new ItemSmith(language).makeGrenade( args[0] ) );
+								} else {
+									msg(player, "errorIllegalCommand");
+								}
+								
 							} else {
 								System.out.println("[GUNSMITH] This is a player only command.");
 							}
@@ -510,14 +610,26 @@ public class GunSmith extends JavaPlugin implements Listener {
 					case "frag":
 							
 							try {
-								Player receiver = (Player) getServer().getPlayer(args[1]);
-								receiver.getInventory().addItem( new ItemSmith(language).makeGrenade( args[0] ) );
+								
+								if ( isPlayer ) {
+									if ( player.isOp() ) {
+										Player receiver = (Player) getServer().getPlayer(args[1]);
+										receiver.getInventory().addItem( new ItemSmith(language).makeGrenade( args[0] ) );
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
+								} else {
+									System.out.println("[GUNSMITH] This is a player only command.");
+								}
+								
 							} catch (NullPointerException npe) {
+								
 								if (isPlayer) {
 									player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Player not found!");
 								} else {
 									System.out.println("[GUNSMITH] Player not found.");
 								}
+								
 							}
 							
 							return true;
@@ -551,7 +663,13 @@ public class GunSmith extends JavaPlugin implements Listener {
 							case "pvtboots":
 								
 								if (isPlayer) {
-									player.getInventory().addItem( new ItemSmith(language).makeArmor( args[0] ) );
+									
+									if ( player.isOp() ) {
+										player.getInventory().addItem( new ItemSmith(language).makeArmor( args[0] ) );
+									} else {
+										msg(player, "errorIllegalCommand");
+									}
+									
 								} else {
 									System.out.println("[GUNSMITH] This is a player only command.");
 								}
@@ -570,8 +688,18 @@ public class GunSmith extends JavaPlugin implements Listener {
 						case "pvtboots":
 								
 								try {
-									Player receiver = (Player) getServer().getPlayer(args[1]);
-									receiver.getInventory().addItem( new ItemSmith(language).makeArmor( args[0] ) );
+									
+									if ( isPlayer ) {
+										if ( player.isOp() ) {
+											Player receiver = (Player) getServer().getPlayer(args[1]);
+											receiver.getInventory().addItem( new ItemSmith(language).makeArmor( args[0] ) );
+										} else {
+											msg(player, "errorIllegalCommand");
+										}
+									} else {
+										System.out.println("[GUNSMITH] This is a player only command.");
+									}
+									
 								} catch (NullPointerException npe) {
 									if (isPlayer) {
 										player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Player not found!");
