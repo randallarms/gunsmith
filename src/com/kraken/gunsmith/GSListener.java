@@ -78,6 +78,11 @@ public class GSListener implements Listener {
     	Player player = e.getPlayer();
     	ItemStack item = player.getInventory().getItemInMainHand();
     	
+    	ArrayList<Integer> types = new ArrayList<Integer>();
+		types.addAll(Arrays.asList(601, 602, 603, 604, 605, 607, 608, 609, 610));
+		
+		Short durability = item.getDurability();
+    	
 	  	//BulletShot
     		//On right click...
     		if ( e.getAction() != Action.LEFT_CLICK_AIR 
@@ -85,7 +90,7 @@ public class GSListener implements Listener {
     				&& item != null && !cooldown.contains( player ) ) {
     			
     			//The Materials correspond to the item the gun is based on
-    			if ( item.getType().equals(Material.DIAMOND_HOE) ) {
+    			if ( item.getType().equals(Material.DIAMOND_HOE) && types.contains( durability.intValue() ) ) {
     				
     				//Check if player has proper ammunition
     				if ( hasAmmo(player, item)  || item.equals(orbital) ) {
@@ -97,21 +102,26 @@ public class GSListener implements Listener {
     						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
     					}
 				    	
+    					//Cooldown scheduling
 				    	if (!item.equals(orbital)) {
-					    	cooldown.add(player);
-					    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					    		public void run() {
-					    			cooldown.remove(player);
-					    		}
-					    	}, shot.findCooldown(item));
+					    	cooldown.add(player);;
     					} else {
     				    	orbitalCooldown.add(player);
-    				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-    				    		public void run() {
-    				    			orbitalCooldown.remove(player);
-    				    		}
-    				    	}, shot.findCooldown(item));
     					}
+				    	
+				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				    		
+				    		public void run() {
+				    			
+				    			if (!item.equals(orbital)) {
+				    				cooldown.remove(player);
+				    			} else {
+				    				orbitalCooldown.remove(player);
+				    			}
+				    			
+				    		}
+				    		
+				    	}, shot.findCooldown(item));
 				    	
     				} else {
     					
@@ -123,6 +133,8 @@ public class GSListener implements Listener {
     					}
     					
     				}
+    				
+    				e.setCancelled(true);
 			    	
     			} else if ( item.equals(frag) ) {
     				
@@ -153,62 +165,113 @@ public class GSListener implements Listener {
     		
     	}
 	    //End of BulletShot
-	
-		@EventHandler
-		public void onProjectileHit(ProjectileHitEvent e) {
+
+	@EventHandler
+	public void onProjectileHit(ProjectileHitEvent e) {
+		
+		Entity entity = e.getEntity();
+		EntityData eventdata = shotprojectiledata.get(entity); 
+		
+		if ( shotprojectiledata.containsKey(entity) && ( eventdata.getGun().equals( rocketLauncher ) 
+				|| eventdata.getGun().equals( frag ) || eventdata.getGun().equals( orbital ) ) ) {
 			
-			Entity entity = e.getEntity();
-			EntityData eventdata = shotprojectiledata.get(entity); 
-			
-			if ( shotprojectiledata.containsKey(entity) && ( eventdata.getGun().equals( rocketLauncher ) 
-					|| eventdata.getGun().equals( frag ) || eventdata.getGun().equals( orbital ) ) ) {
-				
-			    BlockIterator iterator = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0.0D, 4);
-			    Block hitBlock = null;
-			    
-			    while ( iterator.hasNext() ) {
-			    	
-			        hitBlock = iterator.next();
-			         
-			        if ( !hitBlock.getType().equals(Material.AIR) ) {
-			        	break;
-			        }
-				        
-			    }
-			         
-		        if ( eventdata.getGun().equals( rocketLauncher ) ) {
-		        	
-		        	hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 8.0F);
-		        
-		        } else if ( eventdata.getGun().equals( frag ) ) {
-		        	
-		        	shotHitLoc.put(entity, hitBlock.getLocation());
-		        	
-			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			    		
-			    		public void run() {
-			    			Location hit = shotHitLoc.get(entity);
-			    			hit.getWorld().createExplosion(hit, 6.0F);
-			    		}
-			    		
-			    	}, 40);
-		        	
-		        } else if ( eventdata.getGun().equals( orbital ) ) {
-		        	
-		        	shotHitLoc.put(entity, hitBlock.getLocation());
+		    BlockIterator iterator = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0.0D, 4);
+		    Block hitBlock = null;
+		    
+		    while ( iterator.hasNext() ) {
+		    	
+		        hitBlock = iterator.next();
+		         
+		        if ( !hitBlock.getType().equals(Material.AIR) ) {
+		        	break;
+		        }
+			        
+		    }
+		         
+	        if ( eventdata.getGun().equals( rocketLauncher ) ) {
+	        	
+	        	hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 8.0F);
+	        
+	        } else if ( eventdata.getGun().equals( frag ) ) {
+	        	
+	        	shotHitLoc.put(entity, hitBlock.getLocation());
+	        	
+		    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		    		
+		    		public void run() {
+		    			Location hit = shotHitLoc.get(entity);
+		    			hit.getWorld().createExplosion(hit, 6.0F);
+		    		}
+		    		
+		    	}, 40);
+	        	
+	        } else if ( eventdata.getGun().equals( orbital ) ) {
+	        	
+	        	shotHitLoc.put(entity, hitBlock.getLocation());
+	        	
+		    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		    		
+					public void run() {
+		    			Location hit = shotHitLoc.get(entity);
+		    			
+			        	Location newLoc = null;
+			        	boolean isNotAir = false;
+			        	int y = 255;
+			        	while (isNotAir == false) {
+			        		if (y < 0) {
+			        			break;
+			        		}
+			        		newLoc = new Location(hit.getWorld(), hit.getX(), y, hit.getZ());
+			        		if (newLoc.getBlock().getType() != Material.AIR) {
+			        			isNotAir = true;
+			        		} else y--;
+			        	}
+			        	
+			        	hit.getWorld().strikeLightning(hit);
+			        	newLoc.getWorld().createExplosion(newLoc, 9.0F);
+			        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
+			        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
+			        	
+		    		}
+		    		
+		    	}, 126);
+	        	
+	        	
+	        }
+		
+		}
+		
+	}
+
+	@EventHandler
+    public void onHit(EntityDamageByEntityEvent event) {
+		
+		//check if the damager is a snowball
+        if ( event.getDamager() instanceof Snowball ) { 
+        	
+        	//verify it is a gunshot (i.e., snowball shout out by the gun)
+            if (shotprojectiledata.containsKey(event.getDamager())) { 
+            	
+            	//get data stored about the projectile
+                EntityData eventdata = shotprojectiledata.get(event.getDamager()); 
+
+                if ( eventdata.getGun().equals( rocketLauncher ) ) {
+                	
+                	event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 6.0F);
+                	
+                } else if ( eventdata.getGun().equals( orbital ) ) {
+                	
+                	shotHitLoc.put(event.getDamager(), event.getEntity().getLocation());
 		        	
 			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			    		
 						public void run() {
-			    			Location hit = shotHitLoc.get(entity);
+			    			Location hit = shotHitLoc.get(event.getDamager());
 			    			
 				        	Location newLoc = null;
 				        	boolean isNotAir = false;
 				        	int y = 255;
 				        	while (isNotAir == false) {
-				        		if (y < 0) {
-				        			break;
-				        		}
 				        		newLoc = new Location(hit.getWorld(), hit.getX(), y, hit.getZ());
 				        		if (newLoc.getBlock().getType() != Material.AIR) {
 				        			isNotAir = true;
@@ -216,281 +279,228 @@ public class GSListener implements Listener {
 				        	}
 				        	
 				        	hit.getWorld().strikeLightning(hit);
-				        	newLoc.getWorld().createExplosion(newLoc, 9.0F);
+				        	newLoc.getWorld().createExplosion(newLoc, 11.0F);
 				        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
+				        	newLoc.add(-2, 0, -2).getWorld().createExplosion(newLoc, 6.0F);
 				        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
+				        	newLoc.add(3, 0, -3).getWorld().createExplosion(newLoc, 3.0F);
+				        	hit.getWorld().strikeLightning(hit);
 				        	
 			    		}
 			    		
 			    	}, 126);
-		        	
-		        	
-		        }
-			
-			}
-			
-		}
-
-		@EventHandler
-	    public void onHit(EntityDamageByEntityEvent event) {
-			
-			//check if the damager is a snowball
-	        if ( event.getDamager() instanceof Snowball ) { 
-	        	
-	        	//verify it is a gunshot (i.e., snowball shout out by the gun)
-	            if (shotprojectiledata.containsKey(event.getDamager())) { 
+                
+                //check if the event is outside of the range AND target is not the shooter
+                } else if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange()
+                		&& !eventdata.getPlayer().equals( event.getEntity() ) ) { 
+                	
+                	Projectile bullet = (Projectile) event.getDamager();
+                	
+                	//Headshot code
+	            	double projectileHeight = bullet.getLocation().getY();
+	                double playerBodyHeight = event.getEntity().getLocation().getY() + 1.35;
 	            	
-	            	//get data stored about the projectile
-	                EntityData eventdata = shotprojectiledata.get(event.getDamager()); 
-
-	                if ( eventdata.getGun().equals( rocketLauncher ) ) {
-	                	
-	                	event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 6.0F);
-	                	
-	                } else if ( eventdata.getGun().equals( orbital ) ) {
-	                	
-	                	shotHitLoc.put(event.getDamager(), event.getEntity().getLocation());
-			        	
-				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				    		
-							public void run() {
-				    			Location hit = shotHitLoc.get(event.getDamager());
-				    			
-					        	Location newLoc = null;
-					        	boolean isNotAir = false;
-					        	int y = 255;
-					        	while (isNotAir == false) {
-					        		newLoc = new Location(hit.getWorld(), hit.getX(), y, hit.getZ());
-					        		if (newLoc.getBlock().getType() != Material.AIR) {
-					        			isNotAir = true;
-					        		} else y--;
-					        	}
-					        	
-					        	hit.getWorld().strikeLightning(hit);
-					        	newLoc.getWorld().createExplosion(newLoc, 11.0F);
-					        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
-					        	newLoc.add(-2, 0, -2).getWorld().createExplosion(newLoc, 6.0F);
-					        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
-					        	newLoc.add(3, 0, -3).getWorld().createExplosion(newLoc, 3.0F);
-					        	hit.getWorld().strikeLightning(hit);
-					        	
-				    		}
-				    		
-				    	}, 126);
-	                
-	                //check if the event is outside of the range AND target is not the shooter
-	                } else if ( event.getEntity().getLocation().distance(eventdata.getFiredFrom()) <= eventdata.getRange()
-	                		&& !eventdata.getPlayer().equals( event.getEntity() ) ) { 
-	                	
-	                	Projectile bullet = (Projectile) event.getDamager();
-	                	
-	                	//Headshot code
-		            	double projectileHeight = bullet.getLocation().getY();
-		                double playerBodyHeight = event.getEntity().getLocation().getY() + 1.35;
-		            	
-		                if (projectileHeight > playerBodyHeight) {
-		                	event.setDamage( (double) (eventdata.getDamage() * 2) ); // double damage
-		                } else {
-		                	event.setDamage(eventdata.getDamage()); // regular damage
-		                }
-		                
-	                    shotprojectiledata.remove(event.getDamager()); //remove the projectile
-	                    
+	                if (projectileHeight > playerBodyHeight) {
+	                	event.setDamage( (double) (eventdata.getDamage() * 2) ); // double damage
 	                } else {
-	                	event.setCancelled(true);
+	                	event.setDamage(eventdata.getDamage()); // regular damage
 	                }
 	                
-	            }
-	            
-	        }
-	        
-	    }
+                    shotprojectiledata.remove(event.getDamager()); //remove the projectile
+                    
+                } else {
+                	event.setCancelled(true);
+                }
+                
+            }
+            
+        }
+        
+    }
+	
+	//Checks for the name of the ammo used for a particular gun
+	public String getAmmoFor(ItemStack gun) {
 		
-		//Checks for the name of the ammo used for a particular gun
-		public String getAmmoFor(ItemStack gun) {
+		if ( gun.equals(sniper) ) {
+			return "Sniper Rifle";
+		} else if ( gun.equals(br) ) {
+			return "Battle Rifle";
+		} else if ( gun.equals(pistol) ) {
+			return "Pistol";
+		} else if ( gun.equals(lmg) ) {
+			return "LMG";
+		} else if ( gun.equals(bow) ) {
+			return "Crossbow";
+		} else if ( gun.equals(shotgun) ) {
+			return "Shotgun";
+		} else if ( gun.equals(ar) ) {
+			return "Assault Rifle";
+		} else if ( gun.equals(hmg) ) {
+			return "HMG";
+		}  else if ( gun.equals(rocketLauncher) ) {
+			return "Rocket Launcher";
+		} else if ( gun.equals(frag) ) {
+			return "Frag Grenade";
+		} else {
+			return "null";
+		}
+		
+	}
+	
+	//Checks if player has ammunition of a certain type
+	public boolean hasAmmo(Player player, ItemStack gun) {
+		
+		Inventory inv = player.getInventory();
+		String ammo = getAmmoFor(gun);
+		
+		for (ItemStack item : inv) {
 			
-			if ( gun.equals(sniper) ) {
-				return "Sniper Rifle";
-			} else if ( gun.equals(br) ) {
-				return "Battle Rifle";
-			} else if ( gun.equals(pistol) ) {
-				return "Pistol";
-			} else if ( gun.equals(lmg) ) {
-				return "LMG";
-			} else if ( gun.equals(bow) ) {
-				return "Crossbow";
-			} else if ( gun.equals(shotgun) ) {
-				return "Shotgun";
-			} else if ( gun.equals(ar) ) {
-				return "Assault Rifle";
-			} else if ( gun.equals(hmg) ) {
-				return "HMG";
-			}  else if ( gun.equals(rocketLauncher) ) {
-				return "Rocket Launcher";
-			} else if ( gun.equals(frag) ) {
-				return "Frag Grenade";
-			} else {
-				return "null";
+			if (item != null && item.hasItemMeta()) {
+			
+				ItemMeta im = item.getItemMeta();
+				
+				if (!im.equals(null) && im.hasLore()) {
+					
+					List<String> lore = im.getLore();
+					
+					if ( lore.toString().contains("Ammunition | " + ammo) ) {
+						//Ammo was found
+						if (item.getAmount() > 1) {
+							item.setAmount(item.getAmount() - 1);
+						} else {
+							inv.remove(item);
+						}
+						return true;
+					}
+					
+				}
+			
 			}
 			
 		}
 		
-		//Checks if player has ammunition of a certain type
-		public boolean hasAmmo(Player player, ItemStack gun) {
+		//Ammo was not found
+		return false;
+		
+	}
+	
+	//Checks if player has grenades
+	public boolean hasGrenade(Player player, ItemStack grenade) {
+		
+		Inventory inv = player.getInventory();
+		String grenadeName = getAmmoFor(grenade);
+		
+		for (ItemStack item : inv) {
 			
-			Inventory inv = player.getInventory();
-			String ammo = getAmmoFor(gun);
+			if ( item != null && item.hasItemMeta() ) {
 			
-			for (ItemStack item : inv) {
+				ItemMeta im = item.getItemMeta();
 				
-				if (item != null && item.hasItemMeta()) {
-				
-					ItemMeta im = item.getItemMeta();
+				if ( !im.equals(null) && im.hasLore() ) {
 					
-					if (!im.equals(null) && im.hasLore()) {
-						
-						List<String> lore = im.getLore();
-						
-						if ( lore.toString().contains("Ammunition | " + ammo) ) {
-							//Ammo was found
-							if (item.getAmount() > 1) {
-								item.setAmount(item.getAmount() - 1);
-							} else {
-								inv.remove(item);
-							}
+					List<String> lore = im.getLore();
+					
+					if ( lore.toString().contains("Equipment | " + grenadeName) ) {
+						//Ammo was found
+						if (item.getAmount() > 1) {
+							item.setAmount(item.getAmount() - 1);
+							return true;
+						} else {
+							inv.remove(item);
 							return true;
 						}
 						
 					}
-				
+					
 				}
-				
-			}
 			
-			//Ammo was not found
-			return false;
-			
-		}
-		
-		//GUI handling
-		
-		@EventHandler
-		public void onInventoryClick(InventoryClickEvent e) {
-			
-			ItemSmith smithy = new ItemSmith(language);
-			
-			ArrayList<Integer> types = new ArrayList<Integer>();
-			types.addAll(Arrays.asList(601, 602, 603, 604, 605, 607, 608, 609, 610));
-			
-			Player player = (Player) e.getWhoClicked();
-			Inventory inventory = e.getInventory();
-			
-			if ( inventory.getName().equals("GunSmith GUI") && e.getSlotType() != SlotType.OUTSIDE ) {
-				
-				ItemStack clicked = e.getCurrentItem();
-				Short clickedType = 0;
-				clickedType = clicked.getDurability();
-				String clickedLore = new String();
-				
-				if ( clicked.hasItemMeta() ) {
-					clickedLore = clicked.getItemMeta().getLore().toString();
-				}
-				
-				if ( types.contains( clickedType.intValue() ) ) {
-					
-					if ( clickedType == (short) 601 ) {
-						player.getInventory().addItem( smithy.makeGun("pistol", 1) );
-					} else if ( clickedType == (short) 602 ) {
-						player.getInventory().addItem( smithy.makeGun("sniper", 1) );
-					} else if ( clickedType == (short) 603 ) {
-						player.getInventory().addItem( smithy.makeGun("br", 1) );
-					} else if ( clickedType == (short) 604 ) {
-						player.getInventory().addItem( smithy.makeGun("lmg", 1) );
-					} else if ( clickedType == (short) 605 ) {
-						player.getInventory().addItem( smithy.makeGun("bow", 1) );
-					} else if ( clickedType == (short) 607 ) {
-						player.getInventory().addItem( smithy.makeGun("rocketLauncher", 1) );
-					} else if ( clickedType == (short) 608 ) {
-						player.getInventory().addItem( smithy.makeGun("shotgun", 1) );
-					} else if ( clickedType == (short) 609 ) {
-						player.getInventory().addItem( smithy.makeGun("ar", 1) );
-					} else if ( clickedType == (short) 610 ) {
-						player.getInventory().addItem( smithy.makeGun("hmg", 1) );
-					}
-					
-					e.setCancelled(true);
-					player.closeInventory();
-					
-				} else if ( clickedLore.contains("Ammunition") ) {
-					
-					if ( clickedLore.contains("Pistol") ) {
-						smithy.giveAmmo("pistol", player);
-					} else if ( clickedLore.contains("Sniper Rifle") ) {
-						smithy.giveAmmo("sniper", player);
-					} else if ( clickedLore.contains("Battle Rifle") ) {
-						smithy.giveAmmo("br", player);
-					} else if ( clickedLore.contains("LMG") ) {
-						smithy.giveAmmo("lmg", player);
-					} else if ( clickedLore.contains("Crossbow") ) {
-						smithy.giveAmmo("bow", player);
-					} else if ( clickedLore.contains("Rocket Launcher") ) {
-						smithy.giveAmmo("rocketLauncher", player);
-					} else if ( clickedLore.contains("Shotgun") ) {
-						smithy.giveAmmo("shotgun", player);
-					} else if ( clickedLore.contains("Assault Rifle") ) {
-						smithy.giveAmmo("ar", player);
-					} else if ( clickedLore.contains("HMG") ) {
-						smithy.giveAmmo("hmg", player);
-					} 
-					
-					e.setCancelled(true);
-					player.closeInventory();
-					
-				} else {
-					e.setCancelled(true);
-				}
-				
 			}
 			
 		}
 		
-		//Checks if player has grenades
-		public boolean hasGrenade(Player player, ItemStack grenade) {
+		//Grenades not found
+		return false;
+		
+	}
+
+	//GUI handling
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		
+		ItemSmith smithy = new ItemSmith(language);
+		
+		ArrayList<Integer> types = new ArrayList<Integer>();
+		types.addAll(Arrays.asList(601, 602, 603, 604, 605, 607, 608, 609, 610));
+		
+		Player player = (Player) e.getWhoClicked();
+		Inventory inventory = e.getInventory();
+		
+		if ( inventory.getName().equals("GunSmith GUI") && e.getSlotType() != SlotType.OUTSIDE ) {
 			
-			Inventory inv = player.getInventory();
-			String grenadeName = getAmmoFor(grenade);
+			ItemStack clicked = e.getCurrentItem();
+			Short clickedType = 0;
+			clickedType = clicked.getDurability();
+			String clickedLore = new String();
 			
-			for (ItemStack item : inv) {
-				
-				if ( item != null && item.hasItemMeta() ) {
-				
-					ItemMeta im = item.getItemMeta();
-					
-					if ( !im.equals(null) && im.hasLore() ) {
-						
-						List<String> lore = im.getLore();
-						
-						if ( lore.toString().contains("Equipment | " + grenadeName) ) {
-							//Ammo was found
-							if (item.getAmount() > 1) {
-								item.setAmount(item.getAmount() - 1);
-								return true;
-							} else {
-								inv.remove(item);
-								return true;
-							}
-							
-						}
-						
-					}
-				
-				}
-				
+			if ( clicked.hasItemMeta() ) {
+				clickedLore = clicked.getItemMeta().getLore().toString();
 			}
 			
-			//Grenades not found
-			return false;
+			//NOTE: Change ArrayList of durabilities to HashMap of durability-gun pairs for better code
+			if ( types.contains( clickedType.intValue() ) ) {
+				
+				if ( clickedType == (short) 601 ) {
+					player.getInventory().addItem( smithy.makeGun("pistol", 1) );
+				} else if ( clickedType == (short) 602 ) {
+					player.getInventory().addItem( smithy.makeGun("sniper", 1) );
+				} else if ( clickedType == (short) 603 ) {
+					player.getInventory().addItem( smithy.makeGun("br", 1) );
+				} else if ( clickedType == (short) 604 ) {
+					player.getInventory().addItem( smithy.makeGun("lmg", 1) );
+				} else if ( clickedType == (short) 605 ) {
+					player.getInventory().addItem( smithy.makeGun("bow", 1) );
+				} else if ( clickedType == (short) 607 ) {
+					player.getInventory().addItem( smithy.makeGun("rocketLauncher", 1) );
+				} else if ( clickedType == (short) 608 ) {
+					player.getInventory().addItem( smithy.makeGun("shotgun", 1) );
+				} else if ( clickedType == (short) 609 ) {
+					player.getInventory().addItem( smithy.makeGun("ar", 1) );
+				} else if ( clickedType == (short) 610 ) {
+					player.getInventory().addItem( smithy.makeGun("hmg", 1) );
+				}
+				
+				e.setCancelled(true);
+				
+			} else if ( clickedLore.contains("Ammunition") ) {
+				
+				if ( clickedLore.contains("Pistol") ) {
+					smithy.giveAmmo("pistol", player);
+				} else if ( clickedLore.contains("Sniper Rifle") ) {
+					smithy.giveAmmo("sniper", player);
+				} else if ( clickedLore.contains("Battle Rifle") ) {
+					smithy.giveAmmo("br", player);
+				} else if ( clickedLore.contains("LMG") ) {
+					smithy.giveAmmo("lmg", player);
+				} else if ( clickedLore.contains("Crossbow") ) {
+					smithy.giveAmmo("bow", player);
+				} else if ( clickedLore.contains("Rocket Launcher") ) {
+					smithy.giveAmmo("rocketLauncher", player);
+				} else if ( clickedLore.contains("Shotgun") ) {
+					smithy.giveAmmo("shotgun", player);
+				} else if ( clickedLore.contains("Assault Rifle") ) {
+					smithy.giveAmmo("ar", player);
+				} else if ( clickedLore.contains("HMG") ) {
+					smithy.giveAmmo("hmg", player);
+				} 
+				
+				e.setCancelled(true);
+				
+			} else {
+				e.setCancelled(true);
+			}
 			
 		}
+		
+	}
 		
 }
