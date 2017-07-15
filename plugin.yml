@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.9.3.2 (WarZone)
+version: 0.9.3.3 (WarZone)
 commands: 
      guns:
         description: Controls the GunSmith plugin, and opens a GUI for gun selection.

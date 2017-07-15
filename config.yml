@@ -25,4 +25,7 @@ guiEnabled: true
 # OP REQUIREMENT | If true, players must have OP permissions to use the GS GUI.
 opRequirement: false
 # 
+# EXPLOSIONS ENABLED | If true, players can use firearms like the RPG to destroy blocks.
+explosions: false
+# 
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

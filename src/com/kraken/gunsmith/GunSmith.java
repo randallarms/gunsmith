@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9.3.2 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v0.9.3.3 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "0.9.3.2";
+	public String VERSION = "0.9.3.3 (WarZone)";
 	
 	GSListener listener;
 	
@@ -41,6 +41,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 	boolean silentMode = false;
 	boolean guiEnabled = true;
 	boolean opRequired = false;
+	boolean explosions = false;
 	
     @Override
     public void onEnable() {
@@ -79,6 +80,9 @@ public class GunSmith extends JavaPlugin implements Listener {
     	this.opRequired = getConfig().getBoolean("opRequired");
     	getLogger().info("[GUNSMITH] OP requirement enabled: " + opRequired );
     	
+    	this.explosions = getConfig().getBoolean("explosions");
+    	getLogger().info("[GUNSMITH] Explosions enabled: " + opRequired );
+    	
     	getLogger().info("[GUNSMITH] Finished loading.");
 			
     }
@@ -93,7 +97,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     }
     
     public void setLanguage() {
-    	listener.loadLanguage(language);
+    	listener.setLanguage(language);
     }
     
     public void silencer(boolean setting) {
@@ -103,7 +107,11 @@ public class GunSmith extends JavaPlugin implements Listener {
     }
     
     public void setGlassBreak() {
-    	listener.loadGlassBreak(glassBreak);
+    	listener.setGlassBreak(glassBreak);
+    }
+    
+    public void setExplosions() {
+    	listener.setExplosions(explosions);
     }
     
     //GunSmith commands
@@ -343,11 +351,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 								
 								}
 								
-						  //Command: opReqGS
-			        	    case "opRequiredGS":
-			        	    case "oprequiredgs":
-			        	    case "opReqGS":
-			        	    case "opreqgs":
+						  //Command: opReq
+			        	    case "opRequired":
+			        	    case "oprequired":
+			        	    case "opReq":
+			        	    case "opreq":
 			        			  
 			        	    	if ( args.length == 2 ) {
 			        	    		switch ( args[1].toLowerCase() ) {
@@ -387,7 +395,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    				if ( !isPlayer ) {
 			        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
 			        	    				} else {
-			        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReqGS <on/off>\".");
+			        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReq <on/off>\".");
 			        	    				}
 			        	    				
 			        	        	    	return true;
@@ -399,7 +407,71 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    		if ( !isPlayer ) {
 	        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
 	        	    				} else {
-	        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReqGS <on/off>\".");
+	        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReq <on/off>\".");
+	        	    				}
+			        	    		
+	        	        	    	return true;
+	        	        	    	
+			        	    	}
+			        	    	
+			        	  //Command: explosions
+			        	    case "explosions":
+			        	    case "explosion":
+			        	    case "explosives":
+			        			  
+			        	    	if ( args.length == 2 ) {
+			        	    		switch ( args[1].toLowerCase() ) {
+			        	    			case "on":
+			        	    			case "enable":
+			        	    			case "enabled":
+			        	    			case "true":
+			        	    				this.explosions = true;
+			        	    				setExplosions();
+											getConfig().set("explosions", true);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] Explosions are now enabled.");
+											} else {
+												msg(player, "cmdExplosionsEnabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			case "off":
+			        	    			case "disable":
+			        	    			case "disabled":
+			        	    			case "false":
+			        	    				this.explosions = false;
+			        	    				setExplosions();
+											getConfig().set("explosions", false);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] Explosions are now disabled.");
+											} else {
+												msg(player, "cmdExplosionsDisabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			default:
+			        	    				if ( !isPlayer ) {
+			        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+			        	    				} else {
+			        	    					msg(player, "errorExplosionsFormat");
+			        	    				}
+			        	    				
+			        	        	    	return true;
+			        	        	    	
+			        	    		}
+			        	    		
+			        	    	} else {
+			        	    		
+			        	    		if ( !isPlayer ) {
+	        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+	        	    				} else {
+	        	    					msg(player, "errorExplosionsFormat");
 	        	    				}
 			        	    		
 	        	        	    	return true;
@@ -423,9 +495,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 	    		case "versionGS":
 	    			
 					if ( !isPlayer ) {
-						System.out.println("[GUNSMITH] v" + VERSION + " (WarZone / beta)");
+						System.out.println( "[GUNSMITH] v" + VERSION );
 					} else {
-						player.sendMessage(ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION + " (beta)");
+						player.sendMessage( ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION );
 					}
 					
 	                return true;

@@ -138,6 +138,18 @@ public class Messages {
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns gui <cierto/falso>\"");
 						break;
 						
+					case "cmdExplosionsEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Ahora los explosiones estan habilitado.");
+						break;
+						
+					case "cmdExplosionsDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas los explosiones estan habilitado.");
+						break;
+						
+					case "errorExplosionsFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns explosions <cierto/falso>\"");
+						break;	
+						
 					default:
 				
 						break;
@@ -259,6 +271,18 @@ public class Messages {
 						
 					case "errorGUIToggleFormat":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/guns gui <on/off>\"");
+						break;
+					
+					case "cmdExplosionsEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions are now enabled.");
+						break;
+						
+					case "cmdExplosionsDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions have been disabled.");
+						break;
+						
+					case "errorExplosionsFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns explosions <on/off>\".");
 						break;
 						
 					default:
