@@ -37,7 +37,8 @@ public class GSListener implements Listener {
 	ArrayList<Player> cooldown = new ArrayList<Player>();
 	ArrayList<Player> orbitalCooldown = new ArrayList<Player>();
 	String language;
-	Boolean glassBreak;
+	boolean glassBreak;
+	boolean explosions;
 	
 	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
 	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
@@ -60,16 +61,19 @@ public class GSListener implements Listener {
   	  plugin.getServer().getPluginManager().registerEvents(this, plugin);
   	  this.plugin = plugin;
   	  this.language = language;
-  	  glassBreak = plugin.getConfig().getBoolean("glassBreak");
   	  
     }
     
-    public void loadLanguage(String language) {
+    public void setLanguage(String language) {
     	this.language = language;
     }
     
-    public void loadGlassBreak(Boolean glassBreak) {
+    public void setGlassBreak(Boolean glassBreak) {
     	this.glassBreak = glassBreak;
+    }
+    
+    public void setExplosions(Boolean explosions) {
+    	this.explosions = explosions;
     }
 	
 	@EventHandler
@@ -95,7 +99,7 @@ public class GSListener implements Listener {
     				//Check if player has proper ammunition
     				if ( hasAmmo(player, item)  || item.equals(orbital) ) {
     				
-    					GunShot shot = new GunShot(player, item, glassBreak);
+    					GunShot shot = new GunShot( player, item, glassBreak );
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					if ( !item.equals(bow) ) {
@@ -141,7 +145,7 @@ public class GSListener implements Listener {
     				//Check if player has proper ammunition
     				if (hasGrenade(player, item)) {
     				
-    					GunShot shot = new GunShot(player, frag, glassBreak);
+    					GunShot shot = new GunShot( player, frag, glassBreak );
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
@@ -190,7 +194,10 @@ public class GSListener implements Listener {
 		         
 	        if ( eventdata.getGun().equals( rocketLauncher ) ) {
 	        	
-	        	hitBlock.getWorld().createExplosion(hitBlock.getLocation(), 8.0F);
+	        	hitBlock.getWorld().createExplosion( hitBlock.getLocation().getX(), 
+	        											hitBlock.getLocation().getY(), 
+	        											hitBlock.getLocation().getZ(), 
+	        											8.0F, explosions, explosions );
 	        
 	        } else if ( eventdata.getGun().equals( frag ) ) {
 	        	
@@ -200,7 +207,10 @@ public class GSListener implements Listener {
 		    		
 		    		public void run() {
 		    			Location hit = shotHitLoc.get(entity);
-		    			hit.getWorld().createExplosion(hit, 6.0F);
+		    			hit.getWorld().createExplosion( hit.getBlock().getX(), 
+															hit.getBlock().getY(), 
+															hit.getBlock().getZ(), 
+															6.0F, explosions, explosions );
 		    		}
 		    		
 		    	}, 40);
@@ -228,9 +238,9 @@ public class GSListener implements Listener {
 			        	}
 			        	
 			        	hit.getWorld().strikeLightning(hit);
-			        	newLoc.getWorld().createExplosion(newLoc, 9.0F);
-			        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
-			        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
+			        	newLoc.getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 9.0F, explosions, explosions );
+			        	newLoc.add(2, 0, 2).getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 6.0F, explosions, explosions );
+			        	newLoc.add(-3, 0, 3).getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 3.0F, explosions, explosions );
 			        	
 		    		}
 		    		
@@ -257,7 +267,10 @@ public class GSListener implements Listener {
 
                 if ( eventdata.getGun().equals( rocketLauncher ) ) {
                 	
-                	event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 6.0F);
+                	event.getEntity().getWorld().createExplosion( event.getEntity().getLocation().getX(), 
+                													event.getEntity().getLocation().getY(), 
+                													event.getEntity().getLocation().getZ(), 
+                													8.0F, explosions, explosions );
                 	
                 } else if ( eventdata.getGun().equals( orbital ) ) {
                 	
@@ -279,12 +292,9 @@ public class GSListener implements Listener {
 				        	}
 				        	
 				        	hit.getWorld().strikeLightning(hit);
-				        	newLoc.getWorld().createExplosion(newLoc, 11.0F);
-				        	newLoc.add(2, 0, 2).getWorld().createExplosion(newLoc, 6.0F);
-				        	newLoc.add(-2, 0, -2).getWorld().createExplosion(newLoc, 6.0F);
-				        	newLoc.add(-3, 0, 3).getWorld().createExplosion(newLoc, 3.0F);
-				        	newLoc.add(3, 0, -3).getWorld().createExplosion(newLoc, 3.0F);
-				        	hit.getWorld().strikeLightning(hit);
+				        	newLoc.getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 9.0F, explosions, explosions );
+				        	newLoc.add(2, 0, 2).getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 6.0F, explosions, explosions );
+				        	newLoc.add(-3, 0, 3).getWorld().createExplosion( newLoc.getX(), newLoc.getY(), newLoc.getZ(), 3.0F, explosions, explosions );
 				        	
 			    		}
 			    		
