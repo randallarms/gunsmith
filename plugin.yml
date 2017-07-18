@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 0.9.3.3 (WarZone)
+version: 1.0 (WarZone)
 commands: 
      guns:
         description: Controls the GunSmith plugin, and opens a GUI for gun selection.
@@ -20,3 +20,13 @@ commands:
      versionGS:
         description: Get the current version of the GunSmith plugin.
         usage: /<command>
+permissions:
+     gunsmith.*:
+        description: Permission for all GunSmith commands.
+        children:
+           gunsmith.guns: true
+           gunsmith.shoot: true
+     gunsmith.guns:
+        description: Permission to use the GunSmith GUI.
+     gunsmith.shoot:
+        description: Permission to fire GunSmith weapons.
