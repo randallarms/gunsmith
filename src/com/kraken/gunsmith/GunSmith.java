@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v0.9.3.3 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.0 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -20,11 +20,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "0.9.3.3 (WarZone)";
+	public String VERSION = "1.0 (WarZone)";
 	
 	GSListener listener;
 	
@@ -34,14 +35,12 @@ public class GunSmith extends JavaPlugin implements Listener {
 	
 	GunSmithGUI gui = new GunSmithGUI(language);
 	
-	Player player;
-	
-	boolean isPlayer = false;
 	boolean glassBreak = false;
 	boolean silentMode = false;
 	boolean guiEnabled = true;
 	boolean opRequired = false;
 	boolean explosions = false;
+	boolean permissions = false;
 	
     @Override
     public void onEnable() {
@@ -83,6 +82,9 @@ public class GunSmith extends JavaPlugin implements Listener {
     	this.explosions = getConfig().getBoolean("explosions");
     	getLogger().info("[GUNSMITH] Explosions enabled: " + opRequired );
     	
+    	this.permissions = getConfig().getBoolean("permissions");
+    	getLogger().info("[GUNSMITH] Permissions settings enabled: " + permissions );
+    	
     	getLogger().info("[GUNSMITH] Finished loading.");
 			
     }
@@ -118,9 +120,15 @@ public class GunSmith extends JavaPlugin implements Listener {
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
+		Player player;
+		boolean isPlayer;
+		
 		if (sender instanceof Player) {
-			this.player = (Player) sender;
-			this.isPlayer = true;
+			player = (Player) sender;
+			isPlayer = true;
+		} else {
+			player = Bukkit.getServer().getPlayerExact("Octopus__");
+			isPlayer = false;
 		}
 		
 		String command = cmd.getName();
@@ -137,6 +145,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 							
 							if ( opRequired && !( player.isOp() ) ) {
 								msg(player, "errorIllegalCommand");
+							} else if ( permissions && !player.hasPermission("gunsmith.guns") ) {
+								msg(player, "errorPermissions");
 							} else if ( guiEnabled ) {
 								GunSmithGUI.openGSGUI(player);
 							} else {
@@ -253,50 +263,50 @@ public class GunSmith extends JavaPlugin implements Listener {
 								//Silentmode command handling
 								switch ( args[1].toLowerCase() ) {
 								
-								case "true":
-								case "enable":
-								case "enabled":
-								case "on":
-									this.silentMode = true;
-									silencer(true);
-									getConfig().set("silentMode", true);
-									saveConfig();
-									
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Silent mode is now enabled.");
-									} else {
-										msg(player, "cmdSilentOn");
-									}
-									
-									return true;
-									
-								case "false":
-								case "disable":
-								case "disabled":
-								case "off":
-									this.silentMode = false;
-									silencer(false);
-									getConfig().set("silentMode", false);
-									saveConfig();
-									
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Silent mode is now disabled.");
-									} else {
-										msg(player, "cmdSilentOff");
-									}
-									
-									return true;
+									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
+										this.silentMode = true;
+										silencer(true);
+										getConfig().set("silentMode", true);
+										saveConfig();
+										
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] Silent mode is now enabled.");
+										} else {
+											msg(player, "cmdSilentOn");
+										}
+										
+										return true;
+										
+									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
+										this.silentMode = false;
+										silencer(false);
+										getConfig().set("silentMode", false);
+										saveConfig();
+										
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] Silent mode is now disabled.");
+										} else {
+											msg(player, "cmdSilentOff");
+										}
+										
+										return true;
 								
-								//Silentmode command error handling
-								default: 
-									
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Unrecognized command format.");
-									} else {
-										msg(player, "errorSilentModeFormat");
-									}
-									
-									return true;
+								  //Silentmode command error handling
+									default: 
+										
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] Unrecognized command format.");
+										} else {
+											msg(player, "errorSilentModeFormat");
+										}
+										
+										return true;
 								
 								}
 								
@@ -306,48 +316,48 @@ public class GunSmith extends JavaPlugin implements Listener {
 								//GUI command handling	
 								switch ( args[1].toLowerCase() ) {
 								
-								case "true":
-								case "enable":
-								case "enabled":
-								case "on":
-									this.guiEnabled = true;
-									getConfig().set("guiEnabled", true);
-									saveConfig();
-									
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] GUI is now enabled.");
-									} else {
-										msg(player, "cmdGUIEnabled");
-									}
-									
-									return true;
-									
-								case "false":
-								case "disable":
-								case "disabled":
-								case "off":
-									this.guiEnabled = false;
-									getConfig().set("guiEnabled", false);
-									saveConfig();
-
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] GUI is now disabled.");
-									} else {
-										msg(player, "cmdGUIDisabled");
-									}
-									
-									return true;
+									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
+										this.guiEnabled = true;
+										getConfig().set("guiEnabled", true);
+										saveConfig();
+										
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] GUI is now enabled.");
+										} else {
+											msg(player, "cmdGUIEnabled");
+										}
+										
+										return true;
+										
+									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
+										this.guiEnabled = false;
+										getConfig().set("guiEnabled", false);
+										saveConfig();
+	
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] GUI is now disabled.");
+										} else {
+											msg(player, "cmdGUIDisabled");
+										}
+										
+										return true;
 								
-								//GUI command error handling
-								default: 
-									
-									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Unrecognized command format.");
-									} else {
-										msg(player, "errorGUIToggleFormat");
-									}
-									
-									return true;
+								  //GUI command error handling
+									default: 
+										
+										if ( !isPlayer ) {
+											System.out.println("[GUNSMITH] Unrecognized command format.");
+										} else {
+											msg(player, "errorGUIToggleFormat");
+										}
+										
+										return true;
 								
 								}
 								
@@ -358,6 +368,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    case "opreq":
 			        			  
 			        	    	if ( args.length == 2 ) {
+			        	    		
 			        	    		switch ( args[1].toLowerCase() ) {
 			        	    			case "on":
 			        	    			case "enable":
@@ -408,6 +419,70 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
 	        	    				} else {
 	        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns opReq <on/off>\".");
+	        	    				}
+			        	    		
+	        	        	    	return true;
+	        	        	    	
+			        	    	}
+			        	    	
+			        	  //Command: perms
+			        	    case "perms":
+			        	    case "permissions":
+			        	    case "perm":
+			        	    case "permission":
+			        			  
+			        	    	if ( args.length == 2 ) {
+			        	    		
+			        	    		switch ( args[1].toLowerCase() ) {
+			        	    			case "on":
+			        	    			case "enable":
+			        	    			case "enabled":
+			        	    			case "true":
+			        	    				this.permissions = true;
+											getConfig().set("permissions", true);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] Permissions requirement is now enabled. Perm: \"gunsmith.guns\"");
+											} else {
+												msg(player, "cmdPermsEnabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			case "off":
+			        	    			case "disable":
+			        	    			case "disabled":
+			        	    			case "false":
+			        	    				this.permissions = false;
+											getConfig().set("permissions", false);
+											saveConfig();
+											
+											if ( !isPlayer ) {
+												System.out.println("[GUNSMITH] Permissions requirement is now disabled.");
+											} else {
+												msg(player, "cmdPermsDisabled");
+											}
+											
+			        	    				return true;
+			        	    				
+			        	    			default:
+			        	    				if ( !isPlayer ) {
+			        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+			        	    				} else {
+			        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns perms <on/off>\".");
+			        	    				}
+			        	    				
+			        	        	    	return true;
+			        	        	    	
+			        	    		}
+			        	    		
+			        	    	} else {
+			        	    		
+			        	    		if ( !isPlayer ) {
+	        	    					System.out.println("[GUNSMITH] Unrecognized arguments.");
+	        	    				} else {
+	        	    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns perms <on/off>\".");
 	        	    				}
 			        	    		
 	        	        	    	return true;

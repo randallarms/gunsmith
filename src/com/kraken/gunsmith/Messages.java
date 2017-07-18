@@ -54,6 +54,14 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | ¡Pew pew!");
 						break;
 						
+					case "cmdOpReqEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los OP permisos estan necesario ahora por el menu.");
+						break;
+						
+					case "cmdOpReqDisabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los OP permisos no estan necesario ahora por el menu.");
+						break;
+						
 					case "errorGUINotEnabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | El GUI es discapacitado.");
 						break;
@@ -149,6 +157,18 @@ public class Messages {
 					case "errorExplosionsFormat":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns explosions <cierto/falso>\"");
 						break;	
+						
+					case "errorPermissions":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No tienes los permisos correctos.");
+						break;	
+						
+					case "cmdPermsEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los permisos estan necesario ahora por el menu.");
+						break;
+						
+					case "cmdPermsDisabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los permisos no estan necesario ahora por el menu.");
+						break;
 						
 					default:
 				
@@ -283,6 +303,18 @@ public class Messages {
 						
 					case "errorExplosionsFormat":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns explosions <on/off>\".");
+						break;
+						
+					case "errorPermissions":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You do not have the required permission to use this command!");
+						break;	
+						
+					case "cmdPermsEnabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Permissions are now required to use GunSmith guns.");
+						break;
+						
+					case "cmdPermsDisabled":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Permissions are no longer required to use GunSmith guns.");
 						break;
 						
 					default:
