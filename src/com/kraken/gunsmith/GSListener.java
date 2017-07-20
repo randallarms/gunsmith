@@ -96,9 +96,29 @@ public class GSListener implements Listener {
     			//The Materials correspond to the item the gun is based on
     			if ( item.getType().equals(Material.DIAMOND_HOE) && types.contains( durability.intValue() ) ) {
     				
+					Messages msg = new Messages(language);
+					
+					//Check is player has "shoot" permission
+					if ( !player.hasPermission("gunsmith.shoot") ) {
+						msg.makeMsg(player, "errorIllegalCommand");
+						return;
+					}
+					
+					//Check is player has "explosives" permission
+					if ( item.equals(rocketLauncher) && !player.hasPermission("gunsmith.explosives") ) {
+						msg.makeMsg(player, "errorIllegalCommand");
+						return;
+					}
+					
+					//Check is player has "orbital" permission
+					if ( item.equals(orbital) && !player.hasPermission("orbital") ) {
+						msg.makeMsg(player, "errorIllegalCommand");
+						return;
+					}
+    				
     				//Check if player has proper ammunition
     				if ( hasAmmo(player, item)  || item.equals(orbital) ) {
-    				
+    					
     					GunShot shot = new GunShot( player, item, glassBreak );
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	

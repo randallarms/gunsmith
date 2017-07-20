@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 1.0.1 (WarZone)
+version: 1.1 (WarZone)
 commands: 
      guns:
         description: Controls the GunSmith plugin, and opens a GUI for gun selection.
@@ -23,7 +23,13 @@ permissions:
         children:
            gunsmith.guns: true
            gunsmith.shoot: true
+           gunsmith.explosives: true
+           gunsmith.orbital: true
      gunsmith.guns:
         description: Permission to use the GunSmith GUI.
      gunsmith.shoot:
         description: Permission to fire GunSmith weapons.
+     gunsmith.explosives:
+        description: Permission to use explosive GunSmith weapons (RPG).
+     gunsmith.orbital:
+        description: Permission to fire the Hammer of Dawn orbital weapon from GunSmith.
