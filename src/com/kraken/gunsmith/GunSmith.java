@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.0 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.0.1 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "1.0 (WarZone)";
+	public String VERSION = "1.0.1 (WarZone)";
 	
 	GSListener listener;
 	
@@ -495,6 +495,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    case "explosives":
 			        			  
 			        	    	if ( args.length == 2 ) {
+			        	    		
 			        	    		switch ( args[1].toLowerCase() ) {
 			        	    			case "on":
 			        	    			case "enable":
@@ -552,6 +553,17 @@ public class GunSmith extends JavaPlugin implements Listener {
 	        	        	    	return true;
 	        	        	    	
 			        	    	}
+			        	    	
+			        	  //Command: version     
+				    		case "version":
+				    			
+								if ( !isPlayer ) {
+									System.out.println( "[GUNSMITH] v" + VERSION );
+								} else {
+									player.sendMessage( ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION );
+								}
+								
+				                return true;
 							
 							}
 							
@@ -564,19 +576,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 						}
 						
 				}
-			
-				
-	        //Command: versionGS     
-	    		case "versionGS":
-	    			
-					if ( !isPlayer ) {
-						System.out.println( "[GUNSMITH] v" + VERSION );
-					} else {
-						player.sendMessage( ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION );
-					}
-					
-	                return true;
-	        
 	                
 	        //Command: giveGun <gunName>
 			case "giveGun":
