@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.1 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.1.1 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "1.1 (WarZone)";
+	public String VERSION = "1.1.1 (WarZone)";
 	
 	GSListener listener;
 	
@@ -98,6 +98,10 @@ public class GunSmith extends JavaPlugin implements Listener {
     	messenger.makeMsg(player, cmd);
     }
     
+    public void consoleMsg(String cmd) {
+    	messenger.makeConsoleMsg(cmd);
+    }
+    
     public void setLanguage() {
     	listener.setLanguage(language);
     }
@@ -155,7 +159,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							}
 							
 						} else {
-							System.out.println("[GUNSMITH] This is a player-only command.");
+							consoleMsg("errorPlayerCommand");
 						}
 						
 						return true;
@@ -603,7 +607,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									}
 									
 								} else {
-									System.out.println("[GUNSMITH] This is a player-only command.");
+									consoleMsg("errorPlayerCommand");
 									return true;
 								}
 							
@@ -668,7 +672,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									}
 									
 								} else {
-									System.out.println("[GUNSMITH] This is a player-only command.");
+									consoleMsg("errorPlayerCommand");
 									return true;
 								}
 							
@@ -749,7 +753,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 								}
 								
 							} else {
-								System.out.println("[GUNSMITH] This is a player only command.");
+								consoleMsg("errorPlayerCommand");
 							}
 							
 							return true;
@@ -772,7 +776,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 										msg(player, "errorIllegalCommand");
 									}
 								} else {
-									System.out.println("[GUNSMITH] This is a player only command.");
+									consoleMsg("errorPlayerCommand");
 								}
 								
 							} catch (NullPointerException npe) {
@@ -824,7 +828,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									}
 									
 								} else {
-									System.out.println("[GUNSMITH] This is a player only command.");
+									consoleMsg("errorPlayerCommand");
 								}
 								
 								return true;
@@ -850,7 +854,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 											msg(player, "errorIllegalCommand");
 										}
 									} else {
-										System.out.println("[GUNSMITH] This is a player only command.");
+										consoleMsg("errorPlayerCommand");
 									}
 									
 								} catch (NullPointerException npe) {

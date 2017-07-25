@@ -20,6 +20,54 @@ public class Messages {
 		
 	}
 	
+	public void makeConsoleMsg(String msg) {
+		
+		if (this.silentMode) {
+			
+			return;
+			
+		}
+		
+		switch (language) {
+		
+			case "Spanish":
+			case "spanish":
+				
+				//Start of Spanish messages
+				switch (msg) {
+				
+					case "errorPlayerCommand":
+						System.out.println("[GUNSMITH] Este comando es solo para juegadores.");
+						break;
+						
+					default:
+						
+						break;
+						
+				}
+				break;
+				
+			case "English":
+			case "english":
+				
+				//Start of English messages
+				switch (msg) {
+				
+					case "errorPlayerCommand":
+						System.out.println("[GUNSMITH] This is a player-only command.");
+						break;
+						
+					default:
+						
+						break;
+						
+				}
+				break;
+		
+		}
+		
+	}
+	
 	public void makeMsg(Player player, String msg) {
 		
 		if (this.silentMode && !msg.equals("errorSilentMode") && !msg.equals("cmdSilentOn") && !msg.equals("cmdSilentOff")) {
