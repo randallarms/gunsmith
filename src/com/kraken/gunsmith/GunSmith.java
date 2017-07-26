@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.1.1 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.1.2 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "1.1.1 (WarZone)";
+	public String VERSION = "1.1.2 (WarZone)";
 	
 	GSListener listener;
 	
@@ -270,7 +270,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									default: 
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Unrecognized command format.");
+											consoleMsg("errorCommandFormat");
 										} else {
 											msg(player, "errorGlassBreakFormat");
 										}
@@ -323,7 +323,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									default: 
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Unrecognized command format.");
+											consoleMsg("errorCommandFormat");
 										} else {
 											msg(player, "errorSilentModeFormat");
 										}
@@ -374,7 +374,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									default: 
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Unrecognized command format.");
+											consoleMsg("errorCommandFormat");
 										} else {
 											msg(player, "errorGUIToggleFormat");
 										}
@@ -583,7 +583,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							msg(player, "errorIllegalCommand");
 							return true;
 						} else {
-							System.out.println("[GUNSMITH] Unrecognized command format.");
+							consoleMsg("errorCommandFormat");
 						}
 						
 				}
@@ -646,7 +646,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						if (isPlayer) {
 							msg(player, "errorGunFormat");
 						} else {
-							System.out.println("[GUNSMITH] Command not recognized.");
+							consoleMsg("errorCommandFormat");
 						}
 						
 						return true;
@@ -725,7 +725,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							msg(player, "errorAmmoFormat");
 							
 						} else {
-							System.out.println("[GUNSMITH] Command not recognized.");
+							consoleMsg("errorCommandFormat");
 						}
 						
 						return true;
@@ -797,7 +797,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 					if (isPlayer) {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveGrenade <grenadeName> {player}\"");
 					} else {
-						System.out.println("[GUNSMITH] Command format not recognized.");
+						consoleMsg("errorCommandFormat");
 					}
 					
 					return true;
@@ -873,7 +873,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						if (isPlayer) {
 							player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveArmor <armorName> {player}\"");
 						} else {
-							System.out.println("[GUNSMITH] Command format not recognized.");
+							consoleMsg("errorCommandFormat");
 						}
 						
 						return true;
@@ -885,7 +885,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 				if (isPlayer) {
 					msg(player, "errorIllegalCommand");
 				} else {
-					System.out.println("[GUNSMITH] Command not recognized.");
+					consoleMsg("errorCommandFormat");
 				}
 	        	
 	        	return true;

@@ -40,6 +40,10 @@ public class Messages {
 						System.out.println("[GUNSMITH] Este comando es solo para juegadores.");
 						break;
 						
+					case "errorCommandFormat":
+						System.out.println("[GUNSMITH] No reconocido el comando.");
+						break;
+						
 					default:
 						
 						break;
@@ -55,6 +59,10 @@ public class Messages {
 				
 					case "errorPlayerCommand":
 						System.out.println("[GUNSMITH] This is a player-only command.");
+						break;
+						
+					case "errorCommandFormat":
+						System.out.println("[GUNSMITH] Command not recognized.");
 						break;
 						
 					default:
