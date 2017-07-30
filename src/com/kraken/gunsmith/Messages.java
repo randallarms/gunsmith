@@ -8,10 +8,12 @@ public class Messages {
 
 	String language;
 	boolean silentMode;
+	String VERSION;
 	
 	public Messages(String language) {
           this.language = language;
           this.silentMode = Bukkit.getPluginManager().getPlugin("GunSmith").getConfig().getBoolean("silentMode");
+          this.VERSION = GunSmith.VERSION;
     }
 	
 	public void silence(boolean setting) {
@@ -44,6 +46,10 @@ public class Messages {
 						System.out.println("[GUNSMITH] No reconocido el comando.");
 						break;
 						
+					case "cmdVersion":
+						System.out.println("[GUNSMITH] v" + VERSION);
+						break;
+						
 					default:
 						
 						break;
@@ -63,6 +69,10 @@ public class Messages {
 						
 					case "errorCommandFormat":
 						System.out.println("[GUNSMITH] Command not recognized.");
+						break;
+						
+					case "cmdVersion":
+						System.out.println("[GUNSMITH] v" + VERSION);
 						break;
 						
 					default:
@@ -226,6 +236,10 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los permisos no estan necesario ahora por el menu.");
 						break;
 						
+					case "cmdVersion":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | GunSmith v" + VERSION );
+						break;
+						
 					default:
 				
 						break;
@@ -371,6 +385,10 @@ public class Messages {
 						
 					case "cmdPermsDisabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Permissions are no longer required to use GunSmith guns.");
+						break;
+					
+					case "cmdVersion":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | GunSmith v" + VERSION );
 						break;
 						
 					default:
