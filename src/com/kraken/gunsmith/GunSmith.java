@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.1.2 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.1.3 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public String VERSION = "1.1.2 (WarZone)";
+	public static String VERSION = "1.1.3 (WarZone)";
 	
 	GSListener listener;
 	
@@ -172,9 +172,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 			    			case "version":
 			    			
 							if ( !isPlayer ) {
-								System.out.println( "[GUNSMITH] v" + VERSION );
+								consoleMsg("cmdVersion");
 							} else {
-								player.sendMessage( ChatColor.GRAY + "CURRENT: GunSmith v" + VERSION );
+								msg(player, "cmdVersion");
 							}
 							
 			                return true;
