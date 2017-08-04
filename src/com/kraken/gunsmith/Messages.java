@@ -50,6 +50,30 @@ public class Messages {
 						System.out.println("[GUNSMITH] v" + VERSION);
 						break;
 						
+					case "cmdGlassBreakOn":
+						System.out.println("[GUNSMITH] Rompiendo los vidrios estan habilitado.");
+						break;
+						
+					case "cmdGlassBreakOff":
+						System.out.println("[GUNSMITH] Rompiendo los vidrios no mas estan habilitado.");
+						break;
+						
+					case "cmdSilentModeOn":
+						System.out.println("[GUNSMITH] El modo silencioso estan habilitado.");
+						break;
+						
+					case "cmdSilentModeOff":
+						System.out.println("[GUNSMITH] No mas estan habilitado el modo silencioso.");
+						break;
+						
+					case "cmdLanguageSet":
+						System.out.println("[GUNSMITH] El idioma ha sido establecido.");
+						break;
+						
+					case "errorLanguageSet":
+						System.out.println("[GUNSMITH] No reconocido el idioma.");
+						break;
+						
 					default:
 						
 						break;
@@ -73,6 +97,30 @@ public class Messages {
 						
 					case "cmdVersion":
 						System.out.println("[GUNSMITH] v" + VERSION);
+						break;
+						
+					case "cmdGlassBreakOn":
+						System.out.println("[GUNSMITH] Glass-break on gunshot is now enabled.");
+						break;
+						
+					case "cmdGlassBreakOff":
+						System.out.println("[GUNSMITH] Glass-break on gunshot is now disabled.");
+						break;
+						
+					case "cmdSilentModeOn":
+						System.out.println("[GUNSMITH] Silent mode is now enabled.");
+						break;
+						
+					case "cmdSilentModeOff":
+						System.out.println("[GUNSMITH] Silent mode is now disabled.");
+						break;
+						
+					case "cmdLanguageSet":
+						System.out.println("[GUNSMITH] Language set.");
+						break;
+						
+					case "errorLanguageSet":
+						System.out.println("[GUNSMITH] Language not found.");
 						break;
 						
 					default:
@@ -145,11 +193,11 @@ public class Messages {
 						break;
 						
 					case "errorPlayerNotFound":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Â¡No reconocido el jugador!");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | ¡No reconocido el jugador!");
 						break;
 						
 					case "errorWarZoneNotFound":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Â¡Requeras el paquete del WarZone para usar este item!");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | ¡Requeras el paquete del WarZone para usar este item!");
 						break;
 						
 					case "errorStatFormat":

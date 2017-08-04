@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.1.3 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.1.4 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public static String VERSION = "1.1.3 (WarZone)";
+	public static String VERSION = "1.1.4 (WarZone)";
 	
 	GSListener listener;
 	
@@ -91,7 +91,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     
     @Override
     public void onDisable() {
-        getLogger().info("GunSmith has been disabled.");
+        getLogger().info("[GUNSMITH] GunSmith has been disabled.");
     }
     
     public void msg(Player player, String cmd) {
@@ -207,7 +207,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									saveConfig();
 									
 									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Language set.");
+										consoleMsg("cmdLanguageSet");
 									} else {
 										msg(player, "cmdLang");
 									}
@@ -218,7 +218,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 								} else {
 									
 									if ( !isPlayer ) {
-										System.out.println("[GUNSMITH] Language not found.");
+										consoleMsg("errorLanguageSet");
 									} else {
 										msg(player, "errorLangNotFound");
 									}
@@ -242,7 +242,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 										saveConfig();
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Glass-break on gunshot is now enabled.");
+											consoleMsg("cmdGlassBreakOn");
 										} else {
 											msg(player, "cmdGlassBreakOn");
 										}
@@ -259,7 +259,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 										saveConfig();
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Glass-break on gunshot is now disabled.");
+											consoleMsg("cmdGlassBreakOff");
 										} else {
 											msg(player, "cmdGlassBreakOff");
 										}
@@ -295,7 +295,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 										saveConfig();
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Silent mode is now enabled.");
+											consoleMsg("cmdSilentModeOn");
 										} else {
 											msg(player, "cmdSilentOn");
 										}
@@ -312,7 +312,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 										saveConfig();
 										
 										if ( !isPlayer ) {
-											System.out.println("[GUNSMITH] Silent mode is now disabled.");
+											consoleMsg("cmdSilentModeOff");
 										} else {
 											msg(player, "cmdSilentOff");
 										}
