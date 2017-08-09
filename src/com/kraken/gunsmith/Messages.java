@@ -74,6 +74,38 @@ public class Messages {
 						System.out.println("[GUNSMITH] No reconocido el idioma.");
 						break;
 						
+					case "cmdGUIEnabled":
+						System.out.println("[GUNSMITH] El menu de armas estan habilitado.");
+						break;
+						
+					case "cmdGUIDisabled":
+						System.out.println("[GUNSMITH] No mas estan habilitado el menu de armas.");
+						break;
+						
+					case "cmdOpReqEnabled":
+						System.out.println("[GUNSMITH] Necesita los permisos 'op' para usar el menu de armas.");
+						break;
+						
+					case "cmdOpReqDisabled":
+						System.out.println("[GUNSMITH] No mas necesita los permisos 'op' para usar el menu de armas.");
+						break;
+						
+					case "cmdPermsEnabled":
+						System.out.println("[GUNSMITH] Los permisos estan necesarios. El permiso: \"gunsmith.guns\"");
+						break;
+						
+					case "cmdPermsDisabled":
+						System.out.println("[GUNSMITH] No mas estan necesarios los permisos.");
+						break;
+						
+					case "cmdExplosionsEnabled":
+						System.out.println("[GUNSMITH] Explosiones estan habilitado.");
+						break;
+						
+					case "cmdExplosionsDisabled":
+						System.out.println("[GUNSMITH] No mas estan habilitado los explosiones.");
+						break;
+						
 					default:
 						
 						break;
@@ -94,6 +126,10 @@ public class Messages {
 					case "errorCommandFormat":
 						System.out.println("[GUNSMITH] Command not recognized.");
 						break;
+						
+					case "errorArgumentFormat":
+						System.out.println("[GUNSMITH] Unrecognized arguments.");
+						break;						
 						
 					case "cmdVersion":
 						System.out.println("[GUNSMITH] v" + VERSION);
@@ -121,6 +157,42 @@ public class Messages {
 						
 					case "errorLanguageSet":
 						System.out.println("[GUNSMITH] Language not found.");
+						break;
+						
+					case "cmdGUIEnabled":
+						System.out.println("[GUNSMITH] GUI is now enabled.");
+						break;
+						
+					case "cmdGUIDisabled":
+						System.out.println("[GUNSMITH] GUI is now disabled.");
+						break;
+						
+					case "cmdOpReqEnabled":
+						System.out.println("[GUNSMITH] OP requirement is now enabled.");
+						break;
+						
+					case "cmdOpReqDisabled":
+						System.out.println("[GUNSMITH] OP requirement is now disabled.");
+						break;
+						
+					case "errorPlayerNotFound":
+						System.out.println("[GUNSMITH] Player not found!");
+						break;
+						
+					case "cmdPermsEnabled":
+						System.out.println("[GUNSMITH] Permissions requirement is now enabled. Perm: \"gunsmith.guns\"");
+						break;
+						
+					case "cmdPermsDisabled":
+						System.out.println("[GUNSMITH] Permissions requirement is now disabled.");
+						break;
+						
+					case "cmdExplosionsEnabled":
+						System.out.println("[GUNSMITH] Explosions are now enabled.");
+						break;
+						
+					case "cmdExplosionsDisabled":
+						System.out.println("[GUNSMITH] Explosions are now disabled.");
 						break;
 						
 					default:
@@ -176,6 +248,10 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los OP permisos no estan necesario ahora por el menu.");
 						break;
 						
+					case "errorOpReqFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns opReq <on/off>\".");
+						break;
+						
 					case "errorGUINotEnabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | El GUI es discapacitado.");
 						break;
@@ -198,14 +274,6 @@ public class Messages {
 						
 					case "errorWarZoneNotFound":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | ¡Requeras el paquete del WarZone para usar este item!");
-						break;
-						
-					case "errorStatFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/getStat <nombreDeLaArma> <stat>\"");
-						break;
-						
-					case "errorStatType":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | El stats que son disponible: range (distancia), cooldown (tiempo de reutilizacion)");
 						break;
 						
 					case "errorNoAmmoFound":
@@ -284,6 +352,18 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Los permisos no estan necesario ahora por el menu.");
 						break;
 						
+					case "errorPermsFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns perms <cierto/falso>\"");
+						break;
+						
+					case "errorGrenadeFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveGrenade <grenada>\"");
+						break;
+						
+					case "errorArmorFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveArmor <armadura> {jugador}\"");
+						break;
+						
 					case "cmdVersion":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | GunSmith v" + VERSION );
 						break;
@@ -326,6 +406,10 @@ public class Messages {
 					case "cmdOpReqDisabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | OP perms are no longer required for the GS GUI.");
 						break;
+						
+					case "errorOpReqFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns opReq <on/off>\".");
+						break;
 			        	
 					case "cmdGiveGun":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Pew pew!");
@@ -349,14 +433,6 @@ public class Messages {
 						
 					case "errorWarZoneNotFound":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You need the WarZone pack to use that item!");
-						break;
-						
-					case "errorStatFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Enter \"/getStats <gunName> <stat>\"");
-						break;
-						
-					case "errorStatType":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Currently available stats: range, cooldown");
 						break;
 						
 					case "errorNoAmmoFound":
@@ -420,7 +496,7 @@ public class Messages {
 						break;
 						
 					case "errorExplosionsFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | " + "Try entering \"/guns explosions <on/off>\".");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns explosions <on/off>\".");
 						break;
 						
 					case "errorPermissions":
@@ -433,6 +509,18 @@ public class Messages {
 						
 					case "cmdPermsDisabled":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Permissions are no longer required to use GunSmith guns.");
+						break;
+						
+					case "errorPermsFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns perms <on/off>\".");
+						break;	
+						
+					case "errorGrenadeFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveGrenade <grenadeName> {player}\"");
+						break;
+						
+					case "errorArmorFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Unrecognized format. Use \"/giveArmor <armorName> {player}\"");
 						break;
 					
 					case "cmdVersion":
