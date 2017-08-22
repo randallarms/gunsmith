@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.2 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.3 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public static String VERSION = "1.2 (WarZone)";
+	public static String VERSION = "1.3 (WarZone)";
 	
 	GSListener listener;
 	
@@ -102,26 +102,35 @@ public class GunSmith extends JavaPlugin implements Listener {
     	messenger.makeConsoleMsg(cmd);
     }
     
-    public void setLanguage() {
+    public void setLanguage(String language) {
+    	this.language = language;
+    	getConfig().set("language", language);
+    	saveConfig();
     	listener.setLanguage(language);
     }
     
-    public void silencer(boolean setting) {
-    	getConfig().set("silentMode", setting);
+    public void silencer(boolean silentMode) {
+    	this.silentMode = silentMode;
+    	getConfig().set("silentMode", silentMode);
     	saveConfig();
-    	messenger.silence(setting);
+    	messenger.silence(silentMode);
     }
     
-    public void setGlassBreak() {
+    public void setGlassBreak(boolean glassBreak) {
+    	this.glassBreak = glassBreak;
+    	getConfig().set("silentMode", glassBreak);
+    	saveConfig();
     	listener.setGlassBreak(glassBreak);
     }
     
-    public void setExplosions() {
+    public void setExplosions(boolean explosions) {
+    	this.explosions = explosions;
+    	getConfig().set("silentMode", explosions);
+    	saveConfig();
     	listener.setExplosions(explosions);
     }
     
     //GunSmith commands
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player;
@@ -198,13 +207,12 @@ public class GunSmith extends JavaPlugin implements Listener {
 						
 							case "language":
 								
+								String lang = args[1].toLowerCase();
+								
 								//Language command handling
-								if ( languages.contains( args[1].toLowerCase() ) ) {
+								if ( languages.contains( lang ) ) {
 									
-									this.language = args[1].toLowerCase();
-									setLanguage();
-									getConfig().set("language", args[1].toLowerCase());
-									saveConfig();
+									setLanguage(lang);
 									
 									if ( !isPlayer ) {
 										consoleMsg("cmdLanguageSet");
@@ -238,9 +246,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "on":
 									case "cierto":
 										this.glassBreak = true;
-										setGlassBreak();
-										getConfig().set("glassBreak", true);
-										saveConfig();
+										setGlassBreak(true);
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdGlassBreakOn");
@@ -256,9 +262,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "off":
 									case "falso":
 										this.glassBreak = false;
-										setGlassBreak();
-										getConfig().set("glassBreak", false);
-										saveConfig();
+										setGlassBreak(false);
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdGlassBreakOff");
@@ -294,8 +298,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "cierto":
 										this.silentMode = true;
 										silencer(true);
-										getConfig().set("silentMode", true);
-										saveConfig();
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdSilentModeOn");
@@ -312,8 +314,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "falso":
 										this.silentMode = false;
 										silencer(false);
-										getConfig().set("silentMode", false);
-										saveConfig();
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdSilentModeOff");
@@ -535,9 +535,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "enabled":
 			        	    			case "true":
 			        	    				this.explosions = true;
-			        	    				setExplosions();
-											getConfig().set("explosions", true);
-											saveConfig();
+			        	    				setExplosions(true);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdExplosionsEnabled");
@@ -553,9 +551,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "false":
 			        	    			case "falso":
 			        	    				this.explosions = false;
-			        	    				setExplosions();
-											getConfig().set("explosions", false);
-											saveConfig();
+			        	    				setExplosions(false);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdExplosionsDisabled");
@@ -600,20 +596,49 @@ public class GunSmith extends JavaPlugin implements Listener {
 						
 				}
 	                
-	        //Command: giveGun <gunName>
+	        //Command: giveGun <gunName> <player?>
 			case "giveGun":
 			case "givegun":
 				
 				switch (args.length) {
 				
 					case 1:
+					case 2:
 						switch (args[0]) {
 						
 							default:
-								if (isPlayer ) {
+								if (isPlayer) {
 									
 									if ( player.isOp() ) {
-										return new ItemSmith(language).giveGun(args, player);
+										
+										//Find target of command to give gun
+										Player target;
+										
+										//1 arg = self
+										if (args.length < 2) {
+											target = player;
+										//2 args = another player
+										} else {
+											target = getServer().getPlayer(args[1]);
+										}
+										
+										//Give gun to player
+										try {
+											
+											return new ItemSmith(language).giveGun( args[0], target );
+											
+										} catch (NullPointerException npe) {
+											
+											if (isPlayer) {
+												msg(player, "errorPlayerNotFound");
+											} else {
+												consoleMsg("errorPlayerNotFound");
+											}
+											
+											return true;
+											
+										}
+										
 									} else {
 										msg(player, "errorIllegalCommand");
 									}
@@ -623,34 +648,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 									return true;
 								}
 							
-						}
-						
-					case 2:
-						switch (args[0]) {
-						
-							default:
-								try {
-									
-									if ( player.isOp() ) {
-										return new ItemSmith(language).giveGun( args, getServer().getPlayer(args[1]) );
-									} else {
-										msg(player, "errorIllegalCommand");
-									}
-									
-								} catch (NullPointerException npe) {
-									
-									if (isPlayer) {
-										
-										msg(player, "errorPlayerNotFound");
-										
-									} else {
-										consoleMsg("errorPlayerNotFound");
-									}
-									
-									return true;
-									
-								}
-								
 						}
 						
 					default:

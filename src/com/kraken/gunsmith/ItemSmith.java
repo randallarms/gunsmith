@@ -99,43 +99,43 @@ public class ItemSmith {
 		
 	}
 	
-	public boolean giveGun(String[] args, Player player) {
+	public boolean giveGun(String gun, Player player) {
 		
     	ItemStack gunItem = makeGun("pistol", 1);
     	
-    	if ( args[0].equalsIgnoreCase("sniper") ) {
+    	if ( gun.equalsIgnoreCase("sniper") ) {
     		
         	gunItem = makeGun("sniperRifle", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("br") || args[0].equalsIgnoreCase("battleRifle") ) {
+    	} else if ( gun.equalsIgnoreCase("br") || gun.equalsIgnoreCase("battleRifle") ) {
     		
         	gunItem = makeGun("battleRifle", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("lmg") || args[0].equalsIgnoreCase("lightMachineGun") ) {
+    	} else if ( gun.equalsIgnoreCase("lmg") || gun.equalsIgnoreCase("lightMachineGun") ) {
     		
         	gunItem = makeGun("lightMachineGun", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("bow") || args[0].equalsIgnoreCase("crossbow") ) {
+    	} else if ( gun.equalsIgnoreCase("bow") || gun.equalsIgnoreCase("crossbow") ) {
     		
     		gunItem = makeGun("crossbow", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("rpg") || args[0].equalsIgnoreCase("rocketLauncher") )  {
+    	} else if ( gun.equalsIgnoreCase("rpg") || gun.equalsIgnoreCase("rocketLauncher") )  {
     		
         	gunItem = makeGun("rocketLauncher", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("orbital") || args[0].equalsIgnoreCase("hammerOfDawn") ) {
+    	} else if ( gun.equalsIgnoreCase("orbital") || gun.equalsIgnoreCase("hammerOfDawn") ) {
     		
         	gunItem = makeGun("hammerOfDawn", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("shotgun") ) {
+    	} else if ( gun.equalsIgnoreCase("shotgun") ) {
     		
     		gunItem = makeGun("shotgun", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("ar") || args[0].equalsIgnoreCase("assaultRifle") ) {
+    	} else if ( gun.equalsIgnoreCase("ar") || gun.equalsIgnoreCase("assaultRifle") ) {
     		
         	gunItem = makeGun("assaultRifle", 1);
         	
-    	} else if ( args[0].equalsIgnoreCase("hmg") || args[0].equalsIgnoreCase("heavyMachineGun") ) {
+    	} else if ( gun.equalsIgnoreCase("hmg") || gun.equalsIgnoreCase("heavyMachineGun") ) {
     		
         	gunItem = makeGun("heavyMachineGun", 1);
         	
@@ -190,43 +190,43 @@ public class ItemSmith {
 		
 	}
 	
-	public boolean giveAmmo(String arg, Player player) {
+	public boolean giveAmmo(String gun, Player player) {
 		
     	ItemStack ammoItem;
     	
-    	if ( arg.equalsIgnoreCase("sniper") ) {
+    	if ( gun.equalsIgnoreCase("sniper") ) {
     		
     		ammoItem = makeAmmo("sniperAmmo", 1);
         	
-    	} else if ( arg.equalsIgnoreCase("br") || arg.equalsIgnoreCase("battleRifle") ) {
+    	} else if ( gun.equalsIgnoreCase("br") || gun.equalsIgnoreCase("battleRifle") ) {
     		
     		ammoItem = makeAmmo("brAmmo", 1);
         	
-    	} else if ( arg.equalsIgnoreCase("lmg") || arg.equalsIgnoreCase("lightMachineGun") ) {
+    	} else if ( gun.equalsIgnoreCase("lmg") || gun.equalsIgnoreCase("lightMachineGun") ) {
     		
     		ammoItem = makeAmmo("lmgAmmo", 1);
         	
-    	} else if ( arg.equalsIgnoreCase("pistol") ) {
+    	} else if ( gun.equalsIgnoreCase("pistol") ) {
     		
     		ammoItem = makeAmmo("pistolAmmo", 1);	
     		
-    	} else if ( arg.equalsIgnoreCase("bow")  || arg.equalsIgnoreCase("crossbow") ) {
+    	} else if ( gun.equalsIgnoreCase("bow")  || gun.equalsIgnoreCase("crossbow") ) {
     		
     		ammoItem = makeAmmo("crossbowAmmo", 1);	
     		
-		} else if ( arg.equalsIgnoreCase("rpg") || arg.equalsIgnoreCase("rocketLauncher") ) {
+		} else if ( gun.equalsIgnoreCase("rpg") || gun.equalsIgnoreCase("rocketLauncher") ) {
     	
     		ammoItem = makeAmmo("rpgAmmo", 1);
         	
-		} else if ( arg.equalsIgnoreCase("shotgun") ) {
+		} else if ( gun.equalsIgnoreCase("shotgun") ) {
     		
     		ammoItem = makeAmmo("shotgunAmmo", 1);	
     		
-    	} else if ( arg.equalsIgnoreCase("ar") || arg.equalsIgnoreCase("assaultRifle") ) {
+    	} else if ( gun.equalsIgnoreCase("ar") || gun.equalsIgnoreCase("assaultRifle") ) {
     		
     		ammoItem = makeAmmo("arAmmo", 1);	
     		
-		} else if ( arg.equalsIgnoreCase("hmg") || arg.equalsIgnoreCase("heavyMachineGun") ) {
+		} else if ( gun.equalsIgnoreCase("hmg") || gun.equalsIgnoreCase("heavyMachineGun") ) {
     		
     		ammoItem = makeAmmo("hmgAmmo", 1);
         	
