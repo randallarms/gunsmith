@@ -504,23 +504,23 @@ public class GSListener implements Listener {
 			} else if ( clickedLore.contains("Ammunition") ) {
 				
 				if ( clickedLore.contains("Pistol") ) {
-					smithy.giveAmmo("pistol", player);
+					smithy.giveAmmo("pistol", player, 64);
 				} else if ( clickedLore.contains("Sniper Rifle") ) {
-					smithy.giveAmmo("sniper", player);
+					smithy.giveAmmo("sniper", player, 64);
 				} else if ( clickedLore.contains("Battle Rifle") ) {
-					smithy.giveAmmo("br", player);
+					smithy.giveAmmo("br", player, 64);
 				} else if ( clickedLore.contains("LMG") ) {
-					smithy.giveAmmo("lmg", player);
+					smithy.giveAmmo("lmg", player, 64);
 				} else if ( clickedLore.contains("Crossbow") ) {
-					smithy.giveAmmo("bow", player);
+					smithy.giveAmmo("bow", player, 64);
 				} else if ( clickedLore.contains("Rocket Launcher") ) {
-					smithy.giveAmmo("rocketLauncher", player);
+					smithy.giveAmmo("rocketLauncher", player, 64);
 				} else if ( clickedLore.contains("Shotgun") ) {
-					smithy.giveAmmo("shotgun", player);
+					smithy.giveAmmo("shotgun", player, 64);
 				} else if ( clickedLore.contains("Assault Rifle") ) {
-					smithy.giveAmmo("ar", player);
+					smithy.giveAmmo("ar", player, 64);
 				} else if ( clickedLore.contains("HMG") ) {
-					smithy.giveAmmo("hmg", player);
+					smithy.giveAmmo("hmg", player, 64);
 				} 
 				
 				e.setCancelled(true);

@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.3 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.3.1 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public static String VERSION = "1.3 (WarZone)";
+	public static String VERSION = "1.3.1 (WarZone)";
 	
 	GSListener listener;
 	
@@ -604,49 +604,43 @@ public class GunSmith extends JavaPlugin implements Listener {
 				
 					case 1:
 					case 2:
-						switch (args[0]) {
 						
-							default:
-								if (isPlayer) {
-									
-									if ( player.isOp() ) {
-										
-										//Find target of command to give gun
-										Player target;
-										
-										//1 arg = self
-										if (args.length < 2) {
-											target = player;
-										//2 args = another player
-										} else {
-											target = getServer().getPlayer(args[1]);
-										}
-										
-										//Give gun to player
-										try {
-											
-											return new ItemSmith(language).giveGun( args[0], target );
-											
-										} catch (NullPointerException npe) {
-											
-											if (isPlayer) {
-												msg(player, "errorPlayerNotFound");
-											} else {
-												consoleMsg("errorPlayerNotFound");
-											}
-											
-											return true;
-											
-										}
-										
-									} else {
-										msg(player, "errorIllegalCommand");
-									}
-									
-								} else {
-									consoleMsg("errorPlayerCommand");
-									return true;
-								}
+						//Find target of command to give gun
+						Player target;
+						
+						//1 arg = self
+						if (args.length < 2) {
+							if ( isPlayer && player.isOp() ) {
+								target = player;
+							} else {
+								consoleMsg("errorPlayerCommand");
+								return true;
+							}
+						//2 args = another player
+						} else {
+							target = getServer().getPlayer(args[1]);
+						}
+						
+						//Give gun to player
+						try {
+							
+							boolean success = new ItemSmith(language).giveGun( args[0], target, 1 );
+							
+							if (success && !silentMode) {
+					    		new Messages(language).makeMsg(target, "cmdGiveGun");
+					    	}
+							
+							return success;
+							
+						} catch (NullPointerException npe) {
+							
+							if (isPlayer) {
+								msg(player, "errorPlayerNotFound");
+							} else {
+								consoleMsg("errorPlayerNotFound");
+							}
+							
+							return true;
 							
 						}
 						
@@ -662,77 +656,68 @@ public class GunSmith extends JavaPlugin implements Listener {
 				
 				}
 	        
-	        //Command: giveAmmo <ammoName>
+	        //Command: giveAmmo <ammoName> <player?>
 			case "giveAmmo":
 			case "giveammo":
 				
 				switch (args.length) {
 				
 					case 1:
-						switch (args[0]) {
+					case 2:
 						
-							default:
-								if (isPlayer) {
-									
-									if ( player.isOp() ) {
-										new ItemSmith(language).giveAmmo(args[0], player);
-									} else {
-										msg(player, "errorIllegalCommand");
-									}
-									
-								} else {
-									consoleMsg("errorPlayerCommand");
-									return true;
-								}
-							
+						//Find target of command to give gun
+						Player target;
+						
+						//1 arg = self
+						if (args.length < 2) {
+							if ( isPlayer && player.isOp() ) {
+								target = player;
+							} else {
+								consoleMsg("errorPlayerCommand");
+								return true;
+							}
+						//2 args = another player
+						} else {
+							target = getServer().getPlayer(args[1]);
 						}
 						
-					case 2:
-						switch (args[0]) {
-						
-							default:
-								try {
-									
-									if ( player.isOp() ) {
-										return new ItemSmith(language).giveAmmo( args[0], getServer().getPlayer(args[1]) );
-									} else {
-										msg(player, "errorIllegalCommand");
-									}
-									
-								} catch (NullPointerException npe) {
-									
-									if (isPlayer) {
-										
-										msg(player, "errorPlayerNotFound");
-										
-									} else {
-										consoleMsg("errorPlayerNotFound");
-									}
-									
-									return true;
-									
-								} catch (ArrayIndexOutOfBoundsException aie) {
-									
-									if (isPlayer) {
-										
-										msg(player, "errorIllegalCommand");
-										
-									} else {
-										consoleMsg("errorArgumentFormat");
-									}
-									
-									return true;
-									
-								}
-						
+						//Give ammo
+						try {
+							
+							boolean success = new ItemSmith(language).giveAmmo(args[0], target, 64);
+							
+							if (success && !silentMode) {
+								new Messages(language).makeMsg(target, "cmdGiveAmmo");
+					    	}
+							
+							return success;
+							
+						} catch (NullPointerException npe) {
+							
+							if (isPlayer) {
+								msg(player, "errorPlayerNotFound");
+							} else {
+								consoleMsg("errorPlayerNotFound");
+							}
+							
+							return true;
+							
+						} catch (ArrayIndexOutOfBoundsException aie) {
+							
+							if (isPlayer) {
+								msg(player, "errorIllegalCommand");
+							} else {
+								consoleMsg("errorArgumentFormat");
+							}
+							
+							return true;
+							
 						}
 						
 					default:
 						
 						if (isPlayer) {
-							
 							msg(player, "errorAmmoFormat");
-							
 						} else {
 							consoleMsg("errorCommandFormat");
 						}

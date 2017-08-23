@@ -14,8 +14,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 
 public class ItemSmith {
-
+	
 	String language;
+	
 	ArrayList<String> guns = new ArrayList<String>();
 	
 	public ItemSmith(String language) {
@@ -57,9 +58,9 @@ public class ItemSmith {
 	public ItemStack makeGun(String gun, int amount) {
 		
 		Material m = Material.DIAMOND_HOE;
-		String name = "Null";
+		String name = ChatColor.WHITE + "" + ChatColor.BOLD + "[GUN]";
 		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
-		int data = 0;
+		int data = 601;
 		
 		if (gun.equalsIgnoreCase("pistol")) { 
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
@@ -99,51 +100,34 @@ public class ItemSmith {
 		
 	}
 	
-	public boolean giveGun(String gun, Player player) {
+	public ItemStack makeCustomGun(int dataId) {
 		
-    	ItemStack gunItem = makeGun("pistol", 1);
-    	
-    	if ( gun.equalsIgnoreCase("sniper") ) {
-    		
-        	gunItem = makeGun("sniperRifle", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("br") || gun.equalsIgnoreCase("battleRifle") ) {
-    		
-        	gunItem = makeGun("battleRifle", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("lmg") || gun.equalsIgnoreCase("lightMachineGun") ) {
-    		
-        	gunItem = makeGun("lightMachineGun", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("bow") || gun.equalsIgnoreCase("crossbow") ) {
-    		
-    		gunItem = makeGun("crossbow", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("rpg") || gun.equalsIgnoreCase("rocketLauncher") )  {
-    		
-        	gunItem = makeGun("rocketLauncher", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("orbital") || gun.equalsIgnoreCase("hammerOfDawn") ) {
-    		
-        	gunItem = makeGun("hammerOfDawn", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("shotgun") ) {
-    		
-    		gunItem = makeGun("shotgun", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("ar") || gun.equalsIgnoreCase("assaultRifle") ) {
-    		
-        	gunItem = makeGun("assaultRifle", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("hmg") || gun.equalsIgnoreCase("heavyMachineGun") ) {
-    		
-        	gunItem = makeGun("heavyMachineGun", 1);
-        	
-    	}
-    	
-    	new Messages(language).makeMsg(player, "cmdGiveGun");
+		Material m = Material.DIAMOND_HOE;
+		String name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CUSTOM GUN]";
+		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
+		int amount = 1;
+		
+		//Data values represented by custom guns: 701-799
+		int data = dataId + 700;
+		
+		if (dataId < 1 || dataId > 99) {
+			return makeGun("pistol", amount);
+		}
+		
+		// In custom.yml, parent node = dataId & children = attributes
+		// Assign dmg, range, cooldown variables
+		
+		// Create guns.yml for regular guns, as well
+		// Change GSListener, GunShot, etc. classes to reference yml for stats instead
+	
+    	return makeItem(m, name, desc, amount, data, true);
+		
+	}
+	
+	public boolean giveGun(String gun, Player player, int amount) {
+		
+    	ItemStack gunItem = makeGun(gun, amount);
         player.getInventory().addItem(new ItemStack(gunItem));
-        
         return true;
 		
 	}
@@ -154,33 +138,33 @@ public class ItemSmith {
 		String name = "";
 		String ammoFor = "";
 		
-		if (ammo.equals("sniperAmmo") || ammo.equals("sniper")) {
+		if (ammo.equalsIgnoreCase("sniperAmmo") || ammo.equalsIgnoreCase("sniper")) {
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[SNIPER AMMO]";
 			ammoFor = "Sniper Rifle";
-		} else if (ammo.equals("brAmmo") || ammo.equals("br")) {
+		} else if (ammo.equalsIgnoreCase("brAmmo") || ammo.equalsIgnoreCase("br")) {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BR AMMO]";
 			ammoFor = "Battle Rifle";
-		} else if (ammo.equals("lmgAmmo") || ammo.equals("lmg")) {
+		} else if (ammo.equalsIgnoreCase("lmgAmmo") || ammo.equalsIgnoreCase("lmg")) {
 			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LMG AMMO]";
 			ammoFor = "LMG";
-		} else if (ammo.equals("pistolAmmo") || ammo.equals("pistol")) {
+		} else if (ammo.equalsIgnoreCase("pistolAmmo") || ammo.equalsIgnoreCase("pistol")) {
 			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL AMMO]";
 			ammoFor = "Pistol";
-		} else if (ammo.equals("crossbowAmmo") || ammo.equals("bow")) {
+		} else if (ammo.equalsIgnoreCase("crossbowAmmo") || ammo.equalsIgnoreCase("bow")) {
 			m = Material.ARROW;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW BOLTS]";
 			ammoFor = "Crossbow";
-		} else if (ammo.equals("rpgAmmo") || ammo.equals("rocketLauncher")) {
+		} else if (ammo.equalsIgnoreCase("rpgAmmo") || ammo.equalsIgnoreCase("rocketLauncher")) {
 			m = Material.FIREWORK;
 			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[LIGHT WARHEAD]";
 			ammoFor = "Rocket Launcher";
-		} else if (ammo.equals("shotgunAmmo") || ammo.equals("shotgun")) {
+		} else if (ammo.equalsIgnoreCase("shotgunAmmo") || ammo.equalsIgnoreCase("shotgun")) {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN SHELLS]";
 			ammoFor = "Shotgun";
-		} else if (ammo.equals("arAmmo") || ammo.equals("ar")) {
+		} else if (ammo.equalsIgnoreCase("arAmmo") || ammo.equalsIgnoreCase("ar")) {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[AR AMMO]";
 			ammoFor = "Assault Rifle";
-		} else if (ammo.equals("hmgAmmo") || ammo.equals("hmg")) {
+		} else if (ammo.equalsIgnoreCase("hmgAmmo") || ammo.equalsIgnoreCase("hmg")) {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HMG AMMO]";
 			ammoFor = "HMG";
 		}
@@ -190,58 +174,15 @@ public class ItemSmith {
 		
 	}
 	
-	public boolean giveAmmo(String gun, Player player) {
+	public boolean giveAmmo(String gun, Player player, int amount) {
 		
-    	ItemStack ammoItem;
-    	
-    	if ( gun.equalsIgnoreCase("sniper") ) {
-    		
-    		ammoItem = makeAmmo("sniperAmmo", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("br") || gun.equalsIgnoreCase("battleRifle") ) {
-    		
-    		ammoItem = makeAmmo("brAmmo", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("lmg") || gun.equalsIgnoreCase("lightMachineGun") ) {
-    		
-    		ammoItem = makeAmmo("lmgAmmo", 1);
-        	
-    	} else if ( gun.equalsIgnoreCase("pistol") ) {
-    		
-    		ammoItem = makeAmmo("pistolAmmo", 1);	
-    		
-    	} else if ( gun.equalsIgnoreCase("bow")  || gun.equalsIgnoreCase("crossbow") ) {
-    		
-    		ammoItem = makeAmmo("crossbowAmmo", 1);	
-    		
-		} else if ( gun.equalsIgnoreCase("rpg") || gun.equalsIgnoreCase("rocketLauncher") ) {
-    	
-    		ammoItem = makeAmmo("rpgAmmo", 1);
-        	
-		} else if ( gun.equalsIgnoreCase("shotgun") ) {
-    		
-    		ammoItem = makeAmmo("shotgunAmmo", 1);	
-    		
-    	} else if ( gun.equalsIgnoreCase("ar") || gun.equalsIgnoreCase("assaultRifle") ) {
-    		
-    		ammoItem = makeAmmo("arAmmo", 1);	
-    		
-		} else if ( gun.equalsIgnoreCase("hmg") || gun.equalsIgnoreCase("heavyMachineGun") ) {
-    		
-    		ammoItem = makeAmmo("hmgAmmo", 1);
-        	
-    	} else {
-			
-			return false;
-			
-		}
+    	ItemStack ammoItem = makeAmmo(gun, amount);
     	
     	//Put ammo into inventory
-    	for (int i = 0; i < 64; i++) {
+    	for (int i = 0; i < amount; i++) {
     		player.getInventory().addItem(new ItemStack(ammoItem));
     	}
-        
-    	new Messages(language).makeMsg(player, "cmdGiveAmmo");
+    	
         return true;
 		
 	}

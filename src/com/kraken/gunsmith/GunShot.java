@@ -75,23 +75,23 @@ public class GunShot extends Event {
 	        	
 	        shotprojectiledata.put(projectile, data);
 	        
-	      //Visual + audio effects (smoke trail, gunshot blast)
+	        //Visual + audio effects (smoke trail, gunshot blast)
 			shotEffects(player, location, gun, glassBreakEnabled);
 	      
-	      //Cancel snowball packet
-	      for (Player p : Bukkit.getOnlinePlayers()) {
-	          ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
-	      }
+	        //Cancel snowball packet
+	        for (Player p : Bukkit.getOnlinePlayers()) {
+	            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
+	        }
 	      
-	  } else if ( gun.equals(bow) ) {
-    	  
-    	  player.launchProjectile(Arrow.class);
-    	  
-	  } else {
-      	
-          player.getWorld().playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, (float) 0.1, (float) 0.5);
-      	
-      }
+		  } else if ( gun.equals(bow) ) {
+			  
+			  player.launchProjectile(Arrow.class);
+			  
+		  } else {
+		  	
+		      player.getWorld().playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, (float) 0.1, (float) 0.5);
+		  	
+		  }
           
     }
 	
