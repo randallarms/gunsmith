@@ -3,11 +3,11 @@ by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
 Simple custom gun plugin for Bukkit on Minecraft 1.12, 1.11, 1.10, & 1.9!
 
-WARNING: Issue #33 is a resource pack issue. This issue appeared with the update to MC-1.11 and is currently unresolved. Local use of the resource pack seems to work, but server downloading does not. Please see our SpigotMC thread on the subject here: https://www.spigotmc.org/threads/custom-item-models-displaying-improperly-in-mc-1-11.196173
-
 HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
 
-Simple custom gun Bukkit plugin for Minecraft. Simply hold the item corresponding to the gun, and right click to fire. You will need the proper ammunition to fire a weapon, as well!
+VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
+
+Simply hold the item corresponding to the gun, and right click to fire. You will need the proper ammunition to fire a weapon, as well!
 
 GunSmith works best with a custom resource pack that displays the base item (a diamond hoe) as the corresponding firearm. A specialty resource pack is included in our GitHub project repository, and can be directly downloaded here: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
 

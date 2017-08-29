@@ -5,6 +5,8 @@ por Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
 CÓMO USAR E INSTALAR: https://www.spigotmc.org/threads/gunsmith.189617/
 
+VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
+
 Plugin Bukkit de armas, simple y personalizado para Minecraft. Tan solo sostenga el ítem del arma y luego de click derecho para disparar. Además, necesitarás una munición adecuada para dispararla.
 
 GunSmith funciona mejor con un paquete de recursos personalizado que muestra el ítem básico (un diamond hoe) como el correspondiente a las armas de fuego. Un paquete de recursos especiales está incluido en nuestro repositorio de Github, lo puedes descargar directamente aquí: https://github.com/randallarms/gunsmith/raw/master/resources/GunSmith%20%5BResources%5D.zip
