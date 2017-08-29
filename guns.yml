@@ -1,0 +1,18 @@
+# ------------------------------------------------------
+# GUNSMITH Default Guns (guns.yml)
+# 
+# Editing the settings in this file will change the way
+# GunSmith default guns work on your server. To reset to
+# default values, simply delete your guns.yml and then
+# stop/restart your server.
+#
+# FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/
+# ------------------------------------------------------
+#
+601:
+    code: "pistol"
+    name: "PISTOL"
+    desc: "A pistol."
+    dmg: 3D
+    range: 50
+    cooldown: 5
