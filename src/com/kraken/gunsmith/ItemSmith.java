@@ -2,6 +2,7 @@ package com.kraken.gunsmith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.WeakHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,13 +17,11 @@ import net.minecraft.server.v1_12_R1.NBTTagCompound;
 public class ItemSmith {
 	
 	String language;
-	
-	ArrayList<String> guns = new ArrayList<String>();
+	WeakHashMap<Integer, ArrayList<String>> customGunsInfo;
 	
 	public ItemSmith(String language) {
 		
           this.language = language;
-          guns.addAll( Arrays.asList("pistol", "sniper", "br", "lmg", "bow", "rocketLauncher", "shotgun", "ar", "hmg") );
           
     }
 	
@@ -56,6 +55,10 @@ public class ItemSmith {
 	}
 	
 	public ItemStack makeGun(String gun, int amount) {
+		
+		//FOR NEW STATS CONFIGURATION...
+		//
+		//...create gun by config file
 		
 		Material m = Material.DIAMOND_HOE;
 		String name = ChatColor.WHITE + "" + ChatColor.BOLD + "[GUN]";
@@ -95,30 +98,6 @@ public class ItemSmith {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HEAVY MACHINE GUN]";
 			data = 610;
 		}
-	
-    	return makeItem(m, name, desc, amount, data, true);
-		
-	}
-	
-	public ItemStack makeCustomGun(int dataId) {
-		
-		Material m = Material.DIAMOND_HOE;
-		String name = ChatColor.WHITE + "" + ChatColor.BOLD + "[CUSTOM GUN]";
-		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
-		int amount = 1;
-		
-		//Data values represented by custom guns: 701-799
-		int data = dataId + 700;
-		
-		if (dataId < 1 || dataId > 99) {
-			return makeGun("pistol", amount);
-		}
-		
-		// In custom.yml, parent node = dataId & children = attributes
-		// Assign dmg, range, cooldown variables
-		
-		// Create guns.yml for regular guns, as well
-		// Change GSListener, GunShot, etc. classes to reference yml for stats instead
 	
     	return makeItem(m, name, desc, amount, data, true);
 		
@@ -179,9 +158,7 @@ public class ItemSmith {
     	ItemStack ammoItem = makeAmmo(gun, amount);
     	
     	//Put ammo into inventory
-    	for (int i = 0; i < amount; i++) {
-    		player.getInventory().addItem(new ItemStack(ammoItem));
-    	}
+    	player.getInventory().addItem(new ItemStack(ammoItem));
     	
         return true;
 		
@@ -270,6 +247,45 @@ public class ItemSmith {
 		
 		return makeItem(m, name, desc, 4, 0, true);
 	
+	}
+	
+	public ArrayList<ItemStack> listGuns() {
+		
+		//FOR THE NEW STATS CONFIGURATION...
+		//
+	    //File gunsFile = new File("plugins/GunSmith", "guns.yml");
+	    //FileConfiguration guns = YamlConfiguration.loadConfiguration(gunsFile);
+		//
+		//ArrayList<ItemStack> defaultGuns = new ArrayList<ItemStack>();
+		//ArrayList<String> ids = new ArrayList<String>();
+		//
+		//for (String key : guns.getKeys(false) ) {
+		//	
+		//	if ( !ids.contains(key) ) {
+		//		ItemStack gun = new ItemStack( makeGun(key) );
+		//		defaultGuns.add(gun);
+		//	}
+		//	
+		//}
+		//
+		//return defaultGuns;
+		
+		ItemStack pistol = new ItemStack( makeGun("pistol", 1) );
+		ItemStack sniper = new ItemStack( makeGun("sniperRifle", 1) );
+		ItemStack br = new ItemStack( makeGun("battleRifle", 1) );
+		ItemStack lmg = new ItemStack( makeGun("lightMachineGun", 1) );
+		ItemStack bow = new ItemStack( makeGun("crossbow", 1) );
+		ItemStack orbital = new ItemStack( makeGun("orbital", 1) );
+		ItemStack rocketLauncher = new ItemStack( makeGun("rocketLauncher", 1) );
+		ItemStack shotgun = new ItemStack( makeGun("shotgun", 1) );
+		ItemStack ar = new ItemStack( makeGun("assaultRifle", 1) );
+		ItemStack hmg = new ItemStack( makeGun("heavyMachineGun", 1) );
+		ItemStack grenade = new ItemStack( makeGrenade("frag") );
+		
+		ArrayList<ItemStack> guns = new ArrayList<ItemStack>();
+		guns.addAll( Arrays.asList(pistol, sniper, br, lmg, bow, rocketLauncher, shotgun, ar, hmg, orbital, grenade) );
+		return guns;
+		
 	}
 	
 }

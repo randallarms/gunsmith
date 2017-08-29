@@ -1,5 +1,6 @@
 package com.kraken.gunsmith;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -46,6 +47,8 @@ public class GunShot extends Event {
 	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
 	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
 	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
+	
+	ArrayList<ItemStack> guns = new ItemSmith(language).listGuns();
 
 	public GunShot(Player player, ItemStack gun, Boolean glassBreakEnabled) {
 		
@@ -57,13 +60,9 @@ public class GunShot extends Event {
 	        Vector velocity = player.getLocation().getDirection().multiply(10.0D);
 	        
 	        if ( gun.equals(rocketLauncher.getType()) ) {
-	        	damage = 6D;
 	        	velocity = player.getLocation().getDirection().multiply(3D);
 	        } else if ( gun.equals(grenade.getType()) ) {
-	        	damage = 1D;
 	        	velocity = player.getLocation().getDirection().multiply(1.5D);
-	        } else if ( gun.equals(orbital.getType()) ) {
-	        	damage = 0D;
 	        }
 	        
 	        projectile = player.launchProjectile(Snowball.class);
@@ -174,6 +173,10 @@ public class GunShot extends Event {
 	}
 	
 	public double findDamage(ItemStack gun) {
+		
+		if ( guns.contains(gun) ) {
+			//return loaded gun dmg value
+		}
 
 		if ( gun.equals( sniper ) ) {
 			return 7D;
@@ -187,6 +190,12 @@ public class GunShot extends Event {
 			return 5D;
 		} else if ( gun.equals( shotgun ) ) {
 			return 10D;
+		} else if ( gun.equals( rocketLauncher ) ) {
+			return 6D;
+		} else if ( gun.equals( grenade ) ) {
+			return 1D;
+		} else if ( gun.equals( orbital ) ) {
+			return 0D;
 		} else {
 			return 3D;
 		}
@@ -194,6 +203,10 @@ public class GunShot extends Event {
 	}
 	
 	public int findRange(ItemStack gun) {
+		
+		if ( guns.contains(gun) ) {
+			//return loaded gun range value
+		}
 
 		if ( gun.equals( sniper ) || gun.equals( orbital ) || gun.equals( rocketLauncher ) ) {
 			return 125;
@@ -211,23 +224,27 @@ public class GunShot extends Event {
 	      
 	}
 	
-	public int findCooldown(ItemStack m) {
+	public int findCooldown(ItemStack gun) {
 
-		if ( m.equals( sniper ) ) { //Sniper
+		if ( guns.contains(gun) ) {
+			//return loaded gun cooldown value
+		}
+		
+		if ( gun.equals( sniper ) ) { //Sniper
 			return 20;
-		} else if ( m.equals( bow ) ) { //Crossbow
+		} else if ( gun.equals( bow ) ) { //Crossbow
 			return 30;
-		} else if ( m.equals( shotgun ) ) { //Shotgun
+		} else if ( gun.equals( shotgun ) ) { //Shotgun
 			return 20;
-		} else if ( m.equals( br ) ) { //BR
+		} else if ( gun.equals( br ) ) { //BR
 			return 10;
-		} else if ( m.equals( pistol ) || m.equals( ar ) ) { //Pistol, AR
+		} else if ( gun.equals( pistol ) || gun.equals( ar ) ) { //Pistol, AR
 			return 5;
-		} else if ( m.equals( lmg ) || m.equals( hmg ) ) { //LMG, HMG
+		} else if ( gun.equals( lmg ) || gun.equals( hmg ) ) { //LMG, HMG
 			return 2;
-		} else if ( m.equals( rocketLauncher ) ) { //RPG
+		} else if ( gun.equals( rocketLauncher ) ) { //RPG
 			return 50;
-		} else if ( m.equals( orbital ) ) { //Orbital
+		} else if ( gun.equals( orbital ) ) { //Orbital
 			return 250;
 		} else {
 			return 5;

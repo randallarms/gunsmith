@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.3.1 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.4 (WarZone) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,7 +25,7 @@ import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
-	public static String VERSION = "1.3.1 (WarZone)";
+	public static String VERSION = "1.4 (WarZone)";
 	
 	GSListener listener;
 	
@@ -62,6 +62,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 		languages.add("spanish");
 		
 		listener = new GSListener(this, language);
+		setLanguage(language);
 		
 		RecipeSmith recipes = new RecipeSmith(language);
 		
@@ -80,10 +81,15 @@ public class GunSmith extends JavaPlugin implements Listener {
     	getLogger().info("[GUNSMITH] OP requirement enabled: " + opRequired );
     	
     	this.explosions = getConfig().getBoolean("explosions");
-    	getLogger().info("[GUNSMITH] Explosions enabled: " + opRequired );
+    	setExplosions(explosions);
+    	getLogger().info("[GUNSMITH] Explosions enabled: " + explosions );
     	
     	this.permissions = getConfig().getBoolean("permissions");
     	getLogger().info("[GUNSMITH] Permissions settings enabled: " + permissions );
+    	
+    	this.glassBreak = getConfig().getBoolean("glassBreak");
+    	setGlassBreak(glassBreak);
+    	getLogger().info("[GUNSMITH] Glass-breaking settings enabled: " + glassBreak );
     	
     	getLogger().info("[GUNSMITH] Finished loading.");
 			
@@ -91,7 +97,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     
     @Override
     public void onDisable() {
-        getLogger().info("[GUNSMITH] GunSmith has been disabled.");
+        getLogger().info("[GUNSMITH] Disabling...");
     }
     
     public void msg(Player player, String cmd) {
@@ -118,14 +124,14 @@ public class GunSmith extends JavaPlugin implements Listener {
     
     public void setGlassBreak(boolean glassBreak) {
     	this.glassBreak = glassBreak;
-    	getConfig().set("silentMode", glassBreak);
+    	getConfig().set("glassBreak", glassBreak);
     	saveConfig();
     	listener.setGlassBreak(glassBreak);
     }
     
     public void setExplosions(boolean explosions) {
     	this.explosions = explosions;
-    	getConfig().set("silentMode", explosions);
+    	getConfig().set("explosions", explosions);
     	saveConfig();
     	listener.setExplosions(explosions);
     }
@@ -534,7 +540,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "enable":
 			        	    			case "enabled":
 			        	    			case "true":
-			        	    				this.explosions = true;
 			        	    				setExplosions(true);
 											
 											if ( !isPlayer ) {
@@ -550,7 +555,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "disabled":
 			        	    			case "false":
 			        	    			case "falso":
-			        	    				this.explosions = false;
 			        	    				setExplosions(false);
 											
 											if ( !isPlayer ) {
