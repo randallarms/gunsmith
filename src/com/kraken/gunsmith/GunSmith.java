@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.4 (WarZone) | for Minecraft v1.12
+// |GUNSMITH v1.5 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -19,77 +19,61 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 public class GunSmith extends JavaPlugin implements Listener {
-	
-	public static String VERSION = "1.4 (WarZone)";
-	
-	GSListener listener;
 	
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
 	
+	GSListener listener;
 	GunSmithGUI gui = new GunSmithGUI(language);
 	
-	boolean glassBreak = false;
-	boolean silentMode = false;
-	boolean guiEnabled = true;
-	boolean opRequired = false;
-	boolean explosions = false;
-	boolean permissions = false;
+	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
+	
+	public static String VERSION = "1.5 (EpiCenter)";
 	
     @Override
     public void onEnable() {
     	
     	getLogger().info("[GUNSMITH] Loading...");
-    	
-    	PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(this, this);
 		
 		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
 		this.getConfig().options().copyDefaults(true);
 		
+		//Language handling
 		this.language = getConfig().getString("language");
-		getLogger().info( ChatColor.RED + "[GUNSMITH] Language: " + language.toUpperCase() );
-		
 		this.messenger = new Messages(language);
-		
 		languages.add("english");
 		languages.add("spanish");
+		languages.add("chinese");
 		
-		listener = new GSListener(this, language);
+		//Plugin management
+    	PluginManager pm = getServer().getPluginManager();
+    	listener = new GSListener(this, language);
+		pm.registerEvents(listener, this);
+		
+		//Language settings
 		setLanguage(language);
 		
+		//Custom recipes
 		RecipeSmith recipes = new RecipeSmith(language);
 		
 		for (int n = 0; n < recipes.getTotal(); n++) {
 			getServer().addRecipe( recipes.getRecipe(n) );
 		}
-	    	
-    	this.silentMode = getConfig().getBoolean("silentMode");
-    	silencer(silentMode);
-    	getLogger().info("[GUNSMITH] Silent mode: " + silentMode );
-    	
-    	this.guiEnabled = getConfig().getBoolean("guiEnabled");
-    	getLogger().info("[GUNSMITH] GUI enabled: " + guiEnabled );
-    	
-    	this.opRequired = getConfig().getBoolean("opRequired");
-    	getLogger().info("[GUNSMITH] OP requirement enabled: " + opRequired );
-    	
-    	this.explosions = getConfig().getBoolean("explosions");
-    	setExplosions(explosions);
-    	getLogger().info("[GUNSMITH] Explosions enabled: " + explosions );
-    	
-    	this.permissions = getConfig().getBoolean("permissions");
-    	getLogger().info("[GUNSMITH] Permissions settings enabled: " + permissions );
-    	
-    	this.glassBreak = getConfig().getBoolean("glassBreak");
-    	setGlassBreak(glassBreak);
-    	getLogger().info("[GUNSMITH] Glass-breaking settings enabled: " + glassBreak );
+		
+	    //Loading default settings into options
+    	setOption( "guiEnabled", getConfig().getBoolean("guiEnabled") );
+    	setOption( "opRequired", getConfig().getBoolean("opRequired") );
+    	setOption( "explosions", getConfig().getBoolean("explosions") );
+    	setOption( "permissions", getConfig().getBoolean("permissions") );
+    	setOption( "glassBreak", getConfig().getBoolean("glassBreak") );
+    	setOption( "silentMode", getConfig().getBoolean("silentMode") );
+    	silencer( options.get("silentMode") );
     	
     	getLogger().info("[GUNSMITH] Finished loading.");
 			
@@ -108,46 +92,37 @@ public class GunSmith extends JavaPlugin implements Listener {
     	messenger.makeConsoleMsg(cmd);
     }
     
+    public void setOption(String option, boolean setting) {
+    	getConfig().set(option, setting);
+    	saveConfig();
+    	options.put(option, setting);
+    	listener.setOption(option, setting);
+    	getLogger().info("[GUNSMITH] " + option + " setting: " + setting );
+    }
+    
     public void setLanguage(String language) {
     	this.language = language;
     	getConfig().set("language", language);
     	saveConfig();
     	listener.setLanguage(language);
+    	messenger.setLanguage(language);
+    	getLogger().info( "[GUNSMITH] Language: " + language.toUpperCase() );
     }
     
     public void silencer(boolean silentMode) {
-    	this.silentMode = silentMode;
-    	getConfig().set("silentMode", silentMode);
-    	saveConfig();
     	messenger.silence(silentMode);
-    }
-    
-    public void setGlassBreak(boolean glassBreak) {
-    	this.glassBreak = glassBreak;
-    	getConfig().set("glassBreak", glassBreak);
-    	saveConfig();
-    	listener.setGlassBreak(glassBreak);
-    }
-    
-    public void setExplosions(boolean explosions) {
-    	this.explosions = explosions;
-    	getConfig().set("explosions", explosions);
-    	saveConfig();
-    	listener.setExplosions(explosions);
     }
     
     //GunSmith commands
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		Player player;
-		boolean isPlayer;
+		boolean isPlayer = sender instanceof Player;
 		
-		if (sender instanceof Player) {
+		if (isPlayer) {
 			player = (Player) sender;
-			isPlayer = true;
 		} else {
 			player = Bukkit.getServer().getPlayerExact("Octopus__");
-			isPlayer = false;
 		}
 		
 		String command = cmd.getName();
@@ -163,11 +138,11 @@ public class GunSmith extends JavaPlugin implements Listener {
 						
 						if ( isPlayer ) {
 							
-							if ( opRequired && !( player.isOp() ) ) {
+							if ( options.get("opRequired") && !( player.isOp() ) ) {
 								msg(player, "errorIllegalCommand");
-							} else if ( permissions && !player.hasPermission("gunsmith.guns") ) {
+							} else if ( options.get("permissions") && !player.hasPermission("gunsmith.guns") ) {
 								msg(player, "errorPermissions");
-							} else if ( guiEnabled ) {
+							} else if ( options.get("guiEnabled") ) {
 								GunSmithGUI.openGSGUI(player);
 							} else {
 								msg(player, "errorGUINotEnabled");
@@ -251,8 +226,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "enabled":
 									case "on":
 									case "cierto":
-										this.glassBreak = true;
-										setGlassBreak(true);
+										setOption("glassBreak", true);
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdGlassBreakOn");
@@ -267,8 +241,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "disabled":
 									case "off":
 									case "falso":
-										this.glassBreak = false;
-										setGlassBreak(false);
+										setOption("glassBreak", false);
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdGlassBreakOff");
@@ -302,7 +275,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "enabled":
 									case "on":
 									case "cierto":
-										this.silentMode = true;
+										setOption("silentMode", true);
 										silencer(true);
 										
 										if ( !isPlayer ) {
@@ -318,7 +291,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "disabled":
 									case "off":
 									case "falso":
-										this.silentMode = false;
+										setOption("silentMode", false);
 										silencer(false);
 										
 										if ( !isPlayer ) {
@@ -353,9 +326,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "enabled":
 									case "on":
 									case "cierto":
-										this.guiEnabled = true;
-										getConfig().set("guiEnabled", true);
-										saveConfig();
+										setOption("guiEnabled", true);
 										
 										if ( !isPlayer ) {
 											consoleMsg("cmdGUIEnabled");
@@ -370,9 +341,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 									case "disabled":
 									case "off":
 									case "falso":
-										this.guiEnabled = false;
-										getConfig().set("guiEnabled", false);
-										saveConfig();
+										setOption("guiEnabled", false);
 	
 										if ( !isPlayer ) {
 											consoleMsg("cmdGUIDisabled");
@@ -409,9 +378,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "enable":
 			        	    			case "enabled":
 			        	    			case "true":
-			        	    				this.opRequired = true;
-											getConfig().set("opRequired", true);
-											saveConfig();
+			        	    				setOption("opRequired", true);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdOpReqEnabled");
@@ -426,9 +393,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "disabled":
 			        	    			case "false":
 			        	    			case "falso":
-			        	    				this.opRequired = false;
-											getConfig().set("opRequired", false);
-											saveConfig();
+			        	    				setOption("opRequired", false);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdOpReqDisabled");
@@ -475,9 +440,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "enable":
 			        	    			case "enabled":
 			        	    			case "true":
-			        	    				this.permissions = true;
-											getConfig().set("permissions", true);
-											saveConfig();
+			        	    				setOption("permissions", true);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdPermsEnabled");
@@ -492,9 +455,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "disabled":
 			        	    			case "false":
 			        	    			case "falso":
-			        	    				this.permissions = false;
-											getConfig().set("permissions", false);
-											saveConfig();
+			        	    				setOption("permissions", false);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdPermsDisabled");
@@ -540,7 +501,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "enable":
 			        	    			case "enabled":
 			        	    			case "true":
-			        	    				setExplosions(true);
+			        	    				setOption("explosions", true);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdExplosionsEnabled");
@@ -555,7 +516,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    			case "disabled":
 			        	    			case "false":
 			        	    			case "falso":
-			        	    				setExplosions(false);
+			        	    				setOption("explosions", false);
 											
 											if ( !isPlayer ) {
 												consoleMsg("cmdExplosionsDisabled");
@@ -630,7 +591,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							
 							boolean success = new ItemSmith(language).giveGun( args[0], target, 1 );
 							
-							if (success && !silentMode) {
+							if ( success && !options.get("silentMode") ) {
 					    		new Messages(language).makeMsg(target, "cmdGiveGun");
 					    	}
 							
@@ -690,7 +651,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							
 							boolean success = new ItemSmith(language).giveAmmo(args[0], target, 64);
 							
-							if (success && !silentMode) {
+							if ( success && !options.get("silentMode") ) {
 								new Messages(language).makeMsg(target, "cmdGiveAmmo");
 					    	}
 							
