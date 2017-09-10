@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 1.5 (EpiCenter)
+version: 1.5.1 (EpiCenter)
 commands: 
      guns:
         description: Controls the GunSmith plugin, and opens a GUI for gun selection.
@@ -23,13 +23,16 @@ permissions:
         children:
            gunsmith.guns: true
            gunsmith.shoot: true
+           gunsmith.craft: true
            gunsmith.explosives: true
            gunsmith.orbital: true
      gunsmith.guns:
         description: Permission to use the GunSmith GUI.
      gunsmith.shoot:
         description: Permission to fire GunSmith weapons.
+     gunsmith.craft:
+        description: Permission to craft GunSmith custom recipes.
      gunsmith.explosives:
         description: Permission to use explosive GunSmith weapons (RPG).
      gunsmith.orbital:
-        description: Permission to fire the Hammer of Dawn orbital weapon from GunSmith.
+        description: Permission to fire the orbital weapon from GunSmith.
