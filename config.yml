@@ -31,4 +31,7 @@ explosions: false
 # PERMISSIONS REQUIREMENT | If true, players must have the proper permissions to use GunSmith.
 permissions: false
 #
+# CRAFTING ENABLED | If true, players can craft firearms and related custom recipes at the workbench.
+crafting: true
+#
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

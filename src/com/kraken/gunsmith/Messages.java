@@ -18,9 +18,7 @@ public class Messages {
     }
 	
 	public void silence(boolean setting) {
-		
 		this.silentMode = setting;
-		
 	}
 	
 	public void setLanguage (String language) {
@@ -44,31 +42,31 @@ public class Messages {
 				switch (msg) {
 				
 					case "errorPlayerCommand":
-						System.out.println("[GUNSMITH] 只有玩家才能这么做");
+						System.out.println("只有玩家才能这么做");
 						break;
 						
 					case "errorCommandFormat":
-						System.out.println("[GUNSMITH] 指令输入错误");
+						System.out.println("指令输入错误");
 						break;
 						
 					case "errorArgumentFormat":
-						System.out.println("[GUNSMITH] 参数不正确");
+						System.out.println("参数不正确");
 						break;						
 						
 					case "cmdVersion":
-						System.out.println("[GUNSMITH] v" + VERSION);
+						System.out.println("v" + VERSION);
 						break;
 						
 					case "cmdGlassBreakOn":
-						System.out.println("[GUNSMITH] 现在枪可以破坏玻璃");
+						System.out.println("现在枪可以破坏玻璃");
 						break;
 						
 					case "cmdGlassBreakOff":
-						System.out.println("[GUNSMITH] 现在枪不能破坏玻璃");
+						System.out.println("现在枪不能破坏玻璃");
 						break;
 						
 					case "cmdSilentModeOn":
-						System.out.println("[GUNSMITH] 静默模式已开启");
+						System.out.println("静默模式已开启");
 						break;
 						
 					case "cmdSilentModeOff":
@@ -117,6 +115,15 @@ public class Messages {
 						
 					case "cmdExplosionsDisabled":
 						System.out.println("[GUNSMITH] 爆炸已禁用");
+						break;
+						
+					//Untranslated
+					case "cmdCraftingEnabled":
+						System.out.println("[GUNSMITH] Crafting firearm recipes are enabled.");
+						break;
+						
+					case "cmdCraftingDisabled":
+						System.out.println("[GUNSMITH] Crafting firearm recipes are disabled.");
 						break;
 						
 					default:
@@ -201,6 +208,14 @@ public class Messages {
 						System.out.println("[GUNSMITH] No mas estan habilitado los explosiones.");
 						break;
 						
+					case "cmCraftingEnabled":
+						System.out.println("[GUNSMITH] El fabricacion de armas estan habilitado.");
+						break;
+						
+					case "cmdCraftingDisabled":
+						System.out.println("[GUNSMITH] No mas estan habilitado el fabricacion de armas.");
+						break;
+						
 					default:
 						
 						break;
@@ -232,19 +247,19 @@ public class Messages {
 						break;
 						
 					case "cmdGlassBreakOn":
-						System.out.println("[GUNSMITH] Glass-break on gunshot is now enabled.");
+						System.out.println("[GUNSMITH] Glass-break on gunshot is enabled.");
 						break;
 						
 					case "cmdGlassBreakOff":
-						System.out.println("[GUNSMITH] Glass-break on gunshot is now disabled.");
+						System.out.println("[GUNSMITH] Glass-break on gunshot is disabled.");
 						break;
 						
 					case "cmdSilentModeOn":
-						System.out.println("[GUNSMITH] Silent mode is now enabled.");
+						System.out.println("[GUNSMITH] Silent mode is enabled.");
 						break;
 						
 					case "cmdSilentModeOff":
-						System.out.println("[GUNSMITH] Silent mode is now disabled.");
+						System.out.println("[GUNSMITH] Silent mode is disabled.");
 						break;
 						
 					case "cmdLanguageSet":
@@ -256,19 +271,19 @@ public class Messages {
 						break;
 						
 					case "cmdGUIEnabled":
-						System.out.println("[GUNSMITH] GUI is now enabled.");
+						System.out.println("[GUNSMITH] Guns GUI is enabled.");
 						break;
 						
 					case "cmdGUIDisabled":
-						System.out.println("[GUNSMITH] GUI is now disabled.");
+						System.out.println("[GUNSMITH] Guns GUI is disabled.");
 						break;
 						
 					case "cmdOpReqEnabled":
-						System.out.println("[GUNSMITH] OP requirement is now enabled.");
+						System.out.println("[GUNSMITH] OP requirement is enabled.");
 						break;
 						
 					case "cmdOpReqDisabled":
-						System.out.println("[GUNSMITH] OP requirement is now disabled.");
+						System.out.println("[GUNSMITH] OP requirement is disabled.");
 						break;
 						
 					case "errorPlayerNotFound":
@@ -276,19 +291,27 @@ public class Messages {
 						break;
 						
 					case "cmdPermsEnabled":
-						System.out.println("[GUNSMITH] Permissions requirement is now enabled. Perm: \"gunsmith.guns\"");
+						System.out.println("[GUNSMITH] Permissions requirement is enabled. Perm: \"gunsmith.guns\"");
 						break;
 						
 					case "cmdPermsDisabled":
-						System.out.println("[GUNSMITH] Permissions requirement is now disabled.");
+						System.out.println("[GUNSMITH] Permissions requirement is disabled.");
 						break;
 						
 					case "cmdExplosionsEnabled":
-						System.out.println("[GUNSMITH] Explosions are now enabled.");
+						System.out.println("[GUNSMITH] Explosions are enabled.");
 						break;
 						
 					case "cmdExplosionsDisabled":
-						System.out.println("[GUNSMITH] Explosions are now disabled.");
+						System.out.println("[GUNSMITH] Explosions are disabled.");
+						break;
+						
+					case "cmdCraftingEnabled":
+						System.out.println("[GUNSMITH] Crafting firearm recipes are enabled.");
+						break;
+						
+					case "cmdCraftingDisabled":
+						System.out.println("[GUNSMITH] Crafting firearm recipes are disabled.");
 						break;
 						
 					default:
@@ -465,6 +488,19 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | GunSmith v" + VERSION );
 						break;
 						
+					//Untranslated
+					case "cmdCraftingEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is enabled.");
+						break;
+						
+					case "cmdCraftingDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is disabled.");
+						break;
+						
+					case "errorCraftingFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns crafting <on/off>\".");
+						break;
+						
 					default:
 				
 						break;
@@ -585,6 +621,10 @@ public class Messages {
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns gui <cierto/falso>\"");
 						break;
 						
+					case "errorExplosionsFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns explosions <cierto/falso>\"");
+						break;	
+						
 					case "cmdExplosionsEnabled":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Ahora los explosiones estan habilitado.");
 						break;
@@ -593,9 +633,17 @@ public class Messages {
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas los explosiones estan habilitado.");
 						break;
 						
-					case "errorExplosionsFormat":
-    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns explosions <cierto/falso>\"");
+					case "errorCraftingFormat":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns crafting <cierto/falso>\"");
 						break;	
+						
+					case "cmdCraftingEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Ahora el fabricacion de armas estan habilitado.");
+						break;
+						
+					case "cmdCraftingDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas estan habilitado el fabricacion de armas.");
+						break;
 						
 					case "errorPermissions":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No tienes los permisos correctos.");
@@ -745,15 +793,27 @@ public class Messages {
 						break;
 					
 					case "cmdExplosionsEnabled":
-    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions are now enabled.");
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions are enabled.");
 						break;
 						
 					case "cmdExplosionsDisabled":
-    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions have been disabled.");
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Explosions are disabled.");
 						break;
 						
 					case "errorExplosionsFormat":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns explosions <on/off>\".");
+						break;
+						
+					case "cmdCraftingEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is enabled.");
+						break;
+						
+					case "cmdCraftingDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is disabled.");
+						break;
+						
+					case "errorCraftingFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns crafting <on/off>\".");
 						break;
 						
 					case "errorPermissions":

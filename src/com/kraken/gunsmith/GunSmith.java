@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.5 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.5.1 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -25,46 +25,43 @@ import org.bukkit.Bukkit;
 
 public class GunSmith extends JavaPlugin implements Listener {
 	
+	//Lang vars
+	public static String VERSION = "1.5.1 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
 	
+	//Class vars
 	GSListener listener;
+	RecipeSmith recipes;
 	GunSmithGUI gui = new GunSmithGUI(language);
 	
+	//Options
 	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
 	
-	public static String VERSION = "1.5 (EpiCenter)";
-	
+	//Enable
     @Override
     public void onEnable() {
     	
-    	getLogger().info("[GUNSMITH] Loading...");
+    	getLogger().info("Loading...");
 		
 		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
 		this.getConfig().options().copyDefaults(true);
 		
-		//Language handling
+		//Language/Messages handling
 		this.language = getConfig().getString("language");
 		this.messenger = new Messages(language);
-		languages.add("english");
-		languages.add("spanish");
-		languages.add("chinese");
 		
 		//Plugin management
     	PluginManager pm = getServer().getPluginManager();
     	listener = new GSListener(this, language);
 		pm.registerEvents(listener, this);
 		
-		//Language settings
+		//Language settings & defaults
 		setLanguage(language);
-		
-		//Custom recipes
-		RecipeSmith recipes = new RecipeSmith(language);
-		
-		for (int n = 0; n < recipes.getTotal(); n++) {
-			getServer().addRecipe( recipes.getRecipe(n) );
-		}
+		languages.add("english");
+		languages.add("spanish");
+		languages.add("chinese");
 		
 	    //Loading default settings into options
     	setOption( "guiEnabled", getConfig().getBoolean("guiEnabled") );
@@ -72,18 +69,27 @@ public class GunSmith extends JavaPlugin implements Listener {
     	setOption( "explosions", getConfig().getBoolean("explosions") );
     	setOption( "permissions", getConfig().getBoolean("permissions") );
     	setOption( "glassBreak", getConfig().getBoolean("glassBreak") );
+    	setOption( "crafting", getConfig().getBoolean("crafting") );
     	setOption( "silentMode", getConfig().getBoolean("silentMode") );
     	silencer( options.get("silentMode") );
     	
-    	getLogger().info("[GUNSMITH] Finished loading.");
+		//Custom recipes
+		recipes = new RecipeSmith(language);
+		if ( options.get("crafting") ) {
+			addRecipes();
+		}
+    	
+    	getLogger().info("Finished loading!");
 			
     }
     
+    //Disable
     @Override
     public void onDisable() {
-        getLogger().info("[GUNSMITH] Disabling...");
+        getLogger().info("Disabling...");
     }
     
+    //Messages
     public void msg(Player player, String cmd) {
     	messenger.makeMsg(player, cmd);
     }
@@ -92,23 +98,34 @@ public class GunSmith extends JavaPlugin implements Listener {
     	messenger.makeConsoleMsg(cmd);
     }
     
+    //Setting methods
+    //Options setting
     public void setOption(String option, boolean setting) {
     	getConfig().set(option, setting);
     	saveConfig();
     	options.put(option, setting);
     	listener.setOption(option, setting);
-    	getLogger().info("[GUNSMITH] " + option + " setting: " + setting );
+    	getLogger().info(option + " setting: " + setting );
     }
     
+    //Language setting
     public void setLanguage(String language) {
     	this.language = language;
     	getConfig().set("language", language);
     	saveConfig();
     	listener.setLanguage(language);
     	messenger.setLanguage(language);
-    	getLogger().info( "[GUNSMITH] Language: " + language.toUpperCase() );
+    	getLogger().info( "Language: " + language.toUpperCase() );
     }
     
+    //Recipe setting
+    public void addRecipes() {
+		for (int n = 0; n < recipes.getTotal(); n++) {
+			getServer().addRecipe( recipes.getRecipe(n) );
+		}
+    }
+    
+    //Silent mode setting
     public void silencer(boolean silentMode) {
     	messenger.silence(silentMode);
     }
@@ -216,7 +233,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 								}
 								
 							case "glassbreak":
-							case "glassBreak":
 									
 								//Glassbreak command handling
 								switch ( args[1].toLowerCase() ) {
@@ -264,10 +280,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 								
 								}
 								
+							//Command: guns silentMode
 							case "silentmode":
-							case "silentMode":
 								
-								//Silentmode command handling
 								switch ( args[1].toLowerCase() ) {
 								
 									case "true":
@@ -314,11 +329,10 @@ public class GunSmith extends JavaPlugin implements Listener {
 										return true;
 								
 								}
-								
+							
+						    //Command: guns GUI
 							case "gui":
-							case "GUI": 
 								
-								//GUI command handling	
 								switch ( args[1].toLowerCase() ) {
 								
 									case "true":
@@ -351,7 +365,6 @@ public class GunSmith extends JavaPlugin implements Listener {
 										
 										return true;
 								
-								  //GUI command error handling
 									default: 
 										
 										if ( !isPlayer ) {
@@ -364,15 +377,12 @@ public class GunSmith extends JavaPlugin implements Listener {
 								
 								}
 								
-						  //Command: opReq
-			        	    case "opRequired":
+						    //Command: guns opReq
 			        	    case "oprequired":
-			        	    case "opReq":
 			        	    case "opreq":
-			        			  
-			        	    	if ( args.length == 2 ) {
 			        	    		
 			        	    		switch ( args[1].toLowerCase() ) {
+			        	    		
 			        	    			case "on":
 			        	    			case "cierto":
 			        	    			case "enable":
@@ -413,28 +423,15 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	        	    	return true;
 			        	        	    	
 			        	    		}
-			        	    		
-			        	    	} else {
-			        	    		
-			        	    		if ( !isPlayer ) {
-	        	    					consoleMsg("errorArgumentFormat");
-	        	    				} else {
-	        	    					msg(player, "errorOpReqFormat");
-	        	    				}
-			        	    		
-	        	        	    	return true;
-	        	        	    	
-			        	    	}
 			        	    	
-			        	  //Command: perms
+			        	    //Command: guns perms
 			        	    case "perms":
 			        	    case "permissions":
 			        	    case "perm":
 			        	    case "permission":
-			        			  
-			        	    	if ( args.length == 2 ) {
 			        	    		
 			        	    		switch ( args[1].toLowerCase() ) {
+			        	    		
 			        	    			case "on":
 			        	    			case "cierto":
 			        	    			case "enable":
@@ -476,81 +473,102 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	        	    	
 			        	    		}
 			        	    		
-			        	    	} else {
-			        	    		
-			        	    		if ( !isPlayer ) {
-	        	    					consoleMsg("errorArgumentFormat");
-	        	    				} else {
-	        	    					msg(player, "errorPermsFormat");
-	        	    				}
-			        	    		
-	        	        	    	return true;
-	        	        	    	
-			        	    	}
+			        	    //Command: guns crafting
+			        	    case "crafting":
 			        	    	
-			        	  //Command: explosions
+		        	    		switch ( args[1].toLowerCase() ) {
+		        	    		
+		        	    			case "on":
+		        	    			case "cierto":
+		        	    			case "enable":
+		        	    			case "enabled":
+		        	    			case "true":
+		        	    				setOption("crafting", true);
+										
+										if ( !isPlayer ) {
+											consoleMsg("cmdCraftingEnabled");
+										} else {
+											msg(player, "cmdCraftingEnabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			case "off":
+		        	    			case "disable":
+		        	    			case "disabled":
+		        	    			case "false":
+		        	    			case "falso":
+		        	    				setOption("crafting", false);
+		        	    				
+										if ( !isPlayer ) {
+											consoleMsg("cmdCraftingDisabled");
+										} else {
+											msg(player, "cmdCraftingDisabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			default:
+		        	    				if ( !isPlayer ) {
+		        	    					consoleMsg("errorArgumentFormat");
+		        	    				} else {
+		        	    					msg(player, "errorCraftingFormat");
+		        	    				}
+		        	    				
+		        	        	    	return true;
+		        	        	    	
+		        	    		}
+			        	    	
+			        	    //Command: guns explosions
 			        	    case "explosions":
 			        	    case "explosion":
 			        	    case "explosives":
 			        			  
-			        	    	if ( args.length == 2 ) {
-			        	    		
-			        	    		switch ( args[1].toLowerCase() ) {
-			        	    			case "on":
-			        	    			case "cierto":
-			        	    			case "enable":
-			        	    			case "enabled":
-			        	    			case "true":
-			        	    				setOption("explosions", true);
-											
-											if ( !isPlayer ) {
-												consoleMsg("cmdExplosionsEnabled");
-											} else {
-												msg(player, "cmdExplosionsEnabled");
-											}
-											
-			        	    				return true;
-			        	    				
-			        	    			case "off":
-			        	    			case "disable":
-			        	    			case "disabled":
-			        	    			case "false":
-			        	    			case "falso":
-			        	    				setOption("explosions", false);
-											
-											if ( !isPlayer ) {
-												consoleMsg("cmdExplosionsDisabled");
-											} else {
-												msg(player, "cmdExplosionsDisabled");
-											}
-											
-			        	    				return true;
-			        	    				
-			        	    			default:
-			        	    				if ( !isPlayer ) {
-			        	    					consoleMsg("errorArgumentFormat");
-			        	    				} else {
-			        	    					msg(player, "errorExplosionsFormat");
-			        	    				}
-			        	    				
-			        	        	    	return true;
-			        	        	    	
-			        	    		}
-			        	    		
-			        	    	} else {
-			        	    		
-			        	    		if ( !isPlayer ) {
-	        	    					consoleMsg("errorArgumentFormat");
-	        	    				} else {
-	        	    					msg(player, "errorExplosionsFormat");
-	        	    				}
-			        	    		
-	        	        	    	return true;
-	        	        	    	
-			        	    	}
+		        	    		switch ( args[1].toLowerCase() ) {
+		        	    		
+		        	    			case "on":
+		        	    			case "cierto":
+		        	    			case "enable":
+		        	    			case "enabled":
+		        	    			case "true":
+		        	    				setOption("explosions", true);
+										
+										if ( !isPlayer ) {
+											consoleMsg("cmdExplosionsEnabled");
+										} else {
+											msg(player, "cmdExplosionsEnabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			case "off":
+		        	    			case "disable":
+		        	    			case "disabled":
+		        	    			case "false":
+		        	    			case "falso":
+		        	    				setOption("explosions", false);
+										
+										if ( !isPlayer ) {
+											consoleMsg("cmdExplosionsDisabled");
+										} else {
+											msg(player, "cmdExplosionsDisabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			default:
+		        	    				if ( !isPlayer ) {
+		        	    					consoleMsg("errorArgumentFormat");
+		        	    				} else {
+		        	    					msg(player, "errorExplosionsFormat");
+		        	    				}
+		        	    				
+		        	        	    	return true;
+		        	        	    	
+		        	    		}
 			        	    	
-							}
-							
+						}
+								
 					default:
 						if (isPlayer) {
 							msg(player, "errorIllegalCommand");
@@ -559,7 +577,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							consoleMsg("errorCommandFormat");
 						}
 						
-				}
+			}
 	                
 	        //Command: giveGun <gunName> <player?>
 			case "giveGun":
@@ -620,7 +638,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						return true;
 				
 				}
-	        
+		        
 	        //Command: giveAmmo <ammoName> <player?>
 			case "giveAmmo":
 			case "giveammo":
