@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.5.1 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.5.2 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -26,7 +26,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.5.1 (EpiCenter)";
+	public static String VERSION = "1.5.2 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -70,6 +70,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     	setOption( "permissions", getConfig().getBoolean("permissions") );
     	setOption( "glassBreak", getConfig().getBoolean("glassBreak") );
     	setOption( "crafting", getConfig().getBoolean("crafting") );
+    	setOption( "particles", getConfig().getBoolean("particles") );
     	setOption( "silentMode", getConfig().getBoolean("silentMode") );
     	silencer( options.get("silentMode") );
     	
@@ -475,6 +476,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 			        	    		
 			        	    //Command: guns crafting
 			        	    case "crafting":
+			        	    case "craft":
 			        	    	
 		        	    		switch ( args[1].toLowerCase() ) {
 		        	    		
@@ -518,7 +520,55 @@ public class GunSmith extends JavaPlugin implements Listener {
 		        	        	    	return true;
 		        	        	    	
 		        	    		}
+			        	    
+		        	    	//Command: guns particles
+			        	    case "particles":
+			        	    case "smoke":
+			        	    case "trail":
 			        	    	
+		        	    		switch ( args[1].toLowerCase() ) {
+		        	    		
+		        	    			case "on":
+		        	    			case "cierto":
+		        	    			case "enable":
+		        	    			case "enabled":
+		        	    			case "true":
+		        	    				setOption("particles", true);
+										
+										if ( !isPlayer ) {
+											consoleMsg("cmdParticlesEnabled");
+										} else {
+											msg(player, "cmdParticlesEnabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			case "off":
+		        	    			case "disable":
+		        	    			case "disabled":
+		        	    			case "false":
+		        	    			case "falso":
+		        	    				setOption("particles", false);
+		        	    				
+										if ( !isPlayer ) {
+											consoleMsg("cmdParticlesDisabled");
+										} else {
+											msg(player, "cmdParticlesDisabled");
+										}
+										
+		        	    				return true;
+		        	    				
+		        	    			default:
+		        	    				if ( !isPlayer ) {
+		        	    					consoleMsg("errorArgumentFormat");
+		        	    				} else {
+		        	    					msg(player, "errorParticlesFormat");
+		        	    				}
+		        	    				
+		        	        	    	return true;
+		        	        	    	
+		        	    		}
+		        	    		
 			        	    //Command: guns explosions
 			        	    case "explosions":
 			        	    case "explosion":

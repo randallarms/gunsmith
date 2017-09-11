@@ -70,60 +70,68 @@ public class Messages {
 						break;
 						
 					case "cmdSilentModeOff":
-						System.out.println("[GUNSMITH] 静默模式已关闭");
+						System.out.println("静默模式已关闭");
 						break;
 						
 					case "cmdLanguageSet":
-						System.out.println("[GUNSMITH] 语言已设置");
+						System.out.println("语言已设置");
 						break;
 						
 					case "errorLanguageSet":
-						System.out.println("[GUNSMITH] 语言未找到");
+						System.out.println("语言未找到");
 						break;
 						
 					case "cmdGUIEnabled":
-						System.out.println("[GUNSMITH] GUI 已启用");
+						System.out.println("GUI 已启用");
 						break;
 						
 					case "cmdGUIDisabled":
-						System.out.println("[GUNSMITH] GUI 未启用");
+						System.out.println("GUI 未启用");
 						break;
 						
 					case "cmdOpReqEnabled":
-						System.out.println("[GUNSMITH] OP 需求已启用");
+						System.out.println("Op 需求已启用");
 						break;
 						
 					case "cmdOpReqDisabled":
-						System.out.println("[GUNSMITH] OP 需求未启用");
+						System.out.println("Op 需求未启用");
 						break;
 						
 					case "errorPlayerNotFound":
-						System.out.println("[GUNSMITH] 玩家未找到!");
+						System.out.println("玩家未找到!");
 						break;
 						
 					case "cmdPermsEnabled":
-						System.out.println("[GUNSMITH] 权限需求未找到. 权限: \"gunsmith.guns\"");
+						System.out.println("权限需求未找到. 权限: \"gunsmith.guns\"");
 						break;
 						
 					case "cmdPermsDisabled":
-						System.out.println("[GUNSMITH] 已禁用权限需求");
+						System.out.println("已禁用权限需求");
 						break;
 						
 					case "cmdExplosionsEnabled":
-						System.out.println("[GUNSMITH] 爆炸已启用");
+						System.out.println("爆炸已启用");
 						break;
 						
 					case "cmdExplosionsDisabled":
-						System.out.println("[GUNSMITH] 爆炸已禁用");
+						System.out.println("爆炸已禁用");
 						break;
 						
 					//Untranslated
 					case "cmdCraftingEnabled":
-						System.out.println("[GUNSMITH] Crafting firearm recipes are enabled.");
+						System.out.println("Crafting firearm recipes are enabled.");
 						break;
 						
 					case "cmdCraftingDisabled":
-						System.out.println("[GUNSMITH] Crafting firearm recipes are disabled.");
+						System.out.println("Crafting firearm recipes are disabled.");
+						break;
+						
+					case "cmdParticlesEnabled":
+						System.out.println("Particle smoke trails on gunshot are enabled.");
+						break;
+						
+					case "cmdParticlesDisabled":
+						System.out.println("Particle smoke trails on gunshot are disabled.");
 						break;
 						
 					default:
@@ -141,79 +149,87 @@ public class Messages {
 				switch (msg) {
 				
 					case "errorPlayerCommand":
-						System.out.println("[GUNSMITH] Este comando es solo para juegadores.");
+						System.out.println("Este comando es solo para juegadores.");
 						break;
 						
 					case "errorCommandFormat":
-						System.out.println("[GUNSMITH] No reconocido el comando.");
+						System.out.println("No reconocido el comando.");
 						break;
 						
 					case "cmdVersion":
-						System.out.println("[GUNSMITH] v" + VERSION);
+						System.out.println("v" + VERSION);
 						break;
 						
 					case "cmdGlassBreakOn":
-						System.out.println("[GUNSMITH] Rompiendo los vidrios estan habilitado.");
+						System.out.println("Rompiendo los vidrios estan habilitado.");
 						break;
 						
 					case "cmdGlassBreakOff":
-						System.out.println("[GUNSMITH] Rompiendo los vidrios no mas estan habilitado.");
+						System.out.println("Rompiendo los vidrios no mas estan habilitado.");
 						break;
 						
 					case "cmdSilentModeOn":
-						System.out.println("[GUNSMITH] El modo silencioso estan habilitado.");
+						System.out.println("El modo silencioso estan habilitado.");
 						break;
 						
 					case "cmdSilentModeOff":
-						System.out.println("[GUNSMITH] No mas estan habilitado el modo silencioso.");
+						System.out.println("No mas estan habilitado el modo silencioso.");
 						break;
 						
 					case "cmdLanguageSet":
-						System.out.println("[GUNSMITH] El idioma ha sido establecido.");
+						System.out.println("El idioma ha sido establecido.");
 						break;
 						
 					case "errorLanguageSet":
-						System.out.println("[GUNSMITH] No reconocido el idioma.");
+						System.out.println("No reconocido el idioma.");
 						break;
 						
 					case "cmdGUIEnabled":
-						System.out.println("[GUNSMITH] El menu de armas estan habilitado.");
+						System.out.println("El menu de armas estan habilitado.");
 						break;
 						
 					case "cmdGUIDisabled":
-						System.out.println("[GUNSMITH] No mas estan habilitado el menu de armas.");
+						System.out.println("No mas estan habilitado el menu de armas.");
 						break;
 						
 					case "cmdOpReqEnabled":
-						System.out.println("[GUNSMITH] Necesita los permisos 'op' para usar el menu de armas.");
+						System.out.println("Necesita los permisos 'op' para usar el menu de armas.");
 						break;
 						
 					case "cmdOpReqDisabled":
-						System.out.println("[GUNSMITH] No mas necesita los permisos 'op' para usar el menu de armas.");
+						System.out.println("No mas necesita los permisos 'op' para usar el menu de armas.");
 						break;
 						
 					case "cmdPermsEnabled":
-						System.out.println("[GUNSMITH] Los permisos estan necesarios. El permiso: \"gunsmith.guns\"");
+						System.out.println("Los permisos estan necesarios. El permiso: \"gunsmith.guns\"");
 						break;
 						
 					case "cmdPermsDisabled":
-						System.out.println("[GUNSMITH] No mas estan necesarios los permisos.");
+						System.out.println("No mas estan necesarios los permisos.");
 						break;
 						
 					case "cmdExplosionsEnabled":
-						System.out.println("[GUNSMITH] Explosiones estan habilitado.");
+						System.out.println("Explosiones estan habilitado.");
 						break;
 						
 					case "cmdExplosionsDisabled":
-						System.out.println("[GUNSMITH] No mas estan habilitado los explosiones.");
+						System.out.println("No mas estan habilitado los explosiones.");
 						break;
 						
-					case "cmCraftingEnabled":
-						System.out.println("[GUNSMITH] El fabricacion de armas estan habilitado.");
+					case "cmdCraftingEnabled":
+						System.out.println("El fabricacion de armas estan habilitado.");
 						break;
 						
 					case "cmdCraftingDisabled":
-						System.out.println("[GUNSMITH] No mas estan habilitado el fabricacion de armas.");
+						System.out.println("No mas estan habilitado el fabricacion de armas.");
+						break;
+						
+					case "cmdParticlesEnabled":
+						System.out.println("Las partículas de disparo estan habilitado.");
+						break;
+						
+					case "cmdParticlesDisabled":
+						System.out.println("No mas estan habilitado las partículas de disparo.");
 						break;
 						
 					default:
@@ -231,87 +247,95 @@ public class Messages {
 				switch (msg) {
 				
 					case "errorPlayerCommand":
-						System.out.println("[GUNSMITH] This is a player-only command.");
+						System.out.println("This is a player-only command.");
 						break;
 						
 					case "errorCommandFormat":
-						System.out.println("[GUNSMITH] Command not recognized.");
+						System.out.println("Command not recognized.");
 						break;
 						
 					case "errorArgumentFormat":
-						System.out.println("[GUNSMITH] Unrecognized arguments.");
+						System.out.println("Unrecognized arguments.");
 						break;						
 						
 					case "cmdVersion":
-						System.out.println("[GUNSMITH] v" + VERSION);
+						System.out.println("v" + VERSION);
 						break;
 						
 					case "cmdGlassBreakOn":
-						System.out.println("[GUNSMITH] Glass-break on gunshot is enabled.");
+						System.out.println("Glass-break on gunshot is enabled.");
 						break;
 						
 					case "cmdGlassBreakOff":
-						System.out.println("[GUNSMITH] Glass-break on gunshot is disabled.");
+						System.out.println("Glass-break on gunshot is disabled.");
 						break;
 						
 					case "cmdSilentModeOn":
-						System.out.println("[GUNSMITH] Silent mode is enabled.");
+						System.out.println("Silent mode is enabled.");
 						break;
 						
 					case "cmdSilentModeOff":
-						System.out.println("[GUNSMITH] Silent mode is disabled.");
+						System.out.println("Silent mode is disabled.");
 						break;
 						
 					case "cmdLanguageSet":
-						System.out.println("[GUNSMITH] Language set.");
+						System.out.println("Language set.");
 						break;
 						
 					case "errorLanguageSet":
-						System.out.println("[GUNSMITH] Language not found.");
+						System.out.println("Language not found.");
 						break;
 						
 					case "cmdGUIEnabled":
-						System.out.println("[GUNSMITH] Guns GUI is enabled.");
+						System.out.println("Guns GUI is enabled.");
 						break;
 						
 					case "cmdGUIDisabled":
-						System.out.println("[GUNSMITH] Guns GUI is disabled.");
+						System.out.println("Guns GUI is disabled.");
 						break;
 						
 					case "cmdOpReqEnabled":
-						System.out.println("[GUNSMITH] OP requirement is enabled.");
+						System.out.println("Op requirement is enabled.");
 						break;
 						
 					case "cmdOpReqDisabled":
-						System.out.println("[GUNSMITH] OP requirement is disabled.");
+						System.out.println("Op requirement is disabled.");
 						break;
 						
 					case "errorPlayerNotFound":
-						System.out.println("[GUNSMITH] Player not found!");
+						System.out.println("Player not found!");
 						break;
 						
 					case "cmdPermsEnabled":
-						System.out.println("[GUNSMITH] Permissions requirement is enabled. Perm: \"gunsmith.guns\"");
+						System.out.println("Permissions requirement is enabled. Perm: \"gunsmith.guns\"");
 						break;
 						
 					case "cmdPermsDisabled":
-						System.out.println("[GUNSMITH] Permissions requirement is disabled.");
+						System.out.println("Permissions requirement is disabled.");
 						break;
 						
 					case "cmdExplosionsEnabled":
-						System.out.println("[GUNSMITH] Explosions are enabled.");
+						System.out.println("Explosions are enabled.");
 						break;
 						
 					case "cmdExplosionsDisabled":
-						System.out.println("[GUNSMITH] Explosions are disabled.");
+						System.out.println("Explosions are disabled.");
 						break;
 						
 					case "cmdCraftingEnabled":
-						System.out.println("[GUNSMITH] Crafting firearm recipes are enabled.");
+						System.out.println("Crafting firearm recipes are enabled.");
 						break;
 						
 					case "cmdCraftingDisabled":
-						System.out.println("[GUNSMITH] Crafting firearm recipes are disabled.");
+						System.out.println("Crafting firearm recipes are disabled.");
+						break;
+						
+					case "cmdParticlesEnabled":
+						System.out.println("Particle smoke trails on gunshot are enabled.");
+						break;
+						
+					case "cmdParticlesDisabled":
+						System.out.println("Particle smoke trails on gunshot are disabled.");
 						break;
 						
 					default:
@@ -501,6 +525,18 @@ public class Messages {
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns crafting <on/off>\".");
 						break;
 						
+					case "cmdParticlesEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is enabled.");
+						break;
+						
+					case "cmdParticlesDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Firearm crafting is disabled.");
+						break;
+						
+					case "errorParticlesFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns crafting <on/off>\".");
+						break;
+						
 					default:
 				
 						break;
@@ -542,7 +578,7 @@ public class Messages {
 						break;
 						
 					case "errorOpReqFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns opReq <on/off>\".");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns opReq <cierto/falso>\".");
 						break;
 						
 					case "errorGUINotEnabled":
@@ -550,7 +586,7 @@ public class Messages {
 						break;
 						
 					case "errorGunFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveGun <nombreDeLaArma> {jugador}\"");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveGun <arma> {jugador}\"");
 						break;
 						
 					case "cmdGiveAmmo":
@@ -558,7 +594,7 @@ public class Messages {
 						break;
 					
 					case "errorAmmoFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveAmmo <nombreDeLaArma> {jugador}\"");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/giveAmmo <arma> {jugador}\"");
 						break;
 						
 					case "errorPlayerNotFound":
@@ -582,7 +618,7 @@ public class Messages {
 						break;
 						
 					case "errorLangFormat":
-						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns language <nombreDelLenguaje>\"");
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns language <idioma>\"");
 						break;
 						
 					case "cmdGlassBreakOn":
@@ -643,6 +679,18 @@ public class Messages {
 						
 					case "cmdCraftingDisabled":
     					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas estan habilitado el fabricacion de armas.");
+						break;
+						
+					case "cmdParticlesEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Las partículas de disparo estan habilitado.");
+						break;
+						
+					case "cmdParticlesDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No mas estan habilitado las partículas de disparo.");
+						break;
+						
+					case "errorParticlesFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | No reconocido el comando. Teclea \"/guns particles <cierto/falso>\".");
 						break;
 						
 					case "errorPermissions":
@@ -814,6 +862,18 @@ public class Messages {
 						
 					case "errorCraftingFormat":
 						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns crafting <on/off>\".");
+						break;
+						
+					case "cmdParticlesEnabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Particle smoke trails from gunshot are enabled.");
+						break;
+						
+					case "cmdParticlesDisabled":
+    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Particle smoke trails from gunshot are disabled.");
+						break;
+						
+					case "errorParticlesFormat":
+						player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | Try entering \"/guns particles <on/off>\".");
 						break;
 						
 					case "errorPermissions":

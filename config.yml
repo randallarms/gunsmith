@@ -34,4 +34,7 @@ permissions: false
 # CRAFTING ENABLED | If true, players can craft firearms and related custom recipes at the workbench.
 crafting: true
 #
+# CRAFTING ENABLED | If true, fired rounds will emit a smokey particle trail.
+particles: true
+#
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

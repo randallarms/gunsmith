@@ -50,7 +50,7 @@ public class GunShot extends Event {
 	
 	ArrayList<ItemStack> guns = new ItemSmith(language).listGuns();
 
-	public GunShot(Player player, ItemStack gun, Boolean glassBreakEnabled) {
+	public GunShot(Player player, ItemStack gun, GunSmith plugin) {
 		
 		if ( !gun.equals(bow) ) {
 			
@@ -75,7 +75,7 @@ public class GunShot extends Event {
 	        shotprojectiledata.put(projectile, data);
 	        
 	        //Visual + audio effects (smoke trail, gunshot blast)
-			shotEffects(player, location, gun, glassBreakEnabled);
+			shotEffects(player, location, gun, plugin.options.get("glassBreak"), plugin.options.get("particles"));
 	      
 	        //Cancel snowball packet
 	        for (Player p : Bukkit.getOnlinePlayers()) {
@@ -94,7 +94,7 @@ public class GunShot extends Event {
           
     }
 	
-	public void shotEffects(Player player, Location location, ItemStack gun, boolean glassBreakEnabled) {
+	public void shotEffects(Player player, Location location, ItemStack gun, boolean glassBreak, boolean particles) {
 		
 		Integer range = findRange(gun);
 		BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, range );
@@ -113,7 +113,7 @@ public class GunShot extends Event {
         			|| b.equals(Material.THIN_GLASS)
         			|| b.equals(Material.STAINED_GLASS)
         			|| b.equals(Material.STAINED_GLASS_PANE) ) {
-        		if (glassBreakEnabled) {
+        		if (glassBreak) {
         			blockToAdd.getBlock().setType(Material.AIR);
         		} else {
         			break;
@@ -122,10 +122,12 @@ public class GunShot extends Event {
             	break;
             }
         	
-        	player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.WEB);
-        	if ( gun.equals(shotgun) && bCount == 1 ) {
-                fwEffect(blockToAdd.add(player.getLocation().getDirection().multiply(2)).add(0, 1, 0));
-        	}
+        	if (particles) {
+	        	player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.WEB);
+	        	if ( gun.equals(shotgun) && bCount == 1 ) {
+	                fwEffect(blockToAdd.add(player.getLocation().getDirection().multiply(2)).add(0, 1, 0));
+	        	}
+			}
         	
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST, (float) 0.1, (float) 0.5);
             
