@@ -1,6 +1,6 @@
 name: GunSmith
 main: com.kraken.gunsmith.GunSmith
-version: 1.5.1 (EpiCenter)
+version: 1.5.2 (EpiCenter)
 commands: 
      guns:
         description: Controls the GunSmith plugin, and opens a GUI for gun selection.

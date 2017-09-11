@@ -60,12 +60,6 @@ public class GSListener implements Listener {
   	  plugin.getServer().getPluginManager().registerEvents(this, plugin);
   	  this.plugin = plugin;
   	  this.language = language;
-   	  setOption( "guiEnabled", plugin.getConfig().getBoolean("guiEnabled") );
-      setOption( "opRequired", plugin.getConfig().getBoolean("opRequired") );
-      setOption( "explosions", plugin.getConfig().getBoolean("explosions") );
-  	  setOption( "permissions", plugin.getConfig().getBoolean("permissions") );
-  	  setOption( "glassBreak", plugin.getConfig().getBoolean("glassBreak") );
-      setOption( "silentMode", plugin.getConfig().getBoolean("silentMode") );
   	  
     }
     
@@ -120,7 +114,7 @@ public class GSListener implements Listener {
     				//Check if player has proper ammunition
     				if ( hasAmmo(player, item) ) {
     					
-    					GunShot shot = new GunShot( player, item, options.get("glassBreak") );
+    					GunShot shot = new GunShot( player, item, plugin );
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					if ( !item.equals(bow) ) {
@@ -166,7 +160,7 @@ public class GSListener implements Listener {
     				//Check if player has proper ammunition
     				if (hasGrenade(player, item)) {
     				
-    					GunShot shot = new GunShot( player, frag, options.get("glassBreak") );
+    					GunShot shot = new GunShot( player, frag, plugin );
     					Bukkit.getServer().getPluginManager().callEvent(shot);
 				    	
     					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
