@@ -91,7 +91,7 @@ public class GSListener implements Listener {
     			//The Materials correspond to the item the gun is based on
     			if ( item.getType().equals(Material.DIAMOND_HOE) && types.contains( durability.intValue() ) ) {
     				
-					Messages msg = new Messages(language);
+					Messages msg = new Messages(plugin, language);
 					
 					//Check is player has "shoot" permission
 					if ( !player.hasPermission("gunsmith.shoot") ) {
@@ -144,7 +144,7 @@ public class GSListener implements Listener {
 				    	
     				} else {
     					
-    					new Messages(language).makeMsg(player, "errorNoAmmoFound");
+    					new Messages(plugin, language).makeMsg(player, "errorNoAmmoFound");
     					if ( item.equals(pistol) ) {
     						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.1, (float) 0.7);
     					} else {
