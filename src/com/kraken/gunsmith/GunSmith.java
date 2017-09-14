@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.5.2 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.6 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
@@ -26,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.5.2 (EpiCenter)";
+	public static String VERSION = "1.6 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -43,25 +44,26 @@ public class GunSmith extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
     	
-    	getLogger().info("Loading...");
+    	getLogger().info("Loading options...");
 		
 		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
 		this.getConfig().options().copyDefaults(true);
 		
-		//Language/Messages handling
+		//Language/Messages handler class construction
+		languages.add("english");
+		languages.add("spanish");
+		languages.add("chinese");
+		loadMessageFiles();
 		this.language = getConfig().getString("language");
-		this.messenger = new Messages(language);
+		this.messenger = new Messages(this, "english");
 		
-		//Plugin management
+		//General plugin management
     	PluginManager pm = getServer().getPluginManager();
     	listener = new GSListener(this, language);
 		pm.registerEvents(listener, this);
 		
-		//Language settings & defaults
+		//Language setting
 		setLanguage(language);
-		languages.add("english");
-		languages.add("spanish");
-		languages.add("chinese");
 		
 	    //Loading default settings into options
     	setOption( "guiEnabled", getConfig().getBoolean("guiEnabled") );
@@ -119,6 +121,20 @@ public class GunSmith extends JavaPlugin implements Listener {
     	getLogger().info( "Language: " + language.toUpperCase() );
     }
     
+	public void loadMessageFiles() {
+		
+		for (String lang : languages) {
+			
+		    File msgFile = new File("plugins/GunSmith/lang/", lang.toLowerCase() + ".yml");
+	        
+		    if ( !msgFile.exists() ) {
+		    	saveResource("lang/" + lang.toLowerCase() + ".yml", false);
+		    }
+		    
+		}
+		
+    }
+    
     //Recipe setting
     public void addRecipes() {
 		for (int n = 0; n < recipes.getTotal(); n++) {
@@ -136,6 +152,8 @@ public class GunSmith extends JavaPlugin implements Listener {
 
 		Player player;
 		boolean isPlayer = sender instanceof Player;
+		
+		this.messenger = new Messages(this, language);
 		
 		if (isPlayer) {
 			player = (Player) sender;
@@ -179,14 +197,24 @@ public class GunSmith extends JavaPlugin implements Listener {
 						  //Command: version     
 			    			case "version":
 			    			
-							if ( !isPlayer ) {
-								consoleMsg("cmdVersion");
-							} else {
-								msg(player, "cmdVersion");
-							}
-							
-			                return true;
+								if ( !isPlayer ) {
+									consoleMsg("cmdVersion");
+								} else {
+									msg(player, "cmdVersion");
+								}
+								
+				                return true;
+			                
+			                default:
 					
+								if ( !isPlayer ) {
+									consoleMsg("errorCommandFormat");
+								} else {
+									msg(player, "errorIllegalCommand");
+								}
+								
+				                return true;
+			                	
 						}
 						
 					case 2:
@@ -205,6 +233,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						switch ( args[0].toLowerCase() ) {
 						
 							case "language":
+							case "lang":
 								
 								String lang = args[1].toLowerCase();
 								
@@ -660,7 +689,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							boolean success = new ItemSmith(language).giveGun( args[0], target, 1 );
 							
 							if ( success && !options.get("silentMode") ) {
-					    		new Messages(language).makeMsg(target, "cmdGiveGun");
+					    		new Messages(this, language).makeMsg(target, "cmdGiveGun");
 					    	}
 							
 							return success;
@@ -720,7 +749,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 							boolean success = new ItemSmith(language).giveAmmo(args[0], target, 64);
 							
 							if ( success && !options.get("silentMode") ) {
-								new Messages(language).makeMsg(target, "cmdGiveAmmo");
+								new Messages(this, language).makeMsg(target, "cmdGiveAmmo");
 					    	}
 							
 							return success;
