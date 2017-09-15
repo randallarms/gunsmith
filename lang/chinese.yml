@@ -28,7 +28,7 @@ player:
     cmdOpReqEnabled: '&c[GS] &7| 现在GUI需要OP权限才能打开'
     cmdOpReqDisabled: '&c[GS] &7| 打开GUI不再需要OP权限了'
     errorOpReqFormat: '&c[GS] &7| 请输入 "/guns opReq <on/off>".'
-    cmdGiveGun: '&c[GS] &7| 砰! 砰!'
+    cmdGiveGun: '&c[GS] &7| 恭喜获得枪械'
     errorGunFormat: '&c[GS] &7| 错误的格式 请使用 "/giveGun <枪械名称> {玩家}"'
     cmdGiveAmmo: '&c[GS] &7| 已换弹夹'
     errorAmmoFormat: '&c[GS] &7| 错误的格式 请使用 "/giveAmmo <枪械名称> {玩家}"'
