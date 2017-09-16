@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.6 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.7 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.6 (EpiCenter)";
+	public static String VERSION = "1.7 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
