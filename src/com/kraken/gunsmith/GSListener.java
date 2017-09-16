@@ -36,6 +36,8 @@ public class GSListener implements Listener {
 	public final static WeakHashMap<Entity, Location> shotHitLoc = new WeakHashMap<Entity, Location>();
 	ArrayList<Player> cooldown = new ArrayList<Player>();
 	ArrayList<Player> orbitalCooldown = new ArrayList<Player>();
+	ArrayList<Player> justClicked = new ArrayList<Player>();
+	ArrayList<Player> zoomed = new ArrayList<Player>();
 	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
 	String language;
 	
@@ -71,119 +73,157 @@ public class GSListener implements Listener {
     	this.language = language;
     }
     
+  //Check for double-click issues, returns true if clicking too fast
+    public boolean clickCheck(Player player) {
+    	
+		if ( justClicked.contains(player) ) {
+			
+			return false;
+			
+		} else {
+			
+			justClicked.add(player);
+			
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    		public void run() {
+	    			justClicked.remove(player);
+	    		}
+	    	}, 2);
+			
+			return true;
+			
+		}
+		
+    }
+    
 	@EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
     	
     	Player player = e.getPlayer();
     	ItemStack item = player.getInventory().getItemInMainHand();
     	
+    	//Check for double-click issues
+		if ( clickCheck(player) ) {
+			return;
+		}
+    	
     	ArrayList<Integer> types = new ArrayList<Integer>();
 		types.addAll(Arrays.asList(601, 602, 603, 604, 605, 607, 608, 609, 610));
 		
 		Short durability = item.getDurability();
-    	
-	  	//BulletShot
-    		//On right click...
-    		if ( e.getAction() != Action.LEFT_CLICK_AIR 
-    				&& e.getAction() != Action.LEFT_CLICK_BLOCK
-    				&& item != null && !cooldown.contains( player ) ) {
-    			
-    			//The Materials correspond to the item the gun is based on
-    			if ( item.getType().equals(Material.DIAMOND_HOE) && types.contains( durability.intValue() ) ) {
-    				
-					Messages msg = new Messages(plugin, language);
+		
+		boolean isGun = item.getType().equals(Material.DIAMOND_HOE) && types.contains( durability.intValue() );
+	
+		//On right click...
+		if ( e.getAction() != Action.LEFT_CLICK_AIR 
+				&& e.getAction() != Action.LEFT_CLICK_BLOCK ) {
+			
+			//The Materials correspond to the item the gun is based on
+			if ( isGun && !cooldown.contains( player ) ) {
+				
+				Messages msg = new Messages(plugin, language);
+				
+				//Check is player has "shoot" permission
+				if ( !player.hasPermission("gunsmith.shoot") ) {
+					msg.makeMsg(player, "errorIllegalCommand");
+					return;
+				}
+				
+				//Check is player has "explosives" permission
+				if ( item.equals(rocketLauncher) && !player.hasPermission("gunsmith.explosives") ) {
+					msg.makeMsg(player, "errorIllegalCommand");
+					return;
+				}
+				
+				//Check is player has "orbital" permission
+				if ( item.equals(orbital) && !player.hasPermission("orbital") ) {
+					msg.makeMsg(player, "errorIllegalCommand");
+					return;
+				}
+				
+				//Check if player has proper ammunition
+				if ( hasAmmo(player, item) ) {
 					
-					//Check is player has "shoot" permission
-					if ( !player.hasPermission("gunsmith.shoot") ) {
-						msg.makeMsg(player, "errorIllegalCommand");
-						return;
-					}
-					
-					//Check is player has "explosives" permission
-					if ( item.equals(rocketLauncher) && !player.hasPermission("gunsmith.explosives") ) {
-						msg.makeMsg(player, "errorIllegalCommand");
-						return;
-					}
-					
-					//Check is player has "orbital" permission
-					if ( item.equals(orbital) && !player.hasPermission("orbital") ) {
-						msg.makeMsg(player, "errorIllegalCommand");
-						return;
-					}
-    				
-    				//Check if player has proper ammunition
-    				if ( hasAmmo(player, item) ) {
-    					
-    					GunShot shot = new GunShot( player, item, plugin );
-    					Bukkit.getServer().getPluginManager().callEvent(shot);
-				    	
-    					if ( !item.equals(bow) ) {
-    						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
-    					}
-				    	
-    					//Cooldown scheduling
-				    	if (!item.equals(orbital)) {
-					    	cooldown.add(player);;
-    					} else {
-    				    	orbitalCooldown.add(player);
-    					}
-				    	
-				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				    		
-				    		public void run() {
-				    			
-				    			if (!item.equals(orbital)) {
-				    				cooldown.remove(player);
-				    			} else {
-				    				orbitalCooldown.remove(player);
-				    			}
-				    			
-				    		}
-				    		
-				    	}, shot.findCooldown(item));
-				    	
-    				} else {
-    					
-    					new Messages(plugin, language).makeMsg(player, "errorNoAmmoFound");
-    					if ( item.equals(pistol) ) {
-    						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.1, (float) 0.7);
-    					} else {
-    						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.2, (float) 0.5);
-    					}
-    					
-    				}
-    				
-    				e.setCancelled(true);
+					GunShot shot = new GunShot( player, item, plugin );
+					Bukkit.getServer().getPluginManager().callEvent(shot);
 			    	
-    			} else if ( item.equals(frag) ) {
-    				
-    				//Check if player has proper ammunition
-    				if (hasGrenade(player, item)) {
-    				
-    					GunShot shot = new GunShot( player, frag, plugin );
-    					Bukkit.getServer().getPluginManager().callEvent(shot);
-				    	
-    					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
-    					
-				    	cooldown.add(player);
-				    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				    		public void run() {
-				    			cooldown.remove(player);
-				    		}
-				    	}, shot.findCooldown(item));
-				    	
-    				} else {
-    					
-    					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You are out of grenades.");
-    					
-    				}
-    				
-    			}
-    			
-    		}
-    		
-    	}
-	    //End of BulletShot
+					if ( !item.equals(bow) ) {
+						shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+					}
+			    	
+					//Cooldown scheduling
+			    	if (!item.equals(orbital)) {
+				    	cooldown.add(player);;
+					} else {
+				    	orbitalCooldown.add(player);
+					}
+			    	
+			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			    		
+			    		public void run() {
+			    			
+			    			if (!item.equals(orbital)) {
+			    				cooldown.remove(player);
+			    			} else {
+			    				orbitalCooldown.remove(player);
+			    			}
+			    			
+			    		}
+			    		
+			    	}, shot.findCooldown(item));
+			    	
+				} else {
+					
+					new Messages(plugin, language).makeMsg(player, "errorNoAmmoFound");
+					if ( item.equals(pistol) ) {
+						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.1, (float) 0.7);
+					} else {
+						player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, (float) 0.2, (float) 0.5);
+					}
+					
+				}
+				
+				e.setCancelled(true);
+		    	
+			} else if ( item.equals(frag) ) {
+				
+				//Check if player has proper ammunition
+				if (hasGrenade(player, item)) {
+				
+					GunShot shot = new GunShot( player, frag, plugin );
+					Bukkit.getServer().getPluginManager().callEvent(shot);
+			    	
+					shotprojectiledata.put(shot.getProjectile(), shot.getProjectileData());
+					
+			    	cooldown.add(player);
+			    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			    		public void run() {
+			    			cooldown.remove(player);
+			    		}
+			    	}, shot.findCooldown(item));
+			    	
+				} else {
+					
+					player.sendMessage(ChatColor.RED + "[GS]" + ChatColor.GRAY + " | You are out of grenades.");
+					
+				}
+				
+			}
+		
+		//on left click...
+		} else if ( item.equals(sniper) || item.equals(br) ) {
+			
+	        if ( zoomed.contains(player) ) {
+	        	player.setWalkSpeed(0.2F);
+	        	zoomed.remove(player);
+	        } else {
+	        	player.setWalkSpeed(-0.2F);
+	        	zoomed.add(player);
+	        }
+	        
+		}
+		
+	}
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent e) {
@@ -469,6 +509,11 @@ public class GSListener implements Listener {
 		
 		Player player = (Player) e.getWhoClicked();
 		Inventory inventory = e.getInventory();
+		
+    	//Check for double-click issues
+		if ( clickCheck(player) ) {
+			return;
+		}
 		
 		if ( inventory.getName().equals("GunSmith GUI") && e.getSlotType() != SlotType.OUTSIDE ) {
 			
