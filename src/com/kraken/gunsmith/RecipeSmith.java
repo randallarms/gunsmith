@@ -11,15 +11,15 @@ public class RecipeSmith {
 	String language;
 	
 	ShapedRecipe[] recipesList = new ShapedRecipe[rTotal];
-	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
+	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun(602) );
 	ItemStack sniperAmmo = new ItemStack( new ItemSmith(language).makeAmmo("sniperAmmo", 2) );
-	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
+	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun(601) );
 	ItemStack pistolAmmo = new ItemStack( new ItemSmith(language).makeAmmo("pistolAmmo", 1) );
-	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
+	ItemStack br = new ItemStack( new ItemSmith(language).makeGun(603) );
 	ItemStack brAmmo = new ItemStack( new ItemSmith(language).makeAmmo("brAmmo", 2) );
-	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
+	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun(604) );
 	ItemStack lmgAmmo = new ItemStack( new ItemSmith(language).makeAmmo("lmgAmmo", 3) );
-	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
+	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun(605) );
 	ItemStack bowAmmo = new ItemStack( new ItemSmith(language).makeAmmo("crossbowAmmo", 1) );
 	ItemStack smallStock = new ItemStack( new ItemSmith(language).makePart("smallStock", 1) );
 	ItemStack largeStock = new ItemStack( new ItemSmith(language).makePart("largeStock", 1) );
@@ -29,7 +29,7 @@ public class RecipeSmith {
 	ItemStack chamber = new ItemStack( new ItemSmith(language).makePart("chamber", 1) );
 	ItemStack muzzle = new ItemStack( new ItemSmith(language).makePart("muzzle", 1) );
 	ItemStack crossbowStock = new ItemStack( new ItemSmith(language).makePart("crossbowStock", 1) );
-	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
+	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun(607) );
 	ItemStack rpgAmmo = new ItemStack( new ItemSmith(language).makeAmmo("rpgAmmo", 1) );
 	
 	public RecipeSmith(String language) {

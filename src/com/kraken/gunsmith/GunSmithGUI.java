@@ -28,15 +28,15 @@ public class GunSmithGUI {
 		gsGUI.setItem(7, new ItemStack(Material.AIR, 1));
 		gsGUI.setItem(8, new ItemStack(Material.AIR, 1));
 		
-		gsGUI.setItem(9, smithy.makeGun("pistol", 1));
-		gsGUI.setItem(10, smithy.makeGun("br", 1));
-		gsGUI.setItem(11, smithy.makeGun("ar", 1));
-		gsGUI.setItem(12, smithy.makeGun("lmg", 1));
-		gsGUI.setItem(13, smithy.makeGun("hmg", 1));
-		gsGUI.setItem(14, smithy.makeGun("sniper", 1));
-		gsGUI.setItem(15, smithy.makeGun("shotgun", 1));
-		gsGUI.setItem(16, smithy.makeGun("rocketLauncher", 1));
-		gsGUI.setItem(17, smithy.makeGun("bow", 1));
+		gsGUI.setItem(9, smithy.makeGun(601));
+		gsGUI.setItem(10, smithy.makeGun(603));
+		gsGUI.setItem(11, smithy.makeGun(609));
+		gsGUI.setItem(12, smithy.makeGun(604));
+		gsGUI.setItem(13, smithy.makeGun(610));
+		gsGUI.setItem(14, smithy.makeGun(602));
+		gsGUI.setItem(15, smithy.makeGun(608));
+		gsGUI.setItem(16, smithy.makeGun(607));
+		gsGUI.setItem(17, smithy.makeGun(605));
 		
 		gsGUI.setItem(18, smithy.makeAmmo("pistol", 1));
 		gsGUI.setItem(19, smithy.makeAmmo("br", 1));
