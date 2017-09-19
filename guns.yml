@@ -11,8 +11,81 @@
 #
 601:
     code: "pistol"
-    name: "PISTOL"
-    desc: "A pistol."
-    dmg: 3D
+    name: "&f&l[PISTOL]"
+    desc: "&8&oClose-range firearm."
+    dmg: 3
     range: 50
     cooldown: 5
+    ammo: "Pistol"
+602:
+    code: "sniper"
+    name: "&b&l[SNIPER]"
+    desc: "&8&oLong-range firearm."
+    dmg: 8
+    range: 125
+    cooldown: 20
+    ammo: "Sniper Rifle"
+603:
+    code: "br"
+    name: "&a&l[BATTLE RIFLE]"
+    desc: "&8&oMedium-range firearm."
+    dmg: 5
+    range: 90
+    cooldown: 10
+    ammo: "Battle Rifle"
+604:
+    code: "lmg"
+    name: "&b&l[LIGHT MACHINE GUN]"
+    desc: "&8&oLight automatic machine gun."
+    dmg: 5
+    range: 40
+    cooldown: 2
+    ammo: "LMG"
+605:
+    code: "crossbow"
+    name: "&a&l[CROSSBOW]"
+    desc: "&8&oRanged bolt weaponry."
+    dmg: 2
+    range: 30
+    cooldown: 30
+    ammo: "Crossbow"
+606:
+    code: "orbital"
+    name: "&d&l[HAMMER OF DAWN]"
+    desc: "&8&oWeapon of Mass Destruction"
+    dmg: 0
+    range: 125
+    cooldown: 250
+    ammo: "None"
+607:
+    code: "rpg"
+    name: "&d&l[ROCKET LAUNCHER]"
+    desc: "&8&oExplosive warhead launcher."
+    dmg: 6
+    range: 125
+    cooldown: 50
+    ammo: "Rocket Launcher"
+608:
+    code: "shotgun"
+    name: "&a&l[SHOTGUN]"
+    desc: "&8&oBuckshot firearm."
+    dmg: 9
+    range: 20
+    cooldown: 20
+    ammo: "Shotgun"
+609:
+    code: "ar"
+    name: "&a&l[ASSAULT RIFLE]"
+    desc: "&8&oMedium-range automatic firearm."
+    dmg: 5
+    range: 40
+    cooldown: 5
+    ammo: "Assault Rifle"
+610:
+    code: "hmg"
+    name: "&b&l[HEAVY MACHINE GUN]"
+    desc: "&8&oHeavy automatic machine gun."
+    dmg: 6
+    range: 40
+    cooldown: 2
+    ammo: "HMG"

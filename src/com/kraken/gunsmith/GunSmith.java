@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.7 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.8 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.7 (EpiCenter)";
+	public static String VERSION = "1.8 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -46,8 +46,11 @@ public class GunSmith extends JavaPlugin implements Listener {
     	
     	getLogger().info("Loading options...");
 		
-		//Copies the default config.yml from within the .jar if "plugins/config.yml" does not exist
-		this.getConfig().options().copyDefaults(true);
+		//Copies the default config.yml from within the .jar if "plugins/GunSmith/config.yml" does not exist
+		getConfig().options().copyDefaults(true);
+		
+    	//Copies the default guns.yml from within the .jar if "plugins/GunSmith/guns.yml" does not exist
+    	saveResource("guns.yml", false);
 		
 		//Language/Messages handler class construction
 		languages.add("english");
@@ -686,7 +689,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						//Give gun to player
 						try {
 							
-							boolean success = new ItemSmith(language).giveGun( args[0], target, 1 );
+							boolean success = new ItemSmith(language).giveGun( args[0], target );
 							
 							if ( success && !options.get("silentMode") ) {
 					    		new Messages(this, language).makeMsg(target, "cmdGiveGun");

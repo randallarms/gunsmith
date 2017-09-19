@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class GSListener implements Listener {
 	
@@ -41,21 +44,27 @@ public class GSListener implements Listener {
 	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
 	String language;
 	
-	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
-	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
-	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
-	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
-	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
-	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
-	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun("shotgun", 1) );
-	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
-	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
-	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun("orbital", 1) );
+	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun(601) );
+	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun(602) );
+	ItemStack br = new ItemStack( new ItemSmith(language).makeGun(603) );
+	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun(604) );
+	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun(605) );
+	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun(606) );
+	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun(607) );
+	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun(608) );
+	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun(609) );
+	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun(610) );
 	ItemStack frag = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
 	ItemStack pvtHelm = new ItemStack( new ItemSmith(language).makeArmor("pvtHelm") );
 	ItemStack pvtChest = new ItemStack( new ItemSmith(language).makeArmor("pvtChest") );
 	ItemStack pvtLegs = new ItemStack( new ItemSmith(language).makeArmor("pvtLegs") );
 	ItemStack pvtBoots = new ItemStack( new ItemSmith(language).makeArmor("pvtBoots") );
+	
+	//Guns plugin file & config
+    File gunsFile = new File("plugins/GunSmith", "guns.yml");
+    FileConfiguration gunsConfig = YamlConfiguration.loadConfiguration(gunsFile);
+    
+	WeakHashMap<Integer, ItemStack> guns = new ItemSmith(language).listGuns();
 	
     public GSListener(GunSmith plugin, String language) {
   	  
@@ -170,7 +179,7 @@ public class GSListener implements Listener {
 			    			
 			    		}
 			    		
-			    	}, shot.findCooldown(item));
+			    	}, shot.findStat(item, "cooldown") );
 			    	
 				} else {
 					
@@ -200,7 +209,7 @@ public class GSListener implements Listener {
 			    		public void run() {
 			    			cooldown.remove(player);
 			    		}
-			    	}, shot.findCooldown(item));
+			    	}, shot.findStat(item, "cooldown") );
 			    	
 				} else {
 					
@@ -389,44 +398,15 @@ public class GSListener implements Listener {
         
     }
 	
-	//Checks for the name of the ammo used for a particular gun
-	public String getAmmoFor(ItemStack gun) {
-		
-		if ( gun.equals(sniper) ) {
-			return "Sniper Rifle";
-		} else if ( gun.equals(br) ) {
-			return "Battle Rifle";
-		} else if ( gun.equals(pistol) ) {
-			return "Pistol";
-		} else if ( gun.equals(lmg) ) {
-			return "LMG";
-		} else if ( gun.equals(bow) ) {
-			return "Crossbow";
-		} else if ( gun.equals(shotgun) ) {
-			return "Shotgun";
-		} else if ( gun.equals(ar) ) {
-			return "Assault Rifle";
-		} else if ( gun.equals(hmg) ) {
-			return "HMG";
-		}  else if ( gun.equals(rocketLauncher) ) {
-			return "Rocket Launcher";
-		} else if ( gun.equals(frag) ) {
-			return "Frag Grenade";
-		} else {
-			return "null";
-		}
-		
-	}
-	
 	//Checks if player has ammunition of a certain type
 	public boolean hasAmmo(Player player, ItemStack gun) {
+		
+		Inventory inv = player.getInventory();
+		String ammo = gunsConfig.getString(gun.getDurability() + ".ammo");
 		
 		if ( gun.equals(orbital) ) {
 			return true;
 		}
-		
-		Inventory inv = player.getInventory();
-		String ammo = getAmmoFor(gun);
 		
 		for (ItemStack item : inv) {
 			
@@ -463,7 +443,7 @@ public class GSListener implements Listener {
 	public boolean hasGrenade(Player player, ItemStack grenade) {
 		
 		Inventory inv = player.getInventory();
-		String grenadeName = getAmmoFor(grenade);
+		String grenadeName = "Frag Grenade";
 		
 		for (ItemStack item : inv) {
 			
@@ -530,23 +510,23 @@ public class GSListener implements Listener {
 			if ( types.contains( clickedType.intValue() ) ) {
 				
 				if ( clickedType == (short) 601 ) {
-					player.getInventory().addItem( smithy.makeGun("pistol", 1) );
+					player.getInventory().addItem( smithy.makeGun(601) );
 				} else if ( clickedType == (short) 602 ) {
-					player.getInventory().addItem( smithy.makeGun("sniper", 1) );
+					player.getInventory().addItem( smithy.makeGun(602) );
 				} else if ( clickedType == (short) 603 ) {
-					player.getInventory().addItem( smithy.makeGun("br", 1) );
+					player.getInventory().addItem( smithy.makeGun(603) );
 				} else if ( clickedType == (short) 604 ) {
-					player.getInventory().addItem( smithy.makeGun("lmg", 1) );
+					player.getInventory().addItem( smithy.makeGun(604) );
 				} else if ( clickedType == (short) 605 ) {
-					player.getInventory().addItem( smithy.makeGun("bow", 1) );
+					player.getInventory().addItem( smithy.makeGun(605) );
 				} else if ( clickedType == (short) 607 ) {
-					player.getInventory().addItem( smithy.makeGun("rocketLauncher", 1) );
+					player.getInventory().addItem( smithy.makeGun(607) );
 				} else if ( clickedType == (short) 608 ) {
-					player.getInventory().addItem( smithy.makeGun("shotgun", 1) );
+					player.getInventory().addItem( smithy.makeGun(608) );
 				} else if ( clickedType == (short) 609 ) {
-					player.getInventory().addItem( smithy.makeGun("ar", 1) );
+					player.getInventory().addItem( smithy.makeGun(609) );
 				} else if ( clickedType == (short) 610 ) {
-					player.getInventory().addItem( smithy.makeGun("hmg", 1) );
+					player.getInventory().addItem( smithy.makeGun(610) );
 				}
 				
 				e.setCancelled(true);

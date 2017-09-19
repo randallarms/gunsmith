@@ -1,6 +1,6 @@
 package com.kraken.gunsmith;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -11,6 +11,8 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftSnowball;
 import org.bukkit.entity.Arrow;
@@ -36,27 +38,40 @@ public class GunShot extends Event {
 	EntityData data;
 	String language = "English";
 	
-	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun("pistol", 1) );
-	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun("sniperRifle", 1) );
-	ItemStack br = new ItemStack( new ItemSmith(language).makeGun("battleRifle", 1) );
-	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun("lightMachineGun", 1) );
-	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun("crossbow", 1) );
-	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun("orbital", 1) );
-	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun("rocketLauncher", 1) );
-	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun("shotgun", 1) );
-	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun("assaultRifle", 1) );
-	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun("heavyMachineGun", 1) );
+	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun(601) );
+	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun(602) );
+	ItemStack br = new ItemStack( new ItemSmith(language).makeGun(603) );
+	ItemStack lmg = new ItemStack( new ItemSmith(language).makeGun(604) );
+	ItemStack bow = new ItemStack( new ItemSmith(language).makeGun(605) );
+	ItemStack orbital = new ItemStack( new ItemSmith(language).makeGun(606) );
+	ItemStack rocketLauncher = new ItemStack( new ItemSmith(language).makeGun(607) );
+	ItemStack shotgun = new ItemStack( new ItemSmith(language).makeGun(608) );
+	ItemStack ar = new ItemStack( new ItemSmith(language).makeGun(609) );
+	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun(610) );
 	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
 	
-	ArrayList<ItemStack> guns = new ItemSmith(language).listGuns();
+    File gunsFile = new File("plugins/GunSmith", "guns.yml");
+    FileConfiguration gunsConfig = YamlConfiguration.loadConfiguration(gunsFile);
+	WeakHashMap<Integer, ItemStack> guns = new ItemSmith(language).listGuns();
 
 	public GunShot(Player player, ItemStack gun, GunSmith plugin) {
 		
 		if ( !gun.equals(bow) ) {
 			
 			Location location = player.getEyeLocation();
-			Integer range = findRange(gun);
-	        Double damage = findDamage(gun);
+			
+			Integer range = findStat(gun, "range");
+			//Hard-coded range limit for safety
+			if (range > 500) {
+				range = 500;
+			}
+				
+	        Double damage = Double.valueOf( findStat(gun, "dmg") );
+	        //Hard-coded damage limit for safety
+	        if (damage > 100D) {
+	        	damage = 100D;
+	        }
+	        
 	        Vector velocity = player.getLocation().getDirection().multiply(10.0D);
 	        
 	        if ( gun.equals(rocketLauncher.getType()) ) {
@@ -96,7 +111,7 @@ public class GunShot extends Event {
 	
 	public void shotEffects(Player player, Location location, ItemStack gun, boolean glassBreak, boolean particles) {
 		
-		Integer range = findRange(gun);
+		Integer range = findStat(gun, "range");
 		BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, range );
         Location blockToAdd;
 		int bCount = 0;
@@ -142,7 +157,7 @@ public class GunShot extends Event {
 	            			
 	            			LivingEntity target = (LivingEntity) entity;
 	            			if ( !( target instanceof HumanEntity && !entity.getWorld().getPlayers().contains(entity) ) ) {
-	            				target.damage( findDamage(gun) - 2D );
+	            				target.damage( findStat(gun, "dmg") - 2D );
 	            			}
 	            			
 	            		}
@@ -159,7 +174,7 @@ public class GunShot extends Event {
 	            			
 	            			LivingEntity target = (LivingEntity) entity;
 	            			if ( !( target instanceof HumanEntity && !entity.getWorld().getPlayers().contains(entity) ) ) { 
-	            				target.damage( findDamage(gun) - 4D );
+	            				target.damage( findStat(gun, "dmg") - 4D );
 	            			}
 	            		
 	            		}
@@ -174,83 +189,15 @@ public class GunShot extends Event {
 		
 	}
 	
-	public double findDamage(ItemStack gun) {
+	public int findStat(ItemStack gun, String stat) {
 		
-		if ( guns.contains(gun) ) {
-			//return loaded gun dmg value
-		}
-
-		if ( gun.equals( sniper ) ) {
-			return 7D;
-		} else if ( gun.equals( bow ) ) {
-			return 2D;
-		} else if ( gun.equals( pistol )  ) {
-			return 3D;
-		} else if ( gun.equals( br ) || gun.equals( ar ) ) {
-			return 4.5D;
-		} else if ( gun.equals( lmg ) || gun.equals( hmg ) ) {
-			return 5D;
-		} else if ( gun.equals( shotgun ) ) {
-			return 10D;
-		} else if ( gun.equals( rocketLauncher ) ) {
-			return 6D;
-		} else if ( gun.equals( grenade ) ) {
-			return 1D;
-		} else if ( gun.equals( orbital ) ) {
-			return 0D;
-		} else {
-			return 3D;
-		}
-	      
-	}
-	
-	public int findRange(ItemStack gun) {
+		int statNum = 1;
 		
-		if ( guns.contains(gun) ) {
-			//return loaded gun range value
-		}
-
-		if ( gun.equals( sniper ) || gun.equals( orbital ) || gun.equals( rocketLauncher ) ) {
-			return 125;
-		} else if ( gun.equals( pistol ) || gun.equals( br ) ) {
-			return 50;
-		} else if ( gun.equals( lmg ) || gun.equals( hmg ) || gun.equals( ar ) ) {
-			return 40;
-		} else if ( gun.equals( bow ) ) {
-			return 30;
-		} else if ( gun.equals( shotgun ) ) {
-			return 20;
-		} else {
-			return 50;
-		}
-	      
-	}
-	
-	public int findCooldown(ItemStack gun) {
-
-		if ( guns.contains(gun) ) {
-			//return loaded gun cooldown value
+		if ( guns.containsValue(gun) ) {
+		    statNum = gunsConfig.getInt(gun.getDurability() + "." + stat);
 		}
 		
-		if ( gun.equals( sniper ) ) { //Sniper
-			return 20;
-		} else if ( gun.equals( bow ) ) { //Crossbow
-			return 30;
-		} else if ( gun.equals( shotgun ) ) { //Shotgun
-			return 20;
-		} else if ( gun.equals( br ) ) { //BR
-			return 10;
-		} else if ( gun.equals( pistol ) || gun.equals( ar ) ) { //Pistol, AR
-			return 5;
-		} else if ( gun.equals( lmg ) || gun.equals( hmg ) ) { //LMG, HMG
-			return 2;
-		} else if ( gun.equals( rocketLauncher ) ) { //RPG
-			return 50;
-		} else if ( gun.equals( orbital ) ) { //Orbital
-			return 250;
-		} else {
-			return 5;
-		}
+		return statNum;
 	      
 	}
 	

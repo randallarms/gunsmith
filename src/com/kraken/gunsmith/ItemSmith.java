@@ -1,11 +1,13 @@
 package com.kraken.gunsmith;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.WeakHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -54,58 +56,72 @@ public class ItemSmith {
 		
 	}
 	
-	public ItemStack makeGun(String gun, int amount) {
+	public ItemStack makeGun(int id) {
 		
-		//FOR NEW STATS CONFIGURATION...
-		//
-		//...create gun by config file
+		//Make sure that the id is within a diamond hoe's 
+		//durability range, else set it to a default id
+		if ( !(id >= 0 && id <= 1562) ) {
+			id = 601;
+		}
 		
 		Material m = Material.DIAMOND_HOE;
-		String name = ChatColor.WHITE + "" + ChatColor.BOLD + "[GUN]";
-		String desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Firearm";
-		int data = 601;
+		String name = ChatColor.BOLD + "[GUN]";
+		String desc = ChatColor.ITALIC + "Firearm";
 		
-		if (gun.equalsIgnoreCase("pistol")) { 
-			name = ChatColor.WHITE + "" + ChatColor.BOLD + "[PISTOL]";
-			data = 601;
-		} else if (gun.equalsIgnoreCase("sniperRifle") || gun.equalsIgnoreCase("sniper")) {
-			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[SNIPER RIFLE]";
-			data = 602;
-		} else if (gun.equalsIgnoreCase("battleRifle") || gun.equalsIgnoreCase("br")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[BATTLE RIFLE]";
-			data = 603;
-		} else if (gun.equalsIgnoreCase("lightMachineGun") || gun.equalsIgnoreCase("lmg")) {
-			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[LIGHT MACHINE GUN]";
-			data = 604;
-		} else if (gun.equalsIgnoreCase("crossbow") || gun.equalsIgnoreCase("bow")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[CROSSBOW]";
-			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ranged Weapon";
-			data = 605;
-		} else if (gun.equalsIgnoreCase("hammerOfDawn") || gun.equalsIgnoreCase("orbital")) {
-			name = ChatColor.GOLD + "" + ChatColor.BOLD + "[HAMMER OF DAWN]";
-			desc = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Weapon of Mass Destruction";
-			data = 606;
-		} else if (gun.equalsIgnoreCase("rocketLauncher") || gun.equalsIgnoreCase("rpg")) {
-			name = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "[ROCKET LAUNCHER]";
-			data = 607;
-		} else if (gun.equalsIgnoreCase("shotgun")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[SHOTGUN]";
-			data = 608;
-		} else if (gun.equalsIgnoreCase("assaultRifle") || gun.equalsIgnoreCase("ar")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[ASSAULT RIFLE]";
-			data = 609;
-		} else if (gun.equalsIgnoreCase("heavyMachineGun") || gun.equalsIgnoreCase("hmg")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HEAVY MACHINE GUN]";
-			data = 610;
-		}
+		File gunsFile = new File("plugins/GunSmith", "guns.yml");
+	    FileConfiguration guns = YamlConfiguration.loadConfiguration(gunsFile);
+
+		name = ChatColor.translateAlternateColorCodes('&', guns.getString(id + ".name") );
+		desc = ChatColor.translateAlternateColorCodes('&', guns.getString(id + ".desc") );
 	
-    	return makeItem(m, name, desc, amount, data, true);
+    	return makeItem(m, name, desc, 1, id, true);
 		
 	}
 	
-	public boolean giveGun(String gun, Player player, int amount) {
+	public boolean giveGun(String gun, Player player) {
 		
-    	ItemStack gunItem = makeGun(gun, amount);
+		int id;
+		
+		switch ( gun.toLowerCase() ) {
+			
+			case "pistol":
+				id = 601;
+			case "sniperRifle":
+			case "sniper":
+				id = 602;
+			case "battleRifle":
+			case "br":
+				id = 603;
+			case "lightMachineGun":
+			case "lmg":
+				id = 604;
+			case "crossbow":
+			case "bow":
+				id = 605;
+			case "hammerOfDawn":
+			case "orbital":
+				id = 606;
+			case "rocketLauncher":
+			case "rpg":
+				id = 607;
+			case "shotgun":
+				id = 608;
+			case "assaultRifle":
+			case "ar":
+				id = 609;
+			case "heavyMachineGun": 
+			case "hmg":
+				id = 610;
+			default:
+				try{
+					id = Integer.parseInt(gun);
+				} catch (NumberFormatException e) {
+					id = 601;
+				}
+		
+		}
+		
+    	ItemStack gunItem = makeGun(id);
         player.getInventory().addItem(new ItemStack(gunItem));
         return true;
 		
@@ -144,7 +160,7 @@ public class ItemSmith {
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[AR AMMO]";
 			ammoFor = "Assault Rifle";
 		} else if (ammo.equalsIgnoreCase("hmgAmmo") || ammo.equalsIgnoreCase("hmg")) {
-			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[HMG AMMO]";
+			name = ChatColor.AQUA + "" + ChatColor.BOLD + "[HMG AMMO]";
 			ammoFor = "HMG";
 		}
 	
@@ -249,41 +265,25 @@ public class ItemSmith {
 	
 	}
 	
-	public ArrayList<ItemStack> listGuns() {
+	public WeakHashMap<Integer, ItemStack> listGuns() {
 		
-		//FOR THE NEW STATS CONFIGURATION...
-		//
-	    //File gunsFile = new File("plugins/GunSmith", "guns.yml");
-	    //FileConfiguration guns = YamlConfiguration.loadConfiguration(gunsFile);
-		//
-		//ArrayList<ItemStack> defaultGuns = new ArrayList<ItemStack>();
-		//ArrayList<String> ids = new ArrayList<String>();
-		//
-		//for (String key : guns.getKeys(false) ) {
-		//	
-		//	if ( !ids.contains(key) ) {
-		//		ItemStack gun = new ItemStack( makeGun(key) );
-		//		defaultGuns.add(gun);
-		//	}
-		//	
-		//}
-		//
-		//return defaultGuns;
+	    File gunsFile = new File("plugins/GunSmith", "guns.yml");
+	    FileConfiguration gunsConfig = YamlConfiguration.loadConfiguration(gunsFile);
 		
-		ItemStack pistol = new ItemStack( makeGun("pistol", 1) );
-		ItemStack sniper = new ItemStack( makeGun("sniperRifle", 1) );
-		ItemStack br = new ItemStack( makeGun("battleRifle", 1) );
-		ItemStack lmg = new ItemStack( makeGun("lightMachineGun", 1) );
-		ItemStack bow = new ItemStack( makeGun("crossbow", 1) );
-		ItemStack orbital = new ItemStack( makeGun("orbital", 1) );
-		ItemStack rocketLauncher = new ItemStack( makeGun("rocketLauncher", 1) );
-		ItemStack shotgun = new ItemStack( makeGun("shotgun", 1) );
-		ItemStack ar = new ItemStack( makeGun("assaultRifle", 1) );
-		ItemStack hmg = new ItemStack( makeGun("heavyMachineGun", 1) );
-		ItemStack grenade = new ItemStack( makeGrenade("frag") );
+		WeakHashMap<Integer, ItemStack> guns = new WeakHashMap<Integer, ItemStack>();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
 		
-		ArrayList<ItemStack> guns = new ArrayList<ItemStack>();
-		guns.addAll( Arrays.asList(pistol, sniper, br, lmg, bow, rocketLauncher, shotgun, ar, hmg, orbital, grenade) );
+		for (String key : gunsConfig.getKeys(false) ) {
+			
+			int id = Integer.valueOf(key);
+			
+			if ( !ids.contains(id) ) {
+				ItemStack gun = new ItemStack( makeGun(id) );
+				guns.put(id, gun);
+			}
+			
+		}
+		
 		return guns;
 		
 	}
