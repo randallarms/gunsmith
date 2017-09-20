@@ -6,10 +6,10 @@ import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -130,10 +130,17 @@ public class GunShot extends Event {
             }
         	
         	if (particles) {
-	        	player.getWorld().playEffect(blockToAdd, Effect.STEP_SOUND, Material.WEB);
-	        	if ( gun.equals(shotgun) && bCount == 1 ) {
-	                fwEffect(blockToAdd.add(player.getLocation().getDirection().multiply(2)).add(0, 1, 0));
-	        	}
+        		
+        		//Particle generation for particle trails
+        		if ( gun.equals(rocketLauncher) ) {
+        			player.getWorld().spawnParticle(Particle.CRIT, blockToAdd, 1);
+        		} else if ( gun.equals(shotgun) ) {
+        			player.getWorld().spawnParticle(Particle.END_ROD, blockToAdd, 2);
+        			player.getWorld().spawnParticle(Particle.SPELL, blockToAdd, 1);
+        		} else {
+        			player.getWorld().spawnParticle(Particle.SPELL, blockToAdd, 2);
+        		}
+	        	
 			}
         	
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST, (float) 0.1, (float) 0.5);
