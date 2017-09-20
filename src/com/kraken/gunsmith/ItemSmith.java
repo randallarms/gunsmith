@@ -116,7 +116,7 @@ public class ItemSmith {
 				try{
 					id = Integer.parseInt(gun);
 				} catch (NumberFormatException e) {
-					id = 601;
+					return false;
 				}
 		
 		}

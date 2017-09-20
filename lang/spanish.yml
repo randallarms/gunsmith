@@ -29,7 +29,7 @@ player:
     cmdOpReqDisabled: '&c[GS] &7| Los permisos de op no estan necesario ahora por el menu.'
     errorOpReqFormat: '&c[GS] &7| No reconocido el comando. Teclea "/guns opReq <cierto/falso>".'
     errorGUINotEnabled: '&c[GS] &7| El GUI es discapacitado.'
-    errorGunFormat: '&c[GS] &7| No reconocido el comando. Teclea "/giveGun <arma> {jugador}"'
+    errorGunFormat: '&c[GS] &7| No reconocido el comando. Teclea "/giveGun <arma/id> {jugador}"'
     cmdGiveAmmo: '&c[GS] &7| Cierra y carga.'
     errorAmmoFormat: '&c[GS] &7| No reconocido el comando. Teclea "/giveAmmo <arma> {jugador}"'
     errorPlayerNotFound: '&c[GS] &7| ¡No reconocido el jugador!'

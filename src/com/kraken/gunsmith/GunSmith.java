@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.8 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.8.1 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.8 (EpiCenter)";
+	public static String VERSION = "1.8.1 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -674,7 +674,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						Player target;
 						
 						//1 arg = self
-						if (args.length < 2) {
+						if (args.length == 1) {
 							if ( isPlayer && player.isOp() ) {
 								target = player;
 							} else {
@@ -682,8 +682,17 @@ public class GunSmith extends JavaPlugin implements Listener {
 								return true;
 							}
 						//2 args = another player
-						} else {
+						} else if (args.length == 2) {
 							target = getServer().getPlayer(args[1]);
+						//0, 3+ args = argument format error
+						} else {
+							if ( isPlayer && player.isOp() ) {
+								msg(player, "errorGunFormat");
+							} else {
+								consoleMsg("errorArgumentCommand");
+								return true;
+							}
+							return true;
 						}
 						
 						//Give gun to player
@@ -692,7 +701,9 @@ public class GunSmith extends JavaPlugin implements Listener {
 							boolean success = new ItemSmith(language).giveGun( args[0], target );
 							
 							if ( success && !options.get("silentMode") ) {
-					    		new Messages(this, language).makeMsg(target, "cmdGiveGun");
+					    		msg(target, "cmdGiveGun");
+					    	} else if ( !options.get("silentMode") ) {
+					    		msg(target, "errorGunFormat");
 					    	}
 							
 							return success;

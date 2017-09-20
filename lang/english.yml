@@ -29,7 +29,7 @@ player:
     cmdOpReqDisabled: '&c[GS] &7| OP perms are no longer required for the GS GUI.'
     errorOpReqFormat: '&c[GS] &7| Try entering "/guns opReq <on/off>".'
     cmdGiveGun: '&c[GS] &7| Pew pew!'
-    errorGunFormat: '&c[GS] &7| Unrecognized format. Use "/giveGun <gunName> {player}"'
+    errorGunFormat: '&c[GS] &7| Unrecognized format. Use "/giveGun <gunName/id> {player}"'
     cmdGiveAmmo: '&c[GS] &7| Lock ''n load.'
     errorAmmoFormat: '&c[GS] &7| Unrecognized format. Use "/giveAmmo <gunName> {player}"'
     errorPlayerNotFound: '&c[GS] &7| Player not found!'

@@ -117,7 +117,9 @@ public class GSListener implements Listener {
 		}
     	
     	ArrayList<Integer> types = new ArrayList<Integer>();
-		types.addAll(Arrays.asList(601, 602, 603, 604, 605, 607, 608, 609, 610));
+    	for ( String id : gunsConfig.getKeys(false) ) {
+    		types.add( Integer.valueOf(id) );
+    	}
 		
 		Short durability = item.getDurability();
 		
@@ -418,7 +420,7 @@ public class GSListener implements Listener {
 					
 					List<String> lore = im.getLore();
 					
-					if ( lore.toString().contains("Ammunition | " + ammo) ) {
+					if ( lore.toString().toLowerCase().contains( ("Ammunition | " + ammo).toLowerCase() ) ) {
 						//Ammo was found
 						if (item.getAmount() > 1) {
 							item.setAmount(item.getAmount() - 1);
