@@ -56,7 +56,9 @@ public class GunShot extends Event {
 
 	public GunShot(Player player, ItemStack gun, GunSmith plugin) {
 		
-		if ( !gun.equals(bow) ) {
+		if ( gun.equals(bow) ) {
+			player.launchProjectile(Arrow.class);
+		} else {
 			
 			Location location = player.getEyeLocation();
 			
@@ -66,46 +68,36 @@ public class GunShot extends Event {
 				range = 500;
 			}
 				
-	        Double damage = Double.valueOf( findStat(gun, "dmg") );
-	        //Hard-coded damage limit for safety
-	        if (damage > 100D) {
-	        	damage = 100D;
-	        }
-	        
-	        Vector velocity = player.getLocation().getDirection().multiply(10.0D);
-	        
-	        if ( gun.equals(rocketLauncher.getType()) ) {
-	        	velocity = player.getLocation().getDirection().multiply(3D);
-	        } else if ( gun.equals(grenade.getType()) ) {
-	        	velocity = player.getLocation().getDirection().multiply(1.5D);
-	        }
-	        
-	        projectile = player.launchProjectile(Snowball.class);
-	        projectile.setVelocity(velocity);
-	        
-	        //Controls shooter identity, location, range, and damage
-	        	data = new EntityData(player, projectile.getLocation(), range, damage, gun);
-	        //^^^
-	        	
-	        shotprojectiledata.put(projectile, data);
-	        
-	        //Visual + audio effects (smoke trail, gunshot blast)
+			Double damage = Double.valueOf( findStat(gun, "dmg") );
+			//Hard-coded damage limit for safety
+			if (damage > 100D) {
+				damage = 100D;
+			}
+			
+			Vector velocity = player.getLocation().getDirection().multiply(10.0D);
+			
+			if ( gun.equals(rocketLauncher.getType()) ) {
+				velocity = player.getLocation().getDirection().multiply(3D);
+			} else if ( gun.equals(grenade.getType()) ) {
+				velocity = player.getLocation().getDirection().multiply(1.5D);
+			}
+			
+			projectile = player.launchProjectile(Snowball.class);
+			projectile.setVelocity(velocity);
+			
+			//Controls shooter identity, location, range, and damage
+			data = new EntityData(player, projectile.getLocation(), range, damage, gun);
+			shotprojectiledata.put(projectile, data);
+			
+			//Visual + audio effects (smoke trail, gunshot blast)
 			shotEffects(player, location, gun, plugin.options.get("glassBreak"), plugin.options.get("particles"));
-	      
-	        //Cancel snowball packet
-	        for (Player p : Bukkit.getOnlinePlayers()) {
-	            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
-	        }
-	      
-		  } else if ( gun.equals(bow) ) {
 			  
-			  player.launchProjectile(Arrow.class);
-			  
-		  } else {
-		  	
-		      player.getWorld().playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, (float) 0.1, (float) 0.5);
-		  	
-		  }
+			    //Cancel snowball packet
+			for (Player p : Bukkit.getOnlinePlayers()) {
+			    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(((CraftSnowball) projectile).getHandle().getId()));
+			}
+	      
+		}
           
     }
 	
