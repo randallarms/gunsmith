@@ -86,32 +86,42 @@ public class ItemSmith {
 			
 			case "pistol":
 				id = 601;
-			case "sniperRifle":
+				break;
+			case "sniperrifle":
 			case "sniper":
 				id = 602;
-			case "battleRifle":
+				break;
+			case "battlerifle":
 			case "br":
 				id = 603;
-			case "lightMachineGun":
+				break;
+			case "lightmachinegun":
 			case "lmg":
 				id = 604;
+				break;
 			case "crossbow":
 			case "bow":
 				id = 605;
-			case "hammerOfDawn":
+				break;
+			case "hammerofdawn":
 			case "orbital":
 				id = 606;
-			case "rocketLauncher":
+				break;
+			case "rocketlauncher":
 			case "rpg":
 				id = 607;
+				break;
 			case "shotgun":
 				id = 608;
-			case "assaultRifle":
+				break;
+			case "assaultrifle":
 			case "ar":
 				id = 609;
-			case "heavyMachineGun": 
+				break;
+			case "heavymachinegun": 
 			case "hmg":
 				id = 610;
+				break;
 			default:
 				try{
 					id = Integer.parseInt(gun);

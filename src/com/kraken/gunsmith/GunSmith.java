@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.9 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.9.1 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.9 (EpiCenter)";
+	public static String VERSION = "1.9.1 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -661,7 +661,7 @@ public class GunSmith extends JavaPlugin implements Listener {
 						
 			}
 	                
-	        //Command: giveGun <gunName> <player?>
+	        //Command: giveGun <gunName/id> <player?>
 			case "giveGun":
 			case "givegun":
 				
@@ -681,18 +681,22 @@ public class GunSmith extends JavaPlugin implements Listener {
 								consoleMsg("errorPlayerCommand");
 								return true;
 							}
+							
 						//2 args = another player
 						} else if (args.length == 2) {
 							target = getServer().getPlayer(args[1]);
+							
 						//0, 3+ args = argument format error
 						} else {
+							
 							if ( isPlayer && player.isOp() ) {
 								msg(player, "errorGunFormat");
 							} else {
-								consoleMsg("errorArgumentCommand");
-								return true;
+								consoleMsg("errorArgumentFormat");
 							}
+							
 							return true;
+							
 						}
 						
 						//Give gun to player
@@ -700,25 +704,23 @@ public class GunSmith extends JavaPlugin implements Listener {
 							
 							boolean success = new ItemSmith(language).giveGun( args[0], target );
 							
-							if ( success && !options.get("silentMode") ) {
+							if ( success ) {
 					    		msg(target, "cmdGiveGun");
-					    	} else if ( !options.get("silentMode") ) {
+					    	} else {
 					    		msg(target, "errorGunFormat");
 					    	}
-							
-							return success;
 							
 						} catch (NullPointerException npe) {
 							
 							if (isPlayer) {
-								msg(player, "errorPlayerNotFound");
+								msg(player, "errorGunFormat");
 							} else {
-								consoleMsg("errorPlayerNotFound");
+								consoleMsg("errorGunFormat");
 							}
 							
-							return true;
-							
 						}
+						
+						return true;
 						
 					default:
 						
