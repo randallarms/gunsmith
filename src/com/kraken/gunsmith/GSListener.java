@@ -135,19 +135,19 @@ public class GSListener implements Listener {
 				Messages msg = new Messages(plugin, language);
 				
 				//Check is player has "shoot" permission
-				if ( !player.hasPermission("gunsmith.shoot") ) {
+				if ( options.get("permissions") && !player.hasPermission("gunsmith.shoot") ) {
 					msg.makeMsg(player, "errorIllegalCommand");
 					return;
 				}
 				
 				//Check is player has "explosives" permission
-				if ( item.equals(rocketLauncher) && !player.hasPermission("gunsmith.explosives") ) {
+				if ( item.equals(rocketLauncher) && options.get("permissions") && !player.hasPermission("gunsmith.explosives") ) {
 					msg.makeMsg(player, "errorIllegalCommand");
 					return;
 				}
 				
 				//Check is player has "orbital" permission
-				if ( item.equals(orbital) && !player.hasPermission("orbital") ) {
+				if ( item.equals(orbital) && options.get("permissions") && !player.hasPermission("orbital") ) {
 					msg.makeMsg(player, "errorIllegalCommand");
 					return;
 				}
