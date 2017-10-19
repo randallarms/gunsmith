@@ -529,6 +529,12 @@ public class ConsoleCommands {
 			case "giveGun":
 			case "givegun":
 				
+				//Checks for permissions
+				if ( options.get("permissions") && isPlayer && !player.hasPermission("gunsmith.give") ) {
+					plugin.msg(player, "errorIllegalCommand");
+					return true;
+				}
+				
 				switch (args.length) {
 				
 					case 1:
@@ -601,6 +607,12 @@ public class ConsoleCommands {
 	        //Command: giveAmmo <ammoName> <player?>
 			case "giveAmmo":
 			case "giveammo":
+				
+				//Checks for permissions
+				if ( options.get("permissions") && isPlayer && !player.hasPermission("gunsmith.give") ) {
+					plugin.msg(player, "errorIllegalCommand");
+					return true;
+				}
 				
 				switch (args.length) {
 				
