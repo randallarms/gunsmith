@@ -21,6 +21,8 @@ console:
     cmdCraftingDisabled: 'No mas estan habilitado el fabricacion de armas.'
     cmdParticlesEnabled: 'Las partículas de disparo estan habilitado.'
     cmdParticlesDisabled: 'No mas estan habilitado las partículas de disparo.'
+    cmdStoneCrackOn: 'Stone-break on gunshot is enabled.'
+    cmdStoneCrackOff: 'Stone-break on gunshot is disabled.'
 player:
     errorIllegalCommand: '&cNo reconocido el comando, o no tienes el permiso.'
     cmdGuns: '&c[GS] &7| Teclea "/givegun <nombreDeLaArma>" para darse la arma.'
@@ -62,4 +64,7 @@ player:
     errorPermsFormat: '&c[GS] &7| No reconocido el comando. Teclea "/guns perms <cierto/falso>"'
     errorGrenadeFormat: '&c[GS] &7| No reconocido el comando. Teclea "/giveGrenade <grenada>"'
     errorArmorFormat: '&c[GS] &7| No reconocido el comando. Teclea "/giveArmor <armadura> {jugador}"'
+    cmdStoneCrackOn: '&c[GS] &7| Firearm rounds will now break stone.'
+    cmdStoneCrackOff: '&c[GS] &7| Firearm rounds will no longer break stone.'
+    errorStoneCrackFormat: '&c[GS] &7| Unrecognized format. Enter "/guns stonecrack <true/false>"'
     cmdVersion: '&c[GS] &7| GunSmith v'

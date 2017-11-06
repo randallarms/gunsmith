@@ -1,6 +1,7 @@
 package com.kraken.gunsmith;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
@@ -38,6 +39,7 @@ public class GunShot extends Event {
 	EntityData data;
 	String language = "English";
 	
+	//Gun items list
 	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun(601) );
 	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun(602) );
 	ItemStack br = new ItemStack( new ItemSmith(language).makeGun(603) );
@@ -50,11 +52,16 @@ public class GunShot extends Event {
 	ItemStack hmg = new ItemStack( new ItemSmith(language).makeGun(610) );
 	ItemStack grenade = new ItemStack( new ItemSmith(language).makeGrenade("frag") );
 	
+	//Guns plugin file & config
     File gunsFile = new File("plugins/GunSmith", "guns.yml");
     FileConfiguration gunsConfig = YamlConfiguration.loadConfiguration(gunsFile);
 	WeakHashMap<Integer, ItemStack> guns = new ItemSmith(language).listGuns();
 
+	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
+
 	public GunShot(Player player, ItemStack gun, GunSmith plugin) {
+		
+		this.options = plugin.options;
 		
 		if ( gun.equals(bow) ) {
 			player.launchProjectile(Arrow.class);
@@ -90,7 +97,7 @@ public class GunShot extends Event {
 			shotprojectiledata.put(projectile, data);
 			
 			//Visual + audio effects (smoke trail, gunshot blast)
-			shotEffects(player, location, gun, plugin.options.get("glassBreak"), plugin.options.get("particles"));
+			shotEffects(player, location, gun);
 			  
 			    //Cancel snowball packet
 			for (Player p : Bukkit.getOnlinePlayers()) {
@@ -101,7 +108,8 @@ public class GunShot extends Event {
           
     }
 	
-	public void shotEffects(Player player, Location location, ItemStack gun, boolean glassBreak, boolean particles) {
+	@SuppressWarnings("deprecation")
+	public void shotEffects(Player player, Location location, ItemStack gun) {
 		
 		Integer range = findStat(gun, "range");
 		BlockIterator blocksToAdd = new BlockIterator( location, -0.75D, range );
@@ -116,20 +124,66 @@ public class GunShot extends Event {
             blockToAdd = blocksToAdd.next().getLocation();
             Material b = blockToAdd.getBlock().getType();
             
-        	if ( b.equals(Material.GLASS)
-        			|| b.equals(Material.THIN_GLASS)
-        			|| b.equals(Material.STAINED_GLASS)
-        			|| b.equals(Material.STAINED_GLASS_PANE) ) {
-        		if (glassBreak) {
+            //List of the different kinds of glass
+            ArrayList<Material> glass = new ArrayList<>();
+            glass.add(Material.GLASS);
+            glass.add(Material.THIN_GLASS);
+            glass.add(Material.STAINED_GLASS);
+            glass.add(Material.STAINED_GLASS_PANE);
+            
+            //List of the different kinds of stone
+            ArrayList<Material> stone = new ArrayList<>();
+            stone.add(Material.STONE);
+            
+            //Map of the different types of regular stone to cracked/destroyed counterparts
+            WeakHashMap<Material, Material> stoneCracked = new WeakHashMap<>();
+            stoneCracked.put(Material.STONE, Material.COBBLESTONE);
+            
+            //Map of the different types of stone brick data values to cracked/destroyed counterparts
+            WeakHashMap<Byte, Byte> stoneBrick = new WeakHashMap<>();
+            stoneBrick.put( (byte) 0, (byte) 2);
+            stoneBrick.put( (byte) 1, (byte) 2);
+            stoneBrick.put( (byte) 2, (byte) 2);
+            stoneBrick.put( (byte) 3, (byte) 2);
+            
+            //Map of the different types of stone brick monster eggs data values to cracked/destroyed counterparts
+            WeakHashMap<Byte, Byte> stoneBrickEggs = new WeakHashMap<>();
+            stoneBrickEggs.put( (byte) 0, (byte) 1);
+            stoneBrickEggs.put( (byte) 1, (byte) 1);
+            stoneBrickEggs.put( (byte) 2, (byte) 4);
+            stoneBrickEggs.put( (byte) 3, (byte) 4);
+            stoneBrickEggs.put( (byte) 4, (byte) 4);
+            stoneBrickEggs.put( (byte) 5, (byte) 4);
+            
+        	if ( glass.contains(b) ) {
+        		if ( options.get("glassBreak") ) {
         			blockToAdd.getBlock().setType(Material.AIR);
         		} else {
         			break;
         		}
-        	} else if ( b.isOccluding() || !shotprojectiledata.containsKey(projectile) ) {
+        	} else if ( stone.contains(b) ) {
+        		if ( options.get("stoneCrack") ) {
+        			blockToAdd.getBlock().setType( stoneCracked.get(b) );
+        		} else {
+        			break;
+        		}
+        	} else if ( b.equals(Material.SMOOTH_BRICK) ) {
+        		if ( options.get("stoneCrack") ) {
+        			blockToAdd.getBlock().setData( stoneBrick.get( blockToAdd.getBlock().getData() ) );
+        		} else {
+        			break;
+        		}
+        	} else if ( b.equals(Material.MONSTER_EGGS) ) {
+        		if ( options.get("stoneCrack") ) {
+        			blockToAdd.getBlock().setData( stoneBrickEggs.get( blockToAdd.getBlock().getData() ) );
+        		} else {
+        			break;
+        		}
+        	} else if ( b.isSolid() || !shotprojectiledata.containsKey(projectile) ) {
             	break;
             }
         	
-        	if (particles) {
+        	if ( options.get("particles") ) {
         		
         		//Particle generation for particle trails
         		if ( gun.equals(rocketLauncher) ) {

@@ -128,7 +128,9 @@ public class ConsoleCommands {
 									
 									return true;
 								}
+							
 								
+							//Command: guns glassBreak
 							case "glassbreak":
 									
 								//Glassbreak command handling
@@ -171,6 +173,55 @@ public class ConsoleCommands {
 											plugin.consoleMsg("errorCommandFormat");
 										} else {
 											plugin.msg(player, "errorGlassBreakFormat");
+										}
+										
+										return true;
+								
+								}
+								
+							//Command: guns stoneCrack
+							case "stonecrack":
+								
+								//Stonecrack command handling
+								switch ( args[1].toLowerCase() ) {
+								
+									case "true":
+									case "enable":
+									case "enabled":
+									case "on":
+									case "cierto":
+										plugin.setOption("stoneCrack", true);
+										
+										if ( !isPlayer ) {
+											plugin.consoleMsg("cmdStoneCrackOn");
+										} else {
+											plugin.msg(player, "cmdStoneCrackOn");
+										}
+										
+										return true;
+										
+									case "false":
+									case "disable":
+									case "disabled":
+									case "off":
+									case "falso":
+										plugin.setOption("stoneCrack", false);
+										
+										if ( !isPlayer ) {
+											plugin.consoleMsg("cmdStoneCrackOff");
+										} else {
+											plugin.msg(player, "cmdStoneCrackOff");
+										}
+										
+										return true;
+									
+									//Glassbreak command error handling
+									default: 
+										
+										if ( !isPlayer ) {
+											plugin.consoleMsg("errorCommandFormat");
+										} else {
+											plugin.msg(player, "errorStoneCrackFormat");
 										}
 										
 										return true;
@@ -226,7 +277,7 @@ public class ConsoleCommands {
 										return true;
 								
 								}
-							
+								
 						    //Command: guns GUI
 							case "gui":
 								

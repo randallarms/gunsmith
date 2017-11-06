@@ -21,6 +21,8 @@ console:
     cmdCraftingDisabled: '枪械合成已禁用'
     cmdParticlesEnabled: '射击粒子效果已启用'
     cmdParticlesDisabled: '射击粒子效果已禁用'
+    cmdStoneCrackOn: 'Stone-break on gunshot is enabled.'
+    cmdStoneCrackOff: 'Stone-break on gunshot is disabled.'
 player:
     errorIllegalCommand: '&c指令不正确.'
     cmdGuns: '&c[GS] &7| 输入 "/givegun <枪械名称>" 来让自己获得一把枪'
@@ -62,3 +64,6 @@ player:
     cmdParticlesEnabled: '&c[GS] &7| 射击粒子效果已启用'
     cmdParticlesDisabled: '&c[GS] &7| 射击粒子效果已禁用'
     errorParticlesFormat: '&c[GS] &7| 请使用 "/guns crafting <on/off>".'
+    cmdStoneCrackOn: '&c[GS] &7| Firearm rounds will now break stone.'
+    cmdStoneCrackOff: '&c[GS] &7| Firearm rounds will no longer break stone.'
+    errorStoneCrackFormat: '&c[GS] &7| Unrecognized format. Enter "/guns stonecrack <true/false>"'

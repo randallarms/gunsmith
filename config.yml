@@ -16,6 +16,9 @@ language: English
 # GLASS BREAK | If true, fired firearm rounds will break glass on contact.
 glassBreak: false
 #
+# STONE CRACK | If true, fired firearm rounds will crack stone on contact.
+stoneCrack: false
+#
 # SILENT MODE | If true, most messages will not be relayed to players.
 silentMode: false
 #
@@ -34,7 +37,7 @@ permissions: false
 # CRAFTING ENABLED | If true, players can craft firearms and related custom recipes at the workbench.
 crafting: false
 #
-# CRAFTING ENABLED | If true, fired rounds will emit a smokey particle trail.
+# PARTICLES | If true, fired rounds will emit a smokey particle trail.
 particles: true
 #
 # FOR MORE INFO | https://www.spigotmc.org/threads/gunsmith.189617/

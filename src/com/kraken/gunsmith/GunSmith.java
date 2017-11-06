@@ -1,5 +1,5 @@
 // =========================================================================
-// |GUNSMITH v1.9.3 (EpiCenter) | for Minecraft v1.12
+// |GUNSMITH v1.9.4 (EpiCenter) | for Minecraft v1.12
 // | by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 // | code inspired by various Bukkit & Spigot devs -- thank you.
 // | Special mention: codename_B (FireworkEffectPlayer)
@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 public class GunSmith extends JavaPlugin implements Listener {
 	
 	//Lang vars
-	public static String VERSION = "1.9.3 (EpiCenter)";
+	public static String VERSION = "1.9.4 (EpiCenter)";
 	String language;
 	ArrayList<String> languages = new ArrayList<String>();
 	Messages messenger;
@@ -74,6 +74,7 @@ public class GunSmith extends JavaPlugin implements Listener {
     	setOption( "explosions", getConfig().getBoolean("explosions") );
     	setOption( "permissions", getConfig().getBoolean("permissions") );
     	setOption( "glassBreak", getConfig().getBoolean("glassBreak") );
+    	setOption( "stoneCrack", getConfig().getBoolean("stoneCrack") );
     	setOption( "crafting", getConfig().getBoolean("crafting") );
     	setOption( "particles", getConfig().getBoolean("particles") );
     	setOption( "silentMode", getConfig().getBoolean("silentMode") );

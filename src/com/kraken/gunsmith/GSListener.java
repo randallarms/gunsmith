@@ -44,6 +44,7 @@ public class GSListener implements Listener {
 	WeakHashMap<String, Boolean> options = new WeakHashMap<>();
 	String language;
 	
+	//Gun items list
 	ItemStack pistol = new ItemStack( new ItemSmith(language).makeGun(601) );
 	ItemStack sniper = new ItemStack( new ItemSmith(language).makeGun(602) );
 	ItemStack br = new ItemStack( new ItemSmith(language).makeGun(603) );

@@ -21,6 +21,8 @@ console:
     cmdCraftingDisabled: 'Crafting firearm recipes are disabled.'
     cmdParticlesEnabled: 'Particle smoke trails on gunshot are enabled.'
     cmdParticlesDisabled: 'Particle smoke trails on gunshot are disabled.'
+    cmdStoneCrackOn: 'Stone-break on gunshot is enabled.'
+    cmdStoneCrackOff: 'Stone-break on gunshot is disabled.'
 player:
     errorIllegalCommand: '&cYour command was not recognized, or you have insufficient permissions.'
     cmdGuns: '&c[GS] &7| Type "/givegun <gunName>" to give yourself a gun.'
@@ -62,4 +64,7 @@ player:
     errorPermsFormat: '&c[GS] &7| Try entering "/guns perms <on/off>".'
     errorGrenadeFormat: '&c[GS] &7| Unrecognized format. Use "/giveGrenade <grenadeName> {player}"'
     errorArmorFormat: '&c[GS] &7| Unrecognized format. Use "/giveArmor <armorName> {player}"'
+    cmdStoneCrackOn: '&c[GS] &7| Firearm rounds will now break stone.'
+    cmdStoneCrackOff: '&c[GS] &7| Firearm rounds will no longer break stone.'
+    errorStoneCrackFormat: '&c[GS] &7| Unrecognized format. Enter "/guns stonecrack <true/false>"'
     cmdVersion: '&c[GS] &7| GunSmith v'
