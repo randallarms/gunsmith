@@ -1,10 +1,6 @@
 #GunSmith
 
-by Kraken | https://www.spigotmc.org/members/kraken_.287802/
-
 Simple custom gun plugin for Bukkit on Minecraft 1.12, 1.11, 1.10, & 1.9!
-
-HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
 
 VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
 
@@ -28,8 +24,6 @@ Gun Names:
     "shotgun" for a Shotgun
     "ar" for an Assault Rifle
     "hmg" for a Heavy Machine Gun
-
-Guides & plugin to be updated consistently! This plugin is far from complete, and represents an open-source, work-in-progress project.
 
 GunSmith on GitHub: https://github.com/randallarms/gunsmith
 
