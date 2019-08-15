@@ -24,6 +24,18 @@ Gun Names:
     "shotgun" for a Shotgun
     "ar" for an Assault Rifle
     "hmg" for a Heavy Machine Gun
+    
+Commands: 
+
+     guns:
+        description: Controls the GunSmith plugin, and opens a GUI for gun selection.
+        usage: /<command> <argument>
+     giveGun:
+        description: Give GunSmith a gun.
+        usage: /<command> <gunName/id>
+     giveAmmo:
+        description: Give GunSmith ammunition.
+        usage: /<command> <ammoName> 
 
 GunSmith on GitHub: https://github.com/randallarms/gunsmith
 
