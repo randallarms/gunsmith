@@ -34,7 +34,7 @@ public class ItemSmith {
 	    //Gets rid of durability
       	nmsItem = CraftItemStack.asNMSCopy(new ItemStack(m, amount));
       	NBTTagCompound tag = new NBTTagCompound(); //Create the NMS Stack's NBT (item data)
-      	tag.setBoolean("Unbreakable", unbreakable); //Set unbreakable value to true
+      	tag.setBoolean("Unbreakable", unbreakable); //Set unbreakable value
       	nmsItem.setTag(tag); //Apply the tag to the item
       	ItemStack item = CraftItemStack.asCraftMirror(nmsItem); //Get the bukkit version of the stack
 		
@@ -268,7 +268,7 @@ public class ItemSmith {
 		if (grenade.equals("frag")) {
 			m = Material.MAGMA_CREAM;
 			name = ChatColor.GREEN + "" + ChatColor.BOLD + "[FRAG GRENADE]";
-			desc = desc + "Frag Grenade";
+			desc += "Frag Grenade";
 		}
 		
 		return makeItem(m, name, desc, 4, 0, true);
