@@ -1,6 +1,10 @@
-# GunSmith
+#GunSmith
+
+by Kraken | https://www.spigotmc.org/members/kraken_.287802/
 
 Simple custom gun plugin for Bukkit on Minecraft 1.12, 1.11, 1.10, & 1.9!
+
+HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
 
 VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
 
@@ -24,18 +28,9 @@ Gun Names:
     "shotgun" for a Shotgun
     "ar" for an Assault Rifle
     "hmg" for a Heavy Machine Gun
-    
-Commands: 
+	"orbital" for an Orbital Strike marker (experimental & dangerous!)
 
-     guns:
-        description: Controls the GunSmith plugin, and opens a GUI for gun selection.
-        usage: /<command> <argument>
-     giveGun:
-        description: Give GunSmith a gun.
-        usage: /<command> <gunName/id>
-     giveAmmo:
-        description: Give GunSmith ammunition.
-        usage: /<command> <ammoName> 
+Guides & plugin to be updated consistently! This plugin is far from complete, and represents an open-source, work-in-progress project.
 
 GunSmith on GitHub: https://github.com/randallarms/gunsmith
 
