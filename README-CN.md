@@ -1,12 +1,8 @@
 #GunSmith
 
-by Kraken | https://www.spigotmc.org/members/kraken_.287802/
+by Randall Arms
 
 简单的 Bukkit 枪械插件 适合 Minecraft 1.12, 1.11, 1.10, & 1.9!
-
-安装教程: https://www.spigotmc.org/threads/gunsmith.189617/
-
-视频: https://www.youtube.com/watch?v=gYNzPxM2p8k
 
 手持枪械，右键即可开火，当然，首先你得准备充足的弹夹！
 

@@ -1,12 +1,8 @@
 #GunSmith
 
-by Kraken | https://www.spigotmc.org/members/kraken_.287802/
+by Randall Arms
 
 Simple custom gun plugin for Bukkit on Minecraft 1.12, 1.11, 1.10, & 1.9!
-
-HOW TO INSTALL AND USE: https://www.spigotmc.org/threads/gunsmith.189617/
-
-VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
 
 Simply hold the item corresponding to the gun, and right click to fire. You will need the proper ammunition to fire a weapon, as well!
 

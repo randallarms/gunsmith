@@ -1,11 +1,7 @@
 ﻿#GunSmith
-por Kraken | https://www.spigotmc.org/members/kraken_.287802/
+por Randall Arms
 
 ¡Plugin Bukkit de armas, simple y personalizado para Minecraft 1.12, 1.11, 1.10, y 1.9!
-
-CÓMO USAR E INSTALAR: https://www.spigotmc.org/threads/gunsmith.189617/
-
-VIDEO: https://www.youtube.com/watch?v=gYNzPxM2p8k
 
 Plugin Bukkit de armas, simple y personalizado para Minecraft. Tan solo sostenga el ítem del arma y luego de click derecho para disparar. Además, necesitarás una munición adecuada para dispararla.
 
@@ -23,6 +19,7 @@ Escribe "/giveGun (nombreArma)" para obtener un arma. Los nombres de las armas s
     "shotgun" para una escopeta
     "ar" para un Rifle de asalto
     "hmg" para una ametralladora pesada
+	"orbital" para una Orbital Strike (experimental & peligroso!)
 
 Escribe "/giveAmmo (nombreArma)" Para obtener la munición correspondiente al arma en particular (la ballesta utiliza saetas).
 
